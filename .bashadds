@@ -1,0 +1,47 @@
+#!usr/bin/env bash
+function explorer() {
+  if [[ $1 ]]; then
+    local dir=$1
+  else
+    local dir=.
+  fi
+  nautilus $dir
+}
+
+alias cls=clear
+
+alias wifi="nmcli radio wifi"
+
+alias connection="nmcli connection"
+
+alias vimbrowser="tabbed -c vimb -e"
+
+function up() {
+	if [[ $1 ]]; then
+		local levels=$1
+	else
+		local levels=1
+	fi
+	while [[ "$levels" -gt "0" ]]; do
+		cd ..
+		levels=$(($levels-1))
+	done
+}
+
+function restartWifi() {
+	local SSID=$(iwgetid -r);
+	wifi off;
+	wifi on;
+	local enabled=$(wifi);
+	until [[ "$enabled" == "enabled" ]]; do
+		enabled=$(wifi);
+	done
+	if [[ -n "$SSID" ]]; then
+		echo "Reconnecting to $SSID";
+		connection up $SSID;
+	fi
+}
+# Path
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH/:/home/jezer/Descargas/xcb-util-xrm/:/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH/:/home/linuxbrew/.linuxbrew/Cellar/libconfig/1.7.2/lib/:/home/linuxbrew/.linuxbrew/Cellar/pcre/8.44/lib/
+export PATH=$PATH:/home/jezer/.local/bin/

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Miniaplicación Remmina
+Comment=Conectarse a escritorio remoto a través del menú de la miniaplicación
+Icon=org.remmina.Remmina
+Exec=remmina -i
+Terminal=false
+Type=Application
+Hidden=true

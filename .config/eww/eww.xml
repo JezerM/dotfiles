@@ -1,0 +1,157 @@
+<eww>
+  <definitions>
+    <!-- This is the place where you structure your widgets, align them and stuff. -->
+
+    <def name="bar"> <!-- Starts the definition of a widget named main -->
+      <box orientation="h" hexpand="true" space-evenly="true">
+        <workspaces/>
+        <sidestuff/>
+      </box>
+    </def>
+    <def name="sidestuff">
+      <box class="sidestuff" orientation="h" space-evenly="false" halign="end">
+          <volume/>
+          <connection/>
+          <battery/>
+          <date/>
+          <time/>
+          <powerbtn/>
+      </box>
+    </def>
+
+    <def name="workspaces">
+        <box orientation="h" class="workspaces" space-evenly="true" halign="start"> <!-- Your workspaces.-->
+          <button class="{{if current-screen==0 then 'current' else ''}}" onclick="wmctrl -s 0">1</button>
+          <button class="{{if current-screen==1 then 'current' else ''}}" onclick="wmctrl -s 1">2</button>
+          <button class="{{if current-screen==2 then 'current' else ''}}" onclick="wmctrl -s 2">3</button>
+          <button class="{{if current-screen==3 then 'current' else ''}}" onclick="wmctrl -s 3">4</button>
+          <button class="{{if current-screen==4 then 'current' else ''}}" onclick="wmctrl -s 4">5</button>
+          <button class="{{if current-screen==5 then 'current' else ''}}" onclick="wmctrl -s 5">6</button>
+          <button class="{{if current-screen==6 then 'current' else ''}}" onclick="wmctrl -s 6">7</button>
+          <button class="{{if current-screen==7 then 'current' else ''}}" onclick="wmctrl -s 7">8</button>
+          <button class="{{if current-screen==8 then 'current' else ''}}" onclick="wmctrl -s 8">9</button>
+        </box>
+    </def>
+    <def name="music">
+        <box orientation="h" class="music" space-evenly="false">
+          <!-- An image. We won't be using it, but it might be handy if you ever need it. -->
+          <!-- <image path="/home/user/.config/eww/icons/music.svg"/> -->
+
+             {{music}} <!--This is how you use variables.-->
+        </box>
+    </def>
+    <def name="slider-vol">
+      <!--A basic volume slider-->
+      <box orientation="h" class="slider-vol" space-evenly="false">
+        <box class="label-vol"></box>
+        <scale min="0" max="101" value="{{volume}}" onchange="pulsemixer --set-volume {}"/>
+      </box>
+    </def>
+    <def name="slider-ram">
+      <!--A basic RAM slider-->
+      <box orientation="h" class="slider-ram" space-evenly="false">
+        <box class="label-ram"></box>
+        <scale min="0" active="false" max="101" value="{{ram-used}}"/>
+      </box>
+    </def>
+    <def name="connection">
+      <box class="{{if ssid!='no' then 'connection' else 'disconnected'}}">
+          {{if ssid!='no' then '直' else '睊'}} {{if ssid=='no' then 'Disconnected' else ssid}}
+      </box>
+    </def>
+    <def name="volume">
+      <box class="volume"> {{volume}}%</box>
+    </def>
+    <def name="time">
+      <!--Time-->
+      <box class="time"> {{hour}}:{{min}}</box>
+    </def>
+    <def name="date">
+      <box class="date"> {{month}} {{number_day}}, {{year_full}}</box>
+    </def>
+    <def name="battery">
+      <box class="battery"> {{battery-remaining}}%</box>
+    </def>
+    <def name="logoff">
+      <button class="logoff" onclick="~/.config/eww/scripts/logout.sh">Log off</button>
+    </def>
+    <def name="shutdown">
+      <button class="shutdown" onclick="shutdown -h now">Shutdown</button>
+    </def>
+
+    <def name="powerbtn">
+      <button class="powerbtn" onclick="~/.config/eww/scripts/togglePower">Power</button>
+    </def>
+
+    <def name="power">
+      <box class="power" orientation="v" space-evenly="false">
+        <logoff/>
+        <shutdown/>
+      </box>
+    </def>
+
+    <def name="noneBar">
+      <box class="noneBar" orientation="h">
+      </box>
+    </def>
+
+  </definitions>
+
+  <variables>
+
+	  <!-- Music vars -->
+    <!-- These are your variables. Like they say, they run a script, and then output that to the variable. In
+    the following var, we get music info from playerctl. -->
+
+    <script-var name="music" interval="5s">playerctl metadata --format '{{ artist }} - {{ title }}'</script-var>
+
+
+    <!--Volume var-->
+    <!-- If your vars get too complex to write down here, you can use an external script and paste it's path here as well, as shown below.
+     -->
+
+    <script-var name="volume" interval="16ms">pulsemixer --get-volume | awk '{print $1}'</script-var>
+
+    <!--Date vars-->
+    <script-var name="number_day" interval="5h">date "+%d"</script-var>
+    <script-var name="month" interval="10h">date "+%b"</script-var>
+    <script-var name="min" interval="10s">date "+%M"</script-var>
+    <script-var name="hour" interval="1m">date "+%H"</script-var>
+    <script-var name="year_full" interval="15h">date "+%Y"</script-var>
+
+    <!--RAM var-->
+    <script-var name="ram-used" interval="1s">~/.config/eww/scripts/getram</script-var>
+
+    <!--Battery charge var-->
+    <script-var name="battery-remaining" interval="2m">cat /sys/class/power_supply/BAT0/capacity</script-var>
+
+    <script-var name="current-screen" interval="50ms">wmctrl -d | grep "*" | awk '{print $1}'</script-var>
+
+    <script-var name="ssid" interval="1s">~/.config/eww/scripts/getwifi | awk 'NR==1'</script-var>
+
+  </variables>
+
+  <windows>
+    <!-- These are the windows -->
+    <window name="bar" screen="0">
+      <geometry x="0%" y="0%" width="100%" height="28px"/> <!--Specifies geometry-->
+      <reserve side="top" distance="28px"/>
+      <widget>
+        <bar/> <!--This is the def we created earlier-->
+      </widget>
+    </window>
+    <window name="noneBar" screen="0" stacking="bg">
+      <geometry x="0%" y="0%" width="100%" height="32px"/>
+      <reserve side="top" distance="32px"/>
+      <widget>
+        <noneBar/>
+      </widget>
+    </window>
+    <window name="power" screen="0">
+      <geometry x="92%" y="28px" height="10%" width="8%"/>
+        <widget>
+          <power/>
+      </widget>
+    </window>
+  </windows>
+</eww>

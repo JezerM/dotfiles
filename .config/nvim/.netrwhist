@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/home/jezer/.local/share/nvim/site/autoload'
+let g:netrw_dirhist_2='/home/jezer/Escritorio/NodeJS/gametest/ts'
+let g:netrw_dirhist_1='/home/jezer/Escritorio/NodeJS/gametest'
