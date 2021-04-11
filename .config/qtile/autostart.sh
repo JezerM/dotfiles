@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+# This are just some PATH exports 'cause picom had throwing me some errors... 
 export PKG_CONFIG_PATH=/home/jezer/Descargas/xcb-util-xrm/:/usr/lib/x86_64-linux-gnu/pkgconfig/
 export LD_LIBRARY_PATH=/home/linuxbrew/.linuxbrew/Cellar/libconfig/1.7.2/lib/:/home/linuxbrew/.linuxbrew/Cellar/pcre/8.44/lib/
 export PATH=$PATH:/home/jezer/.local/bin/
@@ -22,5 +23,5 @@ bash "/home/jezer/xidlelock.sh" &
 dropbox start &
 eww daemon &
 sleep 3
-eww open noneBar &
+eww open noneBar & # For some reason, eww is not available yet on first time, so I need to do this manually
 
