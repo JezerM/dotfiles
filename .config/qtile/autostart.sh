@@ -11,17 +11,19 @@ xset s 0 0
 xset dpms 0 0 0
 xset r rate 600 35
 
+EWWS=$HOME/.config/qtile/scripts/start_eww.sh
 
 picom --experimental-backends --config ~/.config/picom/picon.conf &
-feh --bg-fill "~/Imágenes/dnord4k_dark.png" & 
+feh --bg-fill "$HOME/Imágenes/dnord4k_dark.png" & 
 feh-blur -d &
 setxkbmap -layout latam &
+dropbox start &
 dunst &
 flashfocus &
 redshift-gtk -l 12.1518:-86.2711 &
-bash "/home/jezer/xidlelock.sh" &
-dropbox start &
-eww daemon &
-sleep 3
-eww open noneBar & # For some reason, eww is not available yet on first time, so I need to do this manually
-
+key-mapper-control --command autoload &
+betterlockscreen -u "$HOME/Imágenes/dnord4k_dark.png" &
+bash "$HOME/xidlelock.sh" &
+if [ -f $EWWS ]; then
+	. $EWWS
+fi

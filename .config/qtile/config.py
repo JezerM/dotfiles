@@ -75,18 +75,19 @@ layout_theme= {
     "border_focus": "#88c0d0",
     "border_normal": "#2E3440",
     "border_width": 2,
-    "margin": 8,
+    "margin": 6,
 }
 
 layouts = [
-    # layout.Columns(border_focus='#88c0d0', border_width=1, margin=10),
-    # Try more layouts by unleashing below layouts.
+    layout.Columns(
+        **layout_theme
+        ),
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    layout.MonadTall(
-        **layout_theme
-        ),
+    # layout.MonadTall(
+        # **layout_theme
+        # ),
     layout.Max(),
     # layout.MonadWide(),
     # layout.RatioTile(),

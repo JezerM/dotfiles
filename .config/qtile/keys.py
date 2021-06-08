@@ -8,6 +8,7 @@ import subprocess
 
 mod = "mod4"
 home = os.path.expanduser('~')
+terminal = "alacritty"
 
 def toggleBar(qtile):
     qtile.cmd_hide_show_bar()
@@ -115,7 +116,7 @@ keys = [
     Key(
         ["control", "mod1"],
         "t",
-        lazy.spawn("x-terminal-emulator"),
+        lazy.spawn(terminal),
         desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
@@ -193,7 +194,7 @@ keys = [
         "XF86MonBrightnessDown",
         lazy.spawn("xbacklight -dec 10"),
         desc="Decrease brightness"),
-    
+
     # Volume and media
     Key(
         [],

@@ -43,7 +43,7 @@ group_box_settings = {
     "disable_drag": True,
     "rounded": True,
     "highlight_color": colors[2],
-    "block_highlight_text_color": colors[6],
+    "block_highlight_text_color": colors[7],
     "highlight_method": "block",
     "this_current_screen_border": colors[14],
     "this_screen_border": colors[7],

@@ -7,7 +7,7 @@ fi
 picom=$(pgrep picom)
 
 if [ -z $picom ]; then
-  picom --experimental-backends &
+  picom --experimental-backends --config ~/.config/picom/picon.conf &
 else
   pkill picom
 fi

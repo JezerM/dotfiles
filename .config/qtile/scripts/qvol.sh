@@ -7,20 +7,23 @@ mute() {
 }
 
 up() {
-  pulsemixer --max-volume 100
+  change=""
   if [[ $1 ]]; then
-    pulsemixer --change-volume +$1
+    change=$1
   else
-    pulsemixer --change-volume +$value
+    change=$value
   fi
+  pulsemixer --change-volume +${change} --max-volume 100
 }
 
 down() {
-  if [[ $1 ]] ; then
-    pulsemixer --change-volume -$1
+  change=""
+  if [[ $1 ]]; then
+    change=$1
   else
-    pulsemixer --change-volume -$value
+    change=$value
   fi
+  pulsemixer --change-volume -${change} --max-volume 100
 }
 
 setV() {
