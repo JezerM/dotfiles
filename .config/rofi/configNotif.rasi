@@ -2,7 +2,7 @@ configuration {
 	display-drun:    " Apps";
 	display-window:  "缾 Windows";
 	show-icons:true;
-	font: "monospace 9";
+	font: "Fira Code 8";
 }
 
 * {
@@ -44,7 +44,7 @@ window {
 	height:		 80%;
     //y-offset:    24px;
     x-offset:    12px;
-	width:		 20%;
+	width:		 30%;
 	orientation: horizontal;
 	children:	 [mainbox];
     border-radius: 12px;

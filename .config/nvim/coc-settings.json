@@ -1,0 +1,5 @@
+{
+  "html.enable": true,
+  "html.autoClosingTags": true,
+  "javascript.showUnused": true
+}

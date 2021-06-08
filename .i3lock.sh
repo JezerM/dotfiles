@@ -38,7 +38,6 @@ i3lock \
 --bshlcolor=$W        \
 \
 --screen 1            \
---blur 8              \
 --clock               \
 --indicator           \
 --timestr="%I:%M:%S %p"  \
@@ -53,7 +52,7 @@ i3lock \
 
 revert
 
-
+#--blur 8              \
 #--greetertext=$(whoami) \
 #--greetersize=20 \
 #--greetercolor=$T \

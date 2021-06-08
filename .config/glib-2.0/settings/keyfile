@@ -7,6 +7,8 @@ gtk-theme='Nordic-darker'
 scaling-factor=70
 font-name='Garuda 8'
 
+text-scaling-factor=0.5
+
 [org/gnome/desktop/session]
 idle-delay=300
 

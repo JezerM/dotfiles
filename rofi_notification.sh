@@ -17,6 +17,7 @@ to_rofi=$(echo -n "$raw" | sed -n '2~6p;3~6p' | sed 's/\&/&amp;/g')
 icon=$(echo -n "$raw" | sed -n '4~6p' | while read -r line; do echo "$line"; done)
 urgency=$(echo -n "$raw" | sed -n '5~6p')
 timestamp=$(echo -n "$raw" | sed -n '6~6p')
+
 ### Create Icon list to parse through with rofi
 while IFS= read -r i; do
     if [[ -f "$i" ]]; then
@@ -29,8 +30,10 @@ while IFS= read -r i; do
     fi
     icon_paths_list="${icon_paths_list}${full_path}"
 done <<< "$icon"
+
 ### Create list of rows that are "active" i.e. low urgency for the -a flag on rofi
 count=0
+
 while IFS= read -r u; do
     if [[ "$u" == *"LOW"* ]]; then
         active_list=${active_list}${active_list:+,}$count
@@ -39,8 +42,10 @@ while IFS= read -r u; do
         count=$((count+1))
     fi
 done <<< "$urgency"
+
 ### Create list of urgent rows for rofi
 count=0
+
 while IFS= read -r u; do
     if [[ "$u" == *"CRITICAL"* ]]; then
         urgent_list=${urgent_list}${urgent_list:+,}$count
@@ -49,9 +54,12 @@ while IFS= read -r u; do
         count=$((count+1))
     fi
 done <<< "$urgency"
+
 ### Guess icon with appname
 readarray -t app_array < <(echo -en "$appname")
+
 app_array=( "${app_array[@],,}" )
+
 ##FIXME: if first notification doesnt have an icon path, notif center will only show latest notification. current workaround is to
 ##enable dunst startup notification
 readarray -t icon_path_array < <(echo -en "$icon_paths_list")
@@ -62,6 +70,7 @@ if $use_appname; then
         fi
     done
 fi
+
 ### Bold appname
 readarray -t timestamp_array < <(echo -en "$timestamp")
 count=0
@@ -70,6 +79,7 @@ while IFS= read -r a; do
     embolden_app="${embolden_app}${embolden_app:+\n}<b>$app_spaces</b>${timestamp_array[$count]}"
     count=$((count+1))
 done <<< "$appname"
+
 ### insert embolden appname
 summary_line=0
 body_line=1
@@ -80,6 +90,7 @@ for a in "${appname_array[@]}"; do
     summary_line=$((summary_line+2))
     body_line=$((body_line+2))
 done
+
 ### Insert icon paths
 appname_line=0
 summary_line=1

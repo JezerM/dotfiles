@@ -1,8 +1,3 @@
-[colors]
-	background = "#2e3440"
-    frame = "#3b4252"
-	#foreground = "#e5e9f0"
-
 [global]
     ### Display ###
 
@@ -10,17 +5,16 @@
     follow = keyboard
 
     #geometry = "262x5-829-46"
-    #geometry = "262x3-14+46"
-    geometry = "262x4-14+66"    
+    geometry = "362x4-14+66"    
     indicate_hidden = yes
     shrink = true
     transparency = 0
     notification_height = 0
     separator_height = 2
-    padding = 20
-    horizontal_padding = 30
-    frame_width = 3
-    corner_radius = 12
+    padding = 15
+    horizontal_padding = 20
+    frame_width = 2
+    corner_radius = 10
 
     #frame_color = 
     separator_color = auto
@@ -28,7 +22,7 @@
     idle_threshold = 120
 
     ### Text ###
-    font = FiraCode Nerd Font, Font Awesome 5 Free Solid 9
+    font = Fira Code, Font Awesome 5 Free Solid 8
     line_height = 0
 
     markup = full
@@ -51,11 +45,11 @@
     ignore_newline = false
     stack_duplicates = true
     hide_duplicate_count = true
-    show_indicators = true
+    show_indicators = yes
 
     ### Icons ###
     icon_position = left
-    max_icon_size = 64
+    max_icon_size = 32
     icon_path = /usr/share/icons/Nord-Icon/48x48/status/:/usr/share/icons/Nord-Icon/48x48/devices/:/usr/share/icons/Nord-Icon/48x48/apps
 
     ### History ###
@@ -64,12 +58,22 @@
 
     ### Misc/Advanced ###
     dmenu = /usr/bin/urxvt -e fzf:
-    browser = /usr/bin/linkhandler
+    browser = /usr/bin/xdg-open
     always_run_script = false
     title = Dunst
     class = Dunst
     startup_notification = true
     force_xinerama = false
+
+    ### Mouse ###
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[colors]
+	background = "#2e3440"
+    frame = "#3b4252"
+	#foreground = "#e5e9f0"
 
 [log_notifs]
     script = ~/dunst_logger.sh

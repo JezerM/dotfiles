@@ -14,7 +14,7 @@ xidlehook \
   --not-when-audio \
   `# Lock after 30 more seconds` \
   --timer $timeToLock \
-    '/home/jezer/.i3lock.sh' \
+    'betterlockscreen -l dimblur' \
     '' \
   `# Finally, suspend an hour after it locks` \
   --timer 3600 \
