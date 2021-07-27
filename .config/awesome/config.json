@@ -1,0 +1,10 @@
+{
+  "Lua.runtime.version": "LuaJIT",
+  "Lua": {
+    "workspace": {
+      "library": [
+        "/usr/share/awesome/lib/"
+      ]
+    }
+  }
+}

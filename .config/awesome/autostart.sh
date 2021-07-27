@@ -7,9 +7,10 @@ export LD_LIBRARY_PATH=/home/linuxbrew/.linuxbrew/Cellar/libconfig/1.7.2/lib/:/h
 export PATH=$PATH:/home/jezer/.local/bin/
 
 
-xset s 0 0
+xset s 0
+xset +dpms
 xset dpms 0 0 0
-xset r rate 600 35
+xset r rate 500 35
 
 function run {
   if ! pgrep -f $1 ;
@@ -18,15 +19,20 @@ function run {
   fi
 }
 
+background="$HOME/Imágenes/gruvbox_street.png"
+lockscreen="$HOME/Imágenes/Halifax_Sunset_by_Vlad_Drobinin.jpg"
 
-run picom --experimental-backends --config ~/.config/picom/picon.conf
-feh --bg-fill "$HOME/Imágenes/dnord4k_dark.png" &
-run feh-blur -d
-setxkbmap -layout latam &
+run picom --experimental-backends --config ~/.config/picom/picom.conf
+#feh --bg-fill $background &
+#run feh-blur -d --blur 4 --darken 10
+setxkbmap -layout latam
 run dropbox start
 #run dunst
 run flashfocus
-run redshift-gtk -l 12.1518:-86.2711
-key-mapper-control --command autoload &
-betterlockscreen -u "$HOME/Imágenes/dnord4k_dark.png" &
+run redshift-gtk -m randr -l 12.15:-86.27 -t 6500:3500
+#key-mapper-control --command autoload &
+xmodmap ~/.Xmodmap
+echo $lockscreen
+betterlockscreen -u $lockscreen &
+light-locker &
 bash "$HOME/xidlelock.sh" &
