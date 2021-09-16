@@ -9,22 +9,50 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'glepnir/lspsaga.nvim'
+Plug 'ray-x/lsp_signature.nvim'
+
+" Org
+Plug 'vhyrro/neorg'
+
+" Completion
+Plug 'hrsh7th/nvim-compe'
+Plug 'windwp/nvim-autopairs'
 
 Plug 'tpope/vim-sensible'
 Plug 'junegunn/seoul256.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'morhetz/gruvbox'
 Plug 'yggdroot/indentline'
 Plug 'myusuf3/numbers.vim'
 Plug 'romkatv/powerlevel10k'
 
+" Gruvbox
+"Plug 'rktjmp/lush.nvim'
+"Plug 'npxbr/gruvbox.nvim'
+Plug 'morhetz/gruvbox'
+
 Plug 'lervag/vimtex'
 Plug 'mattn/emmet-vim'
+
+" Smoother navigation
+Plug 'psliwka/vim-smoothie'
+
+" Snippets
+Plug 'L3MON4D3/LuaSnip'
+Plug 'SirVer/ultisnips'
+
+" Markdown
+"Plug 'godlygeek/tabular'
+"Plug 'plasticboy/vim-markdown'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install' }
+Plug 'ellisonleao/glow.nvim', {'do': ':GlowInstall', 'branch': 'main'}
 
 " Git
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+
+" Editor config
+Plug 'editorconfig/editorconfig-vim'
 
 " Lua colors
 Plug 'folke/lsp-colors.nvim'
@@ -32,6 +60,13 @@ Plug 'norcalli/nvim-colorizer.lua'
 
 " Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
+" Prettier
+Plug 'dense-analysis/ale'
+
+" Ranger
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
 
 " FZF
 Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
@@ -42,6 +77,7 @@ Plug 'ojroques/nvim-lspfuzzy'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
 
 Plug 'leafgarland/typescript-vim'
 "Plug 'valloric/youcompleteme' | " Compile it with './install.py --all' in ycm path
@@ -50,19 +86,19 @@ Plug 'lambdalisue/suda.vim'
 Plug 'scrooloose/nerdtree' |
       \ Plug 'Xuyuanp/nerdtree-git-plugin' |
       \ Plug 'ryanoasis/vim-devicons'
+
 Plug 'scrooloose/nerdcommenter'
 Plug 'arcticicestudio/nord-vim'
 Plug 'tmhedberg/simpylfold'
 Plug 'sheerun/vim-polyglot'
 Plug 'mhinz/vim-startify'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 language en_US.utf8
-
-colorscheme gruvbox
+set spelllang=es,en_us
 
 set shiftwidth=2
 set tabstop=2
@@ -72,43 +108,55 @@ set autoindent
 set smartindent
 let g:suda_smart_edit = 1
 set mouse=a
+set termguicolors
 
-tnoremap <Esc> <C-\><C-n>
-map <silent> <A-z> :let &wrap = !&wrap<CR>
-nnoremap <silent> <A-t> :NERDTreeToggle<CR>
+let g:indentLine_setConceal = 0
+let g:indentLine_fileTypeExclude = ['markdown']
+set conceallevel=1
+let g:vim_markdown_conceal = 0
 
-"nnoremap <silent> k gk
-"nnoremap <silent> j gj
-"nnoremap <silent> <Down> gj
-"nnoremap <silent> <Up> gk
-"nnoremap <silent> 0 g0
-"nnoremap <silent> $ g$
-
-nnoremap <silent> <C-f> :Files<CR>
-nnoremap <silent>K :Lspsaga hover_doc<CR>
+set guifont=MesloLGS\ NF:h12
 
 let g:startify_fortune_use_unicode = 1
+let g:smoothie_experimental_mappings = 1
+let g:user_emmet_leader_key = '<leader>y'
+
+" Latex
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+let g:tex_conceal='abdmg'
+let g:vimtex_syntax_conceal_default=1
+set concealcursor="n-i"
+
+" Ultisnips
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
 
 " Airline
-"let g:airline_theme="kolor"
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_left_sep = "\ue0c6"
+let g:airline_right_sep = "\ue0c7"
 
-"let g:airline_left_sep = "\uE0C6"
-"let g:airline_right_sep = "\uE0C7"
+" Lua files
 
-"" Gruvbox
-let g:gruvbox_italic=1
-let g:airline_theme = "gruvbox"
-set termguicolors
+luafile ~/.config/nvim/plugins/init.lua
+luafile ~/.config/nvim/plugins/telescope.lua
+luafile ~/.config/nvim/plugins/compe.lua
 
-" Aliases
-command! YcmToggle let b:ycm_completing = !b:ycm_completing
+let g:ale_linters_explicit = 1
 
-set foldmethod=syntax
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+
 set foldtext=MyFoldText()
+
 function MyFoldText()
   let line = getline(v:foldstart)
   let folded_line_num = v:foldend - v:foldstart
@@ -116,30 +164,74 @@ function MyFoldText()
   return v:folddashes . sub . " (" . folded_line_num . " L) "
 endfunction
 
-" Transparent background
-"autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-"hi Normal guibg=NONE ctermbg=NONE
+let custom_header = systemlist('cat $HOME/.config/nvim/figlet.txt')
+
+let g:startify_custom_header = custom_header
+
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+
+" Tabmove
+function TabMove(str)
+  let tabpage = tabpagenr()
+  if tabpage == 0
+        tabmove $
+  elseif tabpage == tabpagenr('$')
+        tabmove 0
+  else
+    tabmove a:str
+  endif
+endfunction
 
 " Restore cursor position
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-" Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * silent NERDTreeMirror
+" Highlight cursorline
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
-" Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
+" Documentation on hover
+"augroup hover
+  "autocmd!
+  "autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+  "autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+  "autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+"augroup end
 
-let custom_header = systemlist('cat $HOME/.config/nvim/figlet.txt')
+" Ranger
+let g:ranger_map_keys = 0
 
-let g:startify_custom_header = custom_header
+tnoremap <Esc> <C-\><C-n>
+map <silent> <A-z> :let &wrap = !&wrap<CR>
 
-" Lua
-lua require('lspfuzzy').setup {}
-lua require('lspconfig').clangd.setup{}
-lua require('lspkind').init()
-lua require('lspsaga').init_lsp_saga()
-lua require('colorizer').setup()
-lua require('telescope').setup()
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>fk <cmd>lua require('telescope.builtin').treesitter()<cr>
+nnoremap <leader>f  <cmd>lua require('telescope.builtin').builtin()<cr>
+
+nnoremap <silent><S-C-PageUp> <cmd>tabmove -1<cr>
+nnoremap <silent><S-C-PageDown> <cmd>tabmove +1<cr>
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+"" Gruvbox
+let g:gruvbox_italic=1
+let g:airline_theme = "gruvbox"
+let g:gruvbox_contrast_dark = "medium"
+set background=dark
+
+" Transparent background
+"autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+"hi Normal ctermbg=NONE guibg=NONE
+
+colorscheme gruvbox
