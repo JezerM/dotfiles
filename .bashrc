@@ -129,3 +129,5 @@ if [ -f $HOME/.bashadds ]; then
 fi
 
 source "$HOME/.cargo/env"
+
+eval "$(starship init bash)"

@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=Keymaps
-Comment=Sets the user keymaps
-Exec=bash keymapping.sh
-Terminal=false
-Type=Application
