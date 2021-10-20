@@ -1,6 +1,15 @@
 # My dotfiles
-These are my dotfiles, on Ubuntu, using qtile and LightDM.
-Inspired on [Genome](https://github.com/Barbarossa93/Genome).
+These are my dotfiles, on Ubuntu, using AwesomeWM and LightDM.
 
 ## Dependencies
-Check [packages.txt](packages.txt)
+
+- AwesomeWM
+
+## Install
+
+Inside $HOME directory, use:
+```sh
+git clone --recursive https://github.com/JezerM/dotfiles
+cd dotfiles
+./install.sh
+```
