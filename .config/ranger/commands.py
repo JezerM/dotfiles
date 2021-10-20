@@ -60,3 +60,19 @@ class my_edit(Command):
         # This is a generic tab-completion function that iterates through the
         # content of the current directory.
         return self._tab_directory_content()
+
+class set_wallpaper(Command):
+
+    def execute(self):
+        selection = self.fm.thistab.get_selection()
+        self.fm.notify(selection[0])
+        self.fm.execute_command("feh --bg-fill {0}".format(selection[0]))
+        # if self.arg(1) and self.arg(1)[0] == '-':
+            # flags = self.arg(1)[1:]
+            # command = self.rest(2)
+        # else:
+            # flags = ''
+            # command = self.rest(1)
+
+        # if command:
+            # self.fm.execute_command(command, flags=flags)

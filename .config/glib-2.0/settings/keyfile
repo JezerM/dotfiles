@@ -7,7 +7,7 @@ gtk-theme='Nordic-darker'
 scaling-factor=70
 font-name='Garuda 8'
 
-text-scaling-factor=0.5
+text-scaling-factor=1.0
 
 [org/gnome/desktop/session]
 idle-delay=300
@@ -15,3 +15,13 @@ idle-delay=300
 [org/gnome/desktop/screensaver]
 lock-enabled=false
 lock-delay=0
+
+[org/gnome/desktop/a11y/applications]
+screen-reader-enabled=false
+
+[org/gnome/desktop/applications/terminal]
+exec='x-terminal-emulator'
+
+[org/gnome/shell/extensions/dash-to-dock]
+autohide=false
+show-trash=false

@@ -49,7 +49,7 @@ export ZSH="/home/jezer/.oh-my-zsh"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
- ENABLE_CORRECTION="true"
+ #ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
@@ -78,7 +78,12 @@ export ZSH="/home/jezer/.oh-my-zsh"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git sudo zsh-completions)
+plugins=(
+  git
+  sudo
+  zsh-completions
+  #zsh-autocomplete
+)
 autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
@@ -137,7 +142,7 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 
 eval "$(starship init zsh)"
 
-colorscript random
+#colorscript random
 export GPG_TTY=/dev/pts/1
 
 alias luamake=/home/jezer/Descargas/lua-language-server/3rd/luamake/luamake

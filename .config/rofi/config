@@ -21,3 +21,6 @@ rofi.separator-style: solid
 rofi.hide-scrollbar: false
 rofi.auto-select: false
 rofi.modi: drun,run,window
+
+rofi.show-icons: true
+rofi.icon-theme: Nord-Icon

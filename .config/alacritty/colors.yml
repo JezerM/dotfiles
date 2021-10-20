@@ -1,8 +1,8 @@
 # Colors (Gruvbox dark)
 colors:
   primary:
-    # hard contrast background - '#1d2021'
-    background:        &gruvbox_dark_bg '#282828'
+    #background:        &gruvbox_dark_bg '#1d2021' # Hard contrast
+    background:        &gruvbox_dark_bg '#282828' # Medium contrast
     # soft contrast background - '#32302f'
     foreground:        '#fbf1c7'
     bright_foreground: '#f9f5d7'
