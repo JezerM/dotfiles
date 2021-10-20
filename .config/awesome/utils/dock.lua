@@ -7,9 +7,21 @@ local math = require("math")
 local cairo = require("lgi").cairo
 local inspect = require("inspect")
 
+local snap = require("utils/dock_snap")
+
 local naughty = require("naughty")
 
 local bling = require("bling")
+local rubato = require("rubato")
+
+local modkey = "Mod4"
+
+Dock = {
+}
+
+local function rounded_shape(cr, width, height)
+	gears.shape.rounded_rect(cr, width, height, dpi(5))
+end
 
 local function find_widget_in_wibox(wb, widget)
   local function find_widget_in_hierarchy(h, widget)
@@ -26,8 +38,13 @@ local function find_widget_in_wibox(wb, widget)
   return h and find_widget_in_hierarchy(h, widget)
 end
 
-Dock = {
-}
+local function get_direction(position)
+    if position == "left" or position == "right" then
+        return "vertical"
+    elseif position == "top" or position == "bottom" then
+        return "horizontal"
+    end
+end
 
 local function gen_placement(w)
     local maximize = (w.position == "right" or w.position == "left") and
@@ -37,90 +54,9 @@ local function gen_placement(w)
     return placement
 end
 
-function Dock.move(w, coords)
-    local placement = gen_placement(w)
-    placement(w, {
-            attach = true,
-            update_workarea = false,
-            margins = w.margins,
-            offset = coords
-        })
-end
-
-function Dock.set_position(w, position)
-    w.position = position
-
-    local placement = gen_placement(w)
-
-    placement(w, {
-            attach = true,
-            update_workarea = false,
-            margins = w.margins,
-    })
-
-    w.task_preview.placement_fn = function(c)
-        awful.placement[position](c, {
-                margins = w.size + dpi(10)
-            })
-    end
-end
-
-function Dock.toggle(w)
-    local hidden = w.hidden
-    w.visible = true
-    --w.visible = not w.visible
-
-    local value = {}
-    local size = w.size + w.margins
-
-    if w.position == "top" then value.y = -size
-    elseif w.position == "bottom" then value.y = size
-    elseif w.position == "left" then value.x = -size
-    elseif w.position == "right" then value.x = size
-    end
-
-    if hidden then
-        w.move(w, value)
-        w.opacity = 0
-        w.hidden = false
-    else
-        w.move(w, {x = 0, y = 0})
-        w.opacity = 1
-        w.hidden = true
-    end
-end
-
-function Dock.new(screen)
-
-    local dock_size = dpi(35)
-    local margins = dpi(5)
-    local position = "right"
-
-    local dock_width = nil
-    local dock_height = nil
-
-    local direction = nil
-
-    if position == "left" or position == "right" then
-        dock_width = dock_size
-        direction = "vertical"
-    else
-        dock_height = dock_size
-        direction = "horizontal"
-    end
-
-    local task_preview = bling.widget.task_preview.enable {
-            height = 200,                 -- The height of the popup
-            width = 300,                  -- The width of the popup
-            placement_fn = function(c)    -- Place the widget using awful.placement (this overrides x & y)
-                awful.placement[position](c, {
-                        margins = dock_size + dpi(10),
-                })
-            end
-        }
-
-    local mytasklist = awful.widget.tasklist {
-        screen = screen,
+local function getTaskListDefault(w)
+    return {
+        --screen = s,
         filter = awful.widget.tasklist.filter.currenttags,
         buttons = awful.util.tasklist_buttons,
         style = {
@@ -128,13 +64,13 @@ function Dock.new(screen)
             bg_normal = beautiful.dock_bg_normal,
             bg_focus = beautiful.dock_bg_focus,
             bg_minimize = beautiful.dock_bg_minimize,
-            shape = gears.shape.rounded_rect,
-            shape_border_color = beautiful.dock_border_color,
-            shape_border_width = dpi(2),
+            shape = rounded_shape,
+            --shape_border_color = beautiful.dock_border_color,
+            --shape_border_width = dpi(1),
         },
-        layout = {
-            layout = wibox.layout.flex[direction]
-        },
+        --layout = {
+            --layout = wibox.layout.flex[direction]
+        --},
         widget_template = {
             {
                 {
@@ -142,18 +78,17 @@ function Dock.new(screen)
                         {
                             id     = 'icon_role',
                             resize = true,
-                            forced_height = dpi(20),
                             widget = wibox.widget.imagebox,
                         },
-                        margins = 4,
+                        margins = dpi(5),
                         widget  = wibox.container.margin,
                     },
                     halign = "center",
                     valign = "center",
                     layout = wibox.container.place,
                 },
-                left = 2, right  = 2,
-                top  = 3, bottom = 3,
+                forced_height = w.size - dpi(10),
+                margins = dpi(1),
                 widget = wibox.container.margin
             },
             id     = 'background_role',
@@ -161,27 +96,74 @@ function Dock.new(screen)
             widget = wibox.container.background,
             create_callback = function(self, task, index, object)
                 self:connect_signal("mouse::enter", function()
-                    awesome.emit_signal("bling::task_preview::visibility", screen,
+                    awesome.emit_signal("bling::task_preview::visibility", s,
                                         true, task)
                 end)
             end
         },
     }
-    mytasklist:connect_signal("mouse::leave", function()
-        awesome.emit_signal("bling::task_preview::visibility", screen,
-                            false, mytasklist)
-    end)
+end
 
-    local w = wibox {
+local function update_input_shape(w)
+    if not w.visible then
+        return
+    end
+    local wb = w.wibox
+    local h = find_widget_in_wibox(wb, w.tasklist)
+    local x, y, width, height = 0, 0, wb.width, wb.height
+    if width == 0 or height == 0 then
+        return
+    end
+    if h == nil then
+        --naughty.notify { text = "NIL"}
+    else
+        x, y, width, height = h:get_matrix_to_device()
+                         :transform_rectangle(0, 0, h:get_size())
+    end
+
+    if width == 0 then width = wb.width end
+    if height == 0 then height = wb.height end
+
+    local img = cairo.ImageSurface(cairo.Format.A1, wb.width, wb.height)
+    local cr = cairo.Context(img)
+    if w.position == "left" or w.position == "right" then
+        cr:translate(0, (wb.height / 2) - (height / 2) )
+    else
+        cr:translate((wb.width / 2) - (width / 2), 0 )
+    end
+
+    gears.shape.rectangle(cr, width, height)
+
+    cr:fill()
+    wb.shape_input = img._native
+    img:finish()
+end
+
+local function build_dock(w, tasklist, position)
+    local direction = get_direction(position)
+
+    w.wibox:setup { layout = wibox.layout.align.vertical}
+    local function rect_none(cr, width, height)
+        gears.shape.rectangle(cr, 0, 0)
+    end
+    w.wibox.shape = rect_none
+    w.wibox = nil
+
+    w.wibox = wibox {
         type = "dock",
-        width = dock_width,
-        height = dock_height,
         bg = "#00000000",
         ontop = true,
-        screen = screen,
+        screen = w.screen,
     }
+    w.wibox.visible = true
 
-    w:setup {
+    if direction == "horizontal" then
+        w.wibox.height = w.size
+    else
+        w.wibox.width = w.size
+    end
+
+    w.wibox:setup {
         expand = "none",
         layout = wibox.layout.align[direction],
         nil,
@@ -190,53 +172,224 @@ function Dock.new(screen)
                 {
                     {
                         layout = wibox.layout.fixed[direction],
-                        mytasklist,
+                        tasklist,
                     },
                     widget  = wibox.container.margin,
                 },
-                id = "background",
-                bg = "#00000000",
-                widget = wibox.container.background,
+				widget  = wibox.container.margin,
+				margins = dpi(5),
             },
-            widget  = wibox.container.margin,
+			id = "background",
+			bg = "#282828",
+			widget = wibox.container.background,
+			shape = rounded_shape,
         },
         nil,
     }
 
-    local function update_input_shape()
-        local h = find_widget_in_wibox(w, mytasklist)
-        local x, y, width, height = h:get_matrix_to_device()
-                             :transform_rectangle(0, 0, h:get_size())
-
-        local img = cairo.ImageSurface(cairo.Format.A1, w.width, w.height)
-        local cr = cairo.Context(img)
-
-        cr:translate(0, (w.height / 2) - (height / 2) )
-        gears.shape.rectangle(cr, width, height)
-
-        cr:fill()
-        w.shape_input = img._native
-        img:finish()
-    end
-
-    w:connect_signal("mouse::enter", function()
-        update_input_shape()
+    w.wibox:connect_signal("mouse::enter", function()
+        update_input_shape(w)
     end)
 
-    w.move = Dock.move
-    w.toggle = Dock.toggle
-    w.size = dock_size
-    w.direction = direction
-    w.margins = margins
-    w.visible = true
-    w.hidden = false
+    w:toggle(true)
+end
+-- Remember to separate widget from wibox, like w = {position, size, widget = wibox}
 
-    w.tasklist = mytasklist
+function Dock:move(coords)
+    local placement = gen_placement(self)
+    placement(self.wibox, {
+            attach = true,
+            update_workarea = false,
+            margins = self.margins,
+            offset = coords,
+            honor_workarea = true,
+        })
+end
+
+function Dock:set_position(position)
+    self.position = position or "bottom"
+    local direction = get_direction(position)
+
+    self.tasklist = awful.widget.tasklist(
+            gears.table.join(
+                getTaskListDefault(self),
+                {
+                    screen = self.wibox.screen,
+                    layout = {
+                        layout = wibox.layout.flex[direction]
+                    },
+                }
+            )
+        )
+    self.tasklist:connect_signal("mouse::leave", function()
+        self.task_preview.visible = false
+    end)
+
+    build_dock(self, self.tasklist, position)
+
+    local placement = gen_placement(self)
+
+    placement(self.wibox, {
+            attach = true,
+            update_workarea = false,
+            margins = self.margins,
+            honor_workarea = true,
+    })
+
+    self.task_preview.placement_fn = function(c)
+        awful.placement.next_to(c, {
+                mode = "geometry",
+                margins = dpi(10),
+                preferred_positions = {
+                    "left", "right", "top", "bottom"
+                },
+                preferred_anchors = "middle",
+                geometry = self.wibox,
+        })
+    end
+    --snap.show_placeholder({x=0, y=0, width=200, height=200})
+
+    self.wibox:buttons( gears.table.join(
+            awful.button({ modkey }, 1, function(c)
+                local wb = self.wibox
+                local argy = {}
+                local req       = "request::geometry"
+                local context = "mouse.move"
+                local mode = "after"
+
+                mousegrabber.run(function(_mouse)
+                    local geo = setmetatable(
+                        mode == "live" and awful.placement.under_mouse(wb, argy) or wb:geometry(),
+                        {__index=argy}
+                    )
+                    local t_geo = setmetatable(
+                        mode == "live" and self.task_preview.placement_fn(self.task_preview) or self.task_preview:geometry(),
+                        {__index={}}
+                    )
+
+                    snap.detect_areasnap(wb, 64)
+
+                    -- Quit when the button is released
+                    -- Return true to continue, else, below is executed
+                    for _,v in pairs(_mouse.buttons) do
+                        if v then return true end
+                    end
+
+                    snap.apply_areasnap(self)
+
+                end, "fleur")
+            end)
+        )
+    )
+end
+
+function Dock:toggle(set)
+    --self.wibox.visible = true
+
+	local value = {}
+	local size = self.size + self.margins
+
+	local function change_pos(pos)
+		if self.position == "top" then value.y = -pos
+		elseif self.position == "bottom" then value.y = pos
+		elseif self.position == "left" then value.x = -pos
+		elseif self.position == "right" then value.x = pos
+		end
+	end
+
+	local timed = rubato.timed {
+		intro = 0,
+		prop_intro = true,
+		duration = 0.25,
+		rate = 60,
+		easing = rubato.quadratic,
+		subscribed = function(pos)
+			change_pos(pos)
+			self:move(value)
+		end
+	}
+	local timed_intro = rubato.timed {
+		intro = 0,
+		prop_intro = true,
+		duration = 0.25,
+		rate = 60,
+		easing = rubato.quadratic,
+		subscribed = function(pos)
+			change_pos(size - pos)
+			self:move(value)
+		end
+	}
+
+    if not set then
+        self.visible = not self.visible
+    end
+
+    if self.visible then
+		timed_intro.target = size
+        --self:move({x = 0, y = 0})
+        self.wibox.input_passthrough = false
+		--self.wibox.opacity = 1
+		--self.wibox.visible = true;
+    else
+		timed.target = size
+        --self:move(value)
+        self.wibox.input_passthrough = true
+		--self.wibox.opacity = 0
+		--self.wibox.visible = false;
+    end
+end
+
+
+function Dock:new(args)
+
+    local w = {}
+    w.screen = args.screen
+
+    w.size = args.size or dpi(35)
+    w.margins = args.margins or dpi(5)
+    w.position = args.position or "bottom"
+
+    w.wibox = wibox {
+        type = "dock",
+        bg = "#00000000",
+        ontop = true,
+        screen = w.screen,
+    }
+
+    w.wibox.visible = true
+    w.visible = true
+
+    local task_preview = bling.widget.task_preview.enable {
+            height = 200,
+            width = 300,
+            placement_fn = function(c)
+                awful.placement.next_to(c, {
+                        mode = "geometry",
+                        margins = dpi(5),
+                        preferred_positions = {
+                            "left", "right", "top", "bottom"
+                        },
+                        preferred_anchors = "middle",
+                        geometry = w.wibox,
+                })
+            end
+        }
+
+
     w.task_preview = task_preview
 
-    Dock.set_position(w, position)
+    local function u()
+        update_input_shape(w)
+    end
 
-    print(inspect(mytasklist))
+    client.connect_signal("focus", u)
+    tag.connect_signal("request::layout", u)
+    tag.connect_signal("request::layouts", u)
+
+    self.__index = self
+    setmetatable(w, self)
+
+    w:set_position(w.position)
 
     return w
 end

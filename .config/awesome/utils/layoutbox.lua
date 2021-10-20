@@ -79,6 +79,7 @@ function Layoutbox.new(o)
                     },
                     layout = wibox.layout.fixed.horizontal
             },
+            margin = o.margin,
             shape = o.shape or gears.shape.powerline,
             normal_bg = o.normal_bg or "#505050",
             active_bg = o.active_bg,

@@ -68,6 +68,7 @@ local gruvbox_colors = {
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/gruvbox"
 
+theme.useless_gap                               = 2
 theme.wallpaper                                 = theme.dir .. "/wall.png"
 -- Fonts
 theme.font                                      = "MesloLGS NF 8"
@@ -83,10 +84,10 @@ theme.bg_systray                                = theme.bg_normal
 -- Border
 theme.border_width                              = dpi(2)
 theme.border_normal                             = gruvbox_colors.bg2
-theme.border_focus                              = gruvbox_colors.light_aqua
+theme.border_focus                              = gruvbox_colors.light_blue
 -- Tags
 theme.taglist_fg_focus                          = gruvbox_colors.fg
-theme.taglist_bg_focus                          = gruvbox_colors.purple
+theme.taglist_bg_focus                          = gruvbox_colors.blue
 theme.taglist_bg_occupied                       = gruvbox_colors.bg1
 -- Tasks
 theme.tasklist_fg_focus                         = gruvbox_colors.fg
@@ -100,10 +101,16 @@ theme.dock_fg_normal = gruvbox_colors.fg
 theme.dock_bg_focus  = gruvbox_colors.light_aqua
 theme.dock_bg_minimize = gruvbox_colors.bg0_h
 theme.dock_border_color = gruvbox_colors.bg3
-
+-- Snap
 local rounded_bar = function(cr, width, height)
     gears.shape.rounded_rect(cr, width, height, 5)
 end
+
+theme.snap_bg = gruvbox_colors.light_red
+theme.snap_border_width = dpi(4)
+theme.snap_shape = rounded_bar
+theme.snapper_gap = theme.useless_gap
+
 --theme.tasklist_shape                            = rounded_bar
 -- Menu
 theme.menu_height                               = dpi(18)
@@ -128,11 +135,10 @@ theme.layout_floating                           = theme.dir .. "/icons/floating.
 
 theme.tasklist_plain_task_name                  = true
 theme.tasklist_disable_icon                     = false
-theme.useless_gap                               = 3
 
 -- Titlebar
 
-theme.titlebar_size = dpi(24)
+theme.titlebar_size = dpi(22)
 
 theme.titlebar_close_button_focus               = theme.dir .. "/icons/titlebar/close_focus.svg"
 theme.titlebar_close_button_normal              = theme.dir .. "/icons/titlebar/close_normal.svg"
@@ -215,11 +221,11 @@ local separators = lain.util.separators
 
 -- App menu
 local appmenu = utils.powerline:new{
-    markup = "<b>   </b>",
+    markup = "<b>  </b>",
     font = theme.font,
     normal_bg = gruvbox_colors.bg1,
     active_bg = gruvbox_colors.light_blue,
-    shape = utils.powerline.flipped_arrow,
+	shape = gears.shape.rectangle,
     buttons = awful.util.appmenu_buttons,
 }
 
@@ -239,7 +245,7 @@ local powermenu = utils.powerline:new{
     font = theme.font,
     normal_bg = gruvbox_colors.bg1,
     active_bg = gruvbox_colors.light_red,
-    shape = gears.shape.rectangular_tag,
+    shape = utils.powerline.arrow,
     buttons = awful.util.powermenu_buttons,
 }
 
@@ -275,81 +281,47 @@ theme.cal = lain.widget.cal({
     }
 })
 
--- Mail IMAP check
---[[ to be set before use
-theme.mail = lain.widget.imap({
-    timeout  = 180,
-    server   = "server",
-    mail     = "mail",
-    password = "keyring get mail",
-    notification_preset = { fg = white }
-    settings = function()
-        mail  = ""
-        count = ""
-
-        if mailcount > 0 then
-            mail = "Mail "
-            count = mailcount .. " "
-        end
-
-        widget:set_markup(markup.font(theme.font, markup(gray, mail) .. count))
-    end
-})
---]]
-
--- MPD
-theme.mpd = lain.widget.mpd({
-    settings = function()
-        mpd_notification_preset.fg = "#fff"
-        local artist = mpd_now.artist .. " "
-        local title  = mpd_now.title  .. " "
-
-        if mpd_now.state == "pause" then
-            artist = "mpd "
-            title  = "paused "
-        elseif mpd_now.state == "stop" then
-            artist = ""
-            title  = ""
-        end
-
-        widget:set_markup(markup.font(theme.font, markup(gruvbox_colors.gray, artist) .. title .. " "))
-    end
-})
-
--- /home fs
---[[ commented because it needs Gio/Glib >= 2.54
-theme.fs = lain.widget.fs({
-    notification_preset = { fg = white, bg = theme.bg_normal, font = "Terminus 10.5" },
-    settings  = function()
-        fs_header = ""
-        fs_p      = ""
-
-        if fs_now["/home"].percentage >= 90 then
-            fs_header = " Hdd "
-            fs_p      = fs_now["/home"].percentage
-        end
-
-        widget:set_markup(markup.font(theme.font, markup(gray, fs_header) .. fs_p))
-    end
-})
---]]
-
 -- Battery
-local bat = lain.widget.bat({
-    widget = utils.powerline:new({
+local battery = utils.battery:new {
+    widget = utils.powerline:new {
         markup = " Battery ",
         normal_bg = gruvbox_colors.bg1,
         active_bg = gruvbox_colors.green,
         shape = utils.powerline.flipped_powerline,
-    }).widget,
-    settings = function()
-        local bat_header = "  "
-        local bat_p      = bat_now.perc .. "% "
+    }.widget,
+    settings = function(self)
+        local bat_header = ""
+
+        if     self.perc >= 99 then bat_header = "  "
+        elseif self.perc >= 90 then bat_header = "  "
+        elseif self.perc >= 80 then bat_header = "  "
+        elseif self.perc >= 70 then bat_header = "  "
+        elseif self.perc >= 60 then bat_header = "  "
+        elseif self.perc >= 50 then bat_header = "  "
+        elseif self.perc >= 40 then bat_header = "  "
+        elseif self.perc >= 30 then bat_header = "  "
+        elseif self.perc >= 20 then bat_header = "  "
+        elseif self.perc >= 10 then bat_header = "  "
+        else                        bat_header = "  " end
+
+        if self.ac_status == 1 then
+            bat_header = bat_header .. " "
+        end
+
+        if self.perc >= 30 then self.widget.active_bg = gruvbox_colors.green
+        elseif self.perc >= 15 then self.widget.active_bg = gruvbox_colors.yellow
+        else self.widget.active_bg = gruvbox_colors.red end
+
+        local bat_p      = self.perc .. "% "
         local text_value = markup.font(theme.font, bat_header .. bat_p)
 
-        widget:get_children_by_id("text")[1]:set_markup(text_value)
+        self.widget:get_children_by_id("text")[1]:set_markup(text_value)
     end
-})
+}
+battery.widget:buttons(gears.table.join(
+    awful.button({ }, 1, function() battery:full_update() end)
+))
+
 bat_notification_charged_preset = {
     title = "Battery full",
     text = "You can unplug the cable",
@@ -372,33 +344,14 @@ bat_notification_critical_preset = {
     bg = gruvbox_colors.red
 }
 local battery_t = awful.tooltip {
-    objects = { bat.widget },
+    objects = { battery.widget },
     bg = gruvbox_colors.bg1,
     fg = gruvbox_colors.fg,
     font = "MesloLGS NF 8",
 }
-bat.widget:connect_signal("mouse::enter", function(c)
-    battery_t.text = bat_now.status
+battery.widget:connect_signal("mouse::enter", function(c)
+    battery_t.text = battery.status
 end)
-
--- ALSA volume
---[[
-   [theme.volume = lain.widget.alsa({
-   [    --togglechannel = "IEC958,3",
-   [    settings = function()
-   [        local header = " Vol "
-   [        local vlevel  = volume_now.level
-   [
-   [        if volume_now.status == "off" then
-   [            vlevel = vlevel .. "M "
-   [        else
-   [            vlevel = vlevel .. " "
-   [        end
-   [
-   [        widget:set_markup(markup.font(theme.font, markup(gray, header) .. vlevel))
-   [    end
-   [})
-   ]]
 
 -- PULSE volume
 theme.volume = lain.widget.pulse({
@@ -435,18 +388,6 @@ theme.volume.widget:connect_signal("mouse::enter", function()
     volume_t.text = "Volume at " .. volume_now.left .. "-" .. volume_now.right .. "%"
 end)
 
--- Weather
---[[ to be set before use
-theme.weather = lain.widget.weather({
-    --APPID =
-    city_id = 2643743, -- placeholder (London)
-    settings = function()
-        units = math.floor(weather_now["main"]["temp"])
-        widget:set_markup(" " .. units .. " ")
-    end
-})
---]]
-
 -- Brightness
 
 local brightness_widget = {}
@@ -466,6 +407,7 @@ brightness_widget = utils.brightness:new({
 })
 
 brightness_widget.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() awful.util.launch_rofi("applet_backlight") end),
     awful.button({}, 4, function() brightness_widget:inc() end),
     awful.button({}, 5, function() brightness_widget:dec() end)
 ))
@@ -483,29 +425,22 @@ theme.brightness_widget = brightness_widget
 
 -- Separators
 local first     = wibox.widget.textbox('<span font="Terminus 4"> </span>')
-local arrl_pre  = separators.arrow_right("alpha", "#1A1A1A")
-local arrl_post = separators.arrow_right("#1A1A1A", "alpha")
 local blank     = separators.arrow_right("alpha", "alpha")
 
-local barheight = dpi(20)
+local barheight = dpi(18)
 
 local bling = require("bling")
 
-local readed = bling.helpers.filesystem.list_directory_files(theme.dir .. "/wallpapers/", {"png", "jpg"})
---for i,v in ipairs(readed) do
-    --naughty.notify({text = string.format("%s: %d", v, i)})
---end
-math.randomseed(os.time())
-local ind = math.ceil(math.random(1, #readed))
-theme.wallpaper = string.format("%s/wallpapers/%s", theme.dir, readed[ind])
+local function load_random_wallpaper()
+	local wallpaper = gears.filesystem.get_random_file_from_dir(theme.dir .. "/wallpapers/",
+		{"jpg", "png"}, true)
+	theme.wallpaper = wallpaper
+end
+
+load_random_wallpaper()
+
 
 function theme.at_screen_connect(s)
-    -- Quake application
-    --s.quake = lain.util.quake{ app = "alacritty", argname = "", settings = function(c)
-        --c.sticky = true
-        --c.floating = true
-        --naughty.notify({text="AAAAA"})
-    --end }
 
     -- If wallpaper is a function, call it with the screen
     local wallpaper = theme.wallpaper
@@ -526,7 +461,8 @@ function theme.at_screen_connect(s)
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = utils.layoutbox({
-        shape = gears.shape.powerline,
+        margin = {left = 2, right = 2},
+        shape = gears.shape.rectangle,
         normal_bg = gruvbox_colors.bg1,
         active_bg = gruvbox_colors.aqua,
         font = theme.font,
@@ -550,8 +486,8 @@ function theme.at_screen_connect(s)
             placement_fn = function(c)    -- Place the widget using awful.placement (this overrides x & y)
                 awful.placement.top_left(c, {
                     margins = {
-                        top = 30,
-                        left = 30
+                        top = 24,
+                        left = 24
                     }
                 })
             end
@@ -564,13 +500,13 @@ function theme.at_screen_connect(s)
         filter = awful.widget.taglist.filter.all,
         buttons = awful.util.taglist_buttons,
         style = {
-            shape = gears.shape.powerline,
+            shape = gears.shape.circle,
         },
         layout = {
-            spacing = -8,
+            spacing = 2,
             spacing_widget = {
                 color  = '#00000000',
-                shape  = gears.shape.powerline,
+                shape  = gears.shape.rectangle,
                 widget = wibox.widget.separator,
             },
             layout  = wibox.layout.fixed.horizontal
@@ -584,18 +520,18 @@ function theme.at_screen_connect(s)
                 },
                 layout = wibox.layout.fixed.horizontal,
             },
-            left  = 8,
-            right = 8,
+            left  = 3,
+            right = 3,
             widget = wibox.container.margin
         },
         id     = 'background_role',
         widget = wibox.container.background,
         inactive_bg = "#00000000",
-        active_bg = gruvbox_colors.purple,
-        hover_bg = gruvbox_colors.light_purple,
+        active_bg = gruvbox_colors.blue,
+        hover_bg = gruvbox_colors.light_blue,
         -- Add support for hover colors and an index label
         create_callback = function(self, tag, index, objects) --luacheck: no unused args
-            self:get_children_by_id('text')[1].markup = '<b> '..tag.name..' </b>'
+            self:get_children_by_id('text')[1].markup = '<b>  </b>'
             self:connect_signal('mouse::enter', function()
                 self.bg = self.hover_bg
                 if #tag:clients() > 0 then
@@ -614,11 +550,19 @@ function theme.at_screen_connect(s)
 
                 --awesome.emit_signal("bling::tag_preview::visibility", s, false)
             end)
+            self:update_callback(tag, index, objects)
         end,
         update_callback = function(self, tag, index, objects) --luacheck: no unused args
-                if tag.selected then self.bg = theme.taglist_bg_focus
-                elseif #tag:clients() > 0 then self.bg = theme.taglist_bg_occupied
-                else self.bg = self.inactive_bg end
+                if tag.selected then
+                    self:get_children_by_id('text')[1].markup = '<b>  </b>'
+                    self.bg = theme.taglist_bg_focus
+                elseif #tag:clients() > 0 then
+                    self:get_children_by_id('text')[1].markup = '<b>  </b>'
+                    self.bg = theme.taglist_bg_occupied
+                else
+                    self:get_children_by_id('text')[1].markup = '<span color="#a89984"><b>  </b></span>'
+                    self.bg = self.inactive_bg
+                end
         end,
     },
     }
@@ -702,7 +646,7 @@ function theme.at_screen_connect(s)
         { -- Left widgets
             {
                 layout = wibox.layout.fixed.horizontal,
-                first,
+				first,
                 appmenu.widget,
                 s.mytaglist,
                 s.mylayoutbox,
@@ -714,8 +658,8 @@ function theme.at_screen_connect(s)
             shape = utils.powerline.flipped_arrow,
             widget = wibox.container.background,
         },
-        --s.mytasklist, -- Middle widget
-        nil,
+		--s.mytasklist, -- Middle widget
+		nil,
         { -- Right widgets
             {
                 layout = wibox.layout.fixed.horizontal,
@@ -723,7 +667,8 @@ function theme.at_screen_connect(s)
                 {
                     --wibox.widget.systray(),
                     brightness_widget.widget,
-                    bat.widget,
+                    --bat.widget,
+                    battery.widget,
                     theme.volume.widget,
                     mytextclock.widget,
 
@@ -733,15 +678,11 @@ function theme.at_screen_connect(s)
                 },
                 powermenu.widget,
             },
-            bg = gruvbox_colors.bg .. "dd",
-            shape = gears.shape.rectangular_tag,
+            bg = gruvbox_colors.bg .. "ee",
+            shape = utils.powerline.arrow,
             widget = wibox.container.background,
         },
     }
-
-    s.mywibox:connect_signal("mouse::enter", function(par)
-        print(inspect(par.hierarchy))
-    end)
 
     local function change_wibox_visibility(client)
         if client.screen == s then
@@ -752,7 +693,10 @@ function theme.at_screen_connect(s)
     client.connect_signal("property::fullscreen", change_wibox_visibility)
     client.connect_signal("focus", change_wibox_visibility)
 
-    s.dock = utils.dock.new(s)
+    s.dock = utils.dock:new({
+            screen = s,
+            position = "right"
+        })
 
 end
 

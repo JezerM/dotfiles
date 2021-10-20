@@ -105,42 +105,78 @@ awful.layout.layouts = {
 --lain.layout.cascade.tile.nmaster       = 5
 --lain.layout.cascade.tile.ncol          = 2
 
-local function lockscreen(s)
+local function lockscreen(s) ---@diagnostic disable-line: unused-local
     local socket = "/tmp/xidlehook.sock"
-    local timer = 0
+    local timer = 1
     local st = "xidlehook-client --socket " .. socket .. " control --action trigger --timer " .. timer
     awful.spawn(st)
 end
 
 local rofi_dir = home .. "/.config/rofi/bin/"
 
-local function launcher(s)
+local function launch_rofi(rof)
+    awful.spawn(rofi_dir .. rof)
+end
+
+local function launcher(s) ---@diagnostic disable-line: unused-local
     local launcher_type = "launcher_ribbon"
     awful.spawn(rofi_dir .. launcher_type)
 end
 
-local function app_menu(s)
+local function app_menu(s) ---@diagnostic disable-line: unused-local
     local launcher_type = "launcher_slate"
     awful.spawn(rofi_dir .. launcher_type)
 end
 
-local function power_menu(s)
+local function power_menu(s) ---@diagnostic disable-line: unused-local
     local launcher_type = "powermenu"
     awful.spawn(rofi_dir .. launcher_type)
 end
 
-local function screenshot(s)
+local function screenshot(s) ---@diagnostic disable-line: unused-local
     --local st = home .. "/.takeScreenshot.sh"
     local st = rofi_dir .. "applet_screenshot"
     awful.spawn(st)
 end
 
+local function send_key(key)
+	--root.real_fake_input('key_press', key)
+	--root.fake_input('key_press', key)
+	--root.fake_input('key_release', key)
+	--awful.spawn("xdotool keydown " .. key)
+	--awful.spawn("xdotool keyup " .. key)
+	naughty.notify { title = "Key pressed", text = "Pressed: " .. key}
+end
+
+local vi_mode = false
+
+local function toggle_vi()
+	if vi_mode then
+		naughty.notify { title = "VI mode", text = "Disabled"}
+		root.keys(globalkeys)
+		vi_mode = false
+		--keygrabber:stop()
+	else
+		naughty.notify { title = "VI mode", text = "Enabled"}
+		local clone = gears.table.clone(globalkeys)
+		clone = gears.table.join(clone,
+				awful.key({ }, 'j', function() send_key(88) end),
+				awful.key({ }, 'k', function() send_key(111) end)
+			)
+		root.keys(clone)
+		vi_mode = true
+		--keygrabber:start()
+	end
+end
+
+awful.util.launch_rofi = launch_rofi
+
 awful.util.appmenu_buttons = mytable.join(
-    awful.button({ }, 1, function(a) app_menu() end)
+    awful.button({ }, 1, function(a) app_menu() end) ---@diagnostic disable-line: unused-local
 )
 
 awful.util.powermenu_buttons = mytable.join(
-    awful.button({ }, 1, function(a) power_menu() end)
+    awful.button({ }, 1, function(a) power_menu() end) ---@diagnostic disable-line: unused-local
 )
 
 awful.util.taglist_buttons = mytable.join(
@@ -166,7 +202,7 @@ awful.util.tasklist_buttons = mytable.join(
             c:emit_signal("request::activate", "tasklist", { raise = true })
         end
     end),
-    awful.button({ }, 3, function(c)
+    awful.button({ }, 3, function()
         awful.menu.client_list({ theme = { width = 250 } })
      end),
      awful.button({ }, 4, function() awful.client.focus.byidx(1) end),
@@ -234,17 +270,15 @@ screen.connect_signal("property::geometry", function(s)
     end
 end)
 
-local useless_gap = beautiful.useless_gap
-
 -- No borders when rearranging only 1 non-floating or maximized client
 screen.connect_signal("arrange", function (s)
     local current_tag = awful.screen.focused().selected_tag
     local only_one = #s.tiled_clients == 1
-    if only_one then
-        current_tag.gap = 0
-    else
-        current_tag.gap = beautiful.useless_gap
-    end
+    --if only_one then
+        --current_tag.gap = 0
+    --else
+        --current_tag.gap = beautiful.useless_gap
+    --end
     for _, c in pairs(s.clients) do
         if only_one and not c.floating or c.maximized then
             c.border_width = 0
@@ -258,11 +292,11 @@ end)
 tag.connect_signal("property::layout", function(t)
     --local current_layout = t.layout
     local current_layout = awful.tag.getproperty(t, 'layout')
-    if current_layout == awful.layout.suit.max then
-        t.gap = 0
-    else
-        t.gap = beautiful.useless_gap
-    end
+    --if current_layout == awful.layout.suit.max then
+        --t.gap = 0
+    --else
+        --t.gap = beautiful.useless_gap
+    --end
 end)
 
 -- Create a wibox for each screen and add it
@@ -285,11 +319,14 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
 
     -- Show help
-    awful.key({ modkey }, "s", hotkeys_popup.show_help,
+    awful.key({ modkey }, "d", hotkeys_popup.show_help,
         {description="show help", group="awesome"}),
 
+    awful.key({ }, "Menu", function() toggle_vi() end,
+        {description="toggle vi mode", group="awesome"}),
+
     -- Take a screenshot
-    awful.key({ modkey, "Control" }, "s", screenshot,
+    awful.key({ modkey }, "s", screenshot,
         {description="Take a screenshot", group="client"}),
 
     -- Lock screen
@@ -387,7 +424,7 @@ globalkeys = gears.table.join(
             for s in screen do
                 local dock = s.dock
                 if not dock then return end
-                dock.toggle(dock)
+                dock:toggle()
             end
         end,
         {description = "toggle dock", group = "awesome"}),
@@ -634,6 +671,11 @@ root.keys(globalkeys)
 
 -- }}}
 
+naughty.config.notify_callback = function(args)
+    --awful.spawn("alacritty")
+    return args
+end
+
 -- {{{ Rules
 
 -- Rules to apply to new clients (through the "manage" signal).
@@ -782,18 +824,23 @@ end)
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     if not c.minimized then
-        c:emit_signal("request::activate", "mouse_enter", {raise = true})
+        c:emit_signal("request::activate", "mouse_enter", {raise = false})
     end
 end)
 
 client.connect_signal("focus", function(c)
     if c.no_border then return end
     c.border_color = beautiful.border_focus
+    --c.border_width = dpi(2)
 end)
 client.connect_signal("unfocus", function(c)
     if c.no_border then return end
     c.border_color = beautiful.border_normal
+    --c.border_width = 0
 end)
 -- }}}
+
+collectgarbage("setpause", 110)
+collectgarbage("setstepmul", 1000)
+
 -- vim: shiftwidth=4: tabstop=4
---

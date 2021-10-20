@@ -16,3 +16,6 @@
 [submodule ".config/awesome/lain"]
 	path = .config/awesome/lain
 	url = https://github.com/lcpz/lain
+[submodule ".config/awesome/rubato"]
+	path = .config/awesome/rubato
+	url = https://github.com/andOrlando/rubato

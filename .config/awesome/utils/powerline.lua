@@ -1,18 +1,18 @@
 local wibox = require("wibox")
 local gears = require("gears")
-local naughty = require("naughty")
-local beautiful = require("beautiful")
 
 local flipped_arrow = function(cr, width, height)
-    cr:translate(width,height)
-    cr:rotate(math.pi)
-    gears.shape.rectangular_tag(cr, width, height)
+    local shape = gears.shape.transform(gears.shape.rectangular_tag)
+        :translate(width, height)
+        :rotate(math.pi)
+    shape(cr, width, height)
 end
 
 local flipped_powerline = function(cr, width, height)
-    cr:translate(width,height)
-    cr:rotate(math.pi)
-    gears.shape.powerline(cr, width, height)
+    local shape = gears.shape.transform(gears.shape.powerline)
+        :translate(width, height)
+        :rotate(math.pi)
+    shape(cr, width, height)
 end
 
 Powerline = {
@@ -55,7 +55,7 @@ function Powerline:new(o)
                 widget = wibox.container.margin,
             },
             spacing_widget = {
-                shape = gears.shape.powerline,
+                shape = gears.shape.rectangular_tag,
                 widget = wibox.widget.separator,
             },
             spacing = -8,
@@ -83,5 +83,7 @@ end
 
 Powerline.flipped_powerline = flipped_powerline
 Powerline.flipped_arrow = flipped_arrow
+Powerline.powerline = gears.shape.powerline
+Powerline.arrow = gears.shape.rectangular_tag
 
 return Powerline

@@ -1,10 +1,11 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local watch = require("awful.widget.watch")
 local naughty = require("naughty")
 local gears = require("gears")
 
 local helpers = require("lain.helpers")
+
+local home = os.getenv("HOME")
 
 -- Meta class
 
@@ -31,7 +32,29 @@ function Brightness:new(object)
         end
     }
     timer:start()
+
+    --self:watch()
     return self
+end
+
+function Brightness:watch()
+    local file = "/sys/class/backlight/intel_backlight/brightness"
+    local script = string.format("%s/.config/awesome/scripts/watchfile", home)
+    local comm = string.format([[bash -c '
+    %s %s
+    ']], script, file)
+    awful.spawn.with_line_callback(comm, {
+            stdout = function()
+                gears.timer {
+                    timeout = 0.1,
+                    autostart = true,
+                    single_shot = true,
+                    callback = function()
+                        self:full_update()
+                    end
+                }
+            end
+        })
 end
 
 function Brightness:update()
