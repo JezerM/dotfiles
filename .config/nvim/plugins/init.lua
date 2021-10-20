@@ -28,6 +28,8 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", {silent = true})
 
+    --require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
     vim.api.nvim_exec([[
             augroup hover
               autocmd! * <buffer>
@@ -151,8 +153,8 @@ lspfuzzy.setup {}
 --local telescope = require "telescope"
 --telescope.setup {}
 
-local lspkind = require "lspkind"
-lspkind.init {}
+--local lspkind = require "lspkind"
+--lspkind.init {}
 
 local lspsaga = require "lspsaga"
 lspsaga.init_lsp_saga {}
@@ -223,6 +225,10 @@ lspconfig.diagnosticls.setup {
         formatters = formatters,
         formatFiletypes = formatFiletypes
     }
+}
+lspconfig.sqlls.setup{
+  cmd = {"sql-language-server", "up", "--method", "stdio"};
+  on_attach = on_attach,
 }
 
 require'nvim-treesitter.configs'.setup {
@@ -303,6 +309,13 @@ require'lspconfig'.sumneko_lua.setup {
 }
 
 require('nvim-autopairs').setup()
+require("nvim-autopairs.completion.cmp").setup({
+	map_cr = true, --  map <CR> on insert mode
+	map_complete = true, -- it will auto insert `(` after select function or method item
+	map_char = {
+			tex = "{"
+	},
+})
 require("nvim-autopairs.completion.compe").setup({
   map_cr = true, --  map <CR> on insert mode
   map_complete = true, -- it will auto insert `(` after select function or method item

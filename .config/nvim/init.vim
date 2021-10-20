@@ -15,7 +15,15 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'vhyrro/neorg'
 
 " Completion
-Plug 'hrsh7th/nvim-compe'
+"Plug 'hrsh7th/nvim-compe' " Now deprecated
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-calc'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
 Plug 'windwp/nvim-autopairs'
 
 Plug 'tpope/vim-sensible'
@@ -100,20 +108,25 @@ call plug#end()
 language en_US.utf8
 set spelllang=es,en_us
 
-set shiftwidth=2
+set shiftwidth=0
 set tabstop=2
 set linebreak
-set expandtab
 set autoindent
 set smartindent
 let g:suda_smart_edit = 1
 set mouse=a
 set termguicolors
+set hidden
+
+" IndentLine
+set listchars=tab:\¦\ 
+set list
 
 let g:indentLine_setConceal = 0
-let g:indentLine_fileTypeExclude = ['markdown']
-set conceallevel=1
-let g:vim_markdown_conceal = 0
+let g:indentLine_concealcursor = 0
+"let g:indentLine_fileTypeExclude = ['markdown']
+set conceallevel=2
+"let g:vim_markdown_conceal = 0
 
 set guifont=MesloLGS\ NF:h12
 
@@ -146,9 +159,9 @@ let g:airline_right_sep = "\ue0c7"
 
 " Lua files
 
+luafile ~/.config/nvim/plugins/compe.lua
 luafile ~/.config/nvim/plugins/init.lua
 luafile ~/.config/nvim/plugins/telescope.lua
-luafile ~/.config/nvim/plugins/compe.lua
 
 let g:ale_linters_explicit = 1
 
@@ -190,8 +203,8 @@ endif
 " Highlight cursorline
 augroup CursorLine
   au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline cursorcolumn
+  au WinLeave * setlocal nocursorline nocursorcolumn
 augroup END
 
 " Documentation on hover
@@ -217,12 +230,6 @@ nnoremap <leader>f  <cmd>lua require('telescope.builtin').builtin()<cr>
 
 nnoremap <silent><S-C-PageUp> <cmd>tabmove -1<cr>
 nnoremap <silent><S-C-PageDown> <cmd>tabmove +1<cr>
-
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 "" Gruvbox
 let g:gruvbox_italic=1

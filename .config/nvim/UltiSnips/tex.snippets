@@ -1,12 +1,12 @@
-snippet \beg "begin{} / end{}" bA
+snippet \beg "begin{} / end{}" b
 \begin{$1}
 	$0
 \end{$1}
 endsnippet
 
-snippet // "fraction" iA
+snippet / "fraction" i
 \\frac{$1}{$2}$0
 endsnippet
-snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
+snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)\/\/' "Fraction" wrA
 \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 endsnippet
