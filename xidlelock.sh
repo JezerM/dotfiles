@@ -14,13 +14,9 @@ xidlehook \
   --not-when-fullscreen \
   `# Don't lock when there's audio playing` \
   --not-when-audio \
-  `# Dim screen` \
-  --timer $timeToLock \
-    "$dim" \
-    "$reset" \
   `# Then, lock` \
-  --timer 10 \
-    "$reset && light-locker-command -l" \
+  --timer $timeToLock \
+    "light-locker-command -l" \
     '' \
   `# Finally, suspend an hour after it locks` \
   --timer 3600 \

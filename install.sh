@@ -55,6 +55,12 @@ recursive() {
   fi
 }
 
+install_nvim() {
+	# Taken from vim-plug: https://github.com/junegunn/vim-plug
+	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+}
+
 
 for file in $files; do
   if $(array_contains ignore $file); then
@@ -71,3 +77,6 @@ for file in $files; do
     echo $file added
   fi
 done
+
+install_nvim
+

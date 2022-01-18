@@ -1,30 +1,4 @@
 #!usr/bin/env bash
-function explorer() {
-  if [[ $1 ]]; then
-    local dir=$1
-  else
-    local dir=.
-  fi
-  nautilus $dir
-}
-
-alias wifi="nmcli radio wifi"
-
-alias connection="nmcli connection"
-
-alias vimbrowser="tabbed -c vimb -e"
-
-function up() {
-	if [[ $1 ]]; then
-		local levels=$1
-	else
-		local levels=1
-	fi
-	while [[ "$levels" -gt "0" ]]; do
-		cd ..
-		levels=$(($levels-1))
-	done
-}
 
 function restartWifi() {
 	local SSID=$(iwgetid -r);
@@ -41,13 +15,13 @@ function restartWifi() {
 }
 
 # Set PATH for rofi apps
-PATH=$PATH:~/.config/rofi/bin:~/.npm-global/bin/
+export PATH=$PATH:~/.config/rofi/bin:~/.npm-global/bin/
+
+export DENO_INSTALL="/home/jezer/.deno"
 
 # Path
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH/:/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/local/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/:/usr/lib/
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH/:/home/linuxbrew/.linuxbrew/Cellar/libconfig/1.7.2/lib/:/home/linuxbrew/.linuxbrew/Cellar/pcre/8.44/lib/
-export PATH=$PATH:$HOME/.local/bin/:$HOME/go/bin/:/opt/mssql-tools/bin/
-export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig/
+export PATH=$PATH:$HOME/.local/bin/:$HOME/go/bin/:/opt/mssql-tools/bin/:$DENO_INSTALL/bin
 
-export MANPAGER="sh -c 'col -bx | bat --paging always -l man -p'"
+#export MANPAGER="sh -c 'col -bx | bat --paging always -l man -p'"
 export BAT_THEME="gruvbox-dark"
