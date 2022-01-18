@@ -109,6 +109,12 @@ require "lsp_signature".setup({
     }
 })
 
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
 lspconfig.clangd.setup {
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
@@ -150,6 +156,15 @@ lspconfig.cssls.setup {
 }
 lspconfig.jsonls.setup {
     capabilities = capabilities,
+    on_attach = function(client)
+        client.resolved_capabilities.hover = false
+        on_attach(client)
+    end,
+    settings = {
+        json = {
+            schemas = require('schemastore').json.schemas(),
+        },
+    },
 }
 lspconfig.vimls.setup {
     on_attach = function(client)

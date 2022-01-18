@@ -17,6 +17,8 @@ require("packer").startup(function()
   use "onsails/lspkind-nvim"
   use "ray-x/lsp_signature.nvim"
   use "windwp/nvim-autopairs"
+  use 'arkav/lualine-lsp-progress'
+  use "b0o/schemastore.nvim"
 
   -- Completion
   use "hrsh7th/nvim-cmp"
@@ -32,11 +34,17 @@ require("packer").startup(function()
   use { 'nvim-treesitter/nvim-treesitter', run = ":TSUpdate" }
 
   -- Themes
-  use "vim-airline/vim-airline"
-  use "vim-airline/vim-airline-themes"
-  use "morhetz/gruvbox"
+  --use "vim-airline/vim-airline"
+  --use "vim-airline/vim-airline-themes"
+  --use "morhetz/gruvbox"
+  use "ellisonleao/gruvbox.nvim"
+  use "sainnhe/everforest"
   use "yggdroot/indentline"
   use "myusuf3/numbers.vim"
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+  }
 
   -- Lua colors
   use "folke/lsp-colors.nvim"
@@ -79,6 +87,10 @@ require("packer").startup(function()
   use "leafOfTree/vim-vue-plugin"
   use "sheerun/vim-polyglot"
   --use "leafgarland/typescript-vim"
+  use {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+  }
 
   -- Utils
   use "lambdalisue/suda.vim"
@@ -101,6 +113,10 @@ vim.opt.hidden = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
+
+-- Searc
+--vim.opt.ignorecase = true
+--vim.opt.smartcase = true
 
 -- Tabs
 vim.opt.shiftwidth = 2
@@ -153,6 +169,10 @@ vim.g.airline_theme = "gruvbox"
 vim.g.gruvbox_contrast_dark = "medium"
 vim.opt.background = "dark"
 
+-- Everforest
+vim.g.everforest_background = "hard"
+vim.g.everforest_enable_italic = 1
+
 -- Folding
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
@@ -203,3 +223,4 @@ cmd "colorscheme gruvbox"
 require("completion")
 require("settings")
 require("telescope-config")
+require("lualine-config")
