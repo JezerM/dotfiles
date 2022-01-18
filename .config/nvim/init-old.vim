@@ -3,16 +3,13 @@ set nocompatible
 " Plugins will be downloaded under the specified directory."
 call plug#begin('~/.vim/plugged')
 
-" Declare the list of plugins.
-
 " Lua
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
-Plug 'glepnir/lspsaga.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 
 " Org
-Plug 'vhyrro/neorg'
+"Plug 'vhyrro/neorg'
 
 " Completion
 "Plug 'hrsh7th/nvim-compe' " Now deprecated
@@ -22,17 +19,16 @@ Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-calc'
+Plug 'ray-x/cmp-treesitter'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 Plug 'windwp/nvim-autopairs'
 
-Plug 'tpope/vim-sensible'
-Plug 'junegunn/seoul256.vim'
+"Plug 'tpope/vim-sensible'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'yggdroot/indentline'
 Plug 'myusuf3/numbers.vim'
-Plug 'romkatv/powerlevel10k'
 
 " Gruvbox
 "Plug 'rktjmp/lush.nvim'
@@ -40,14 +36,11 @@ Plug 'romkatv/powerlevel10k'
 Plug 'morhetz/gruvbox'
 
 Plug 'lervag/vimtex'
-Plug 'mattn/emmet-vim'
-
-" Smoother navigation
-Plug 'psliwka/vim-smoothie'
 
 " Snippets
-Plug 'L3MON4D3/LuaSnip'
 Plug 'SirVer/ultisnips'
+"Plug 'L3MON4D3/LuaSnip'
+"Plug 'mattn/emmet-vim'
 
 " Markdown
 "Plug 'godlygeek/tabular'
@@ -67,14 +60,7 @@ Plug 'folke/lsp-colors.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 
 " Treesitter
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-
-" Prettier
-Plug 'dense-analysis/ale'
-
-" Ranger
-Plug 'francoiscabrol/ranger.vim'
-Plug 'rbgrouleff/bclose.vim'
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
 " FZF
 Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
@@ -85,7 +71,12 @@ Plug 'ojroques/nvim-lspfuzzy'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
+Plug 'xiyaowong/telescope-emoji.nvim'
+Plug 'AckslD/nvim-neoclip.lua'
+
+" Syntax
+Plug 'leafOfTree/vim-vue-plugin'
+Plug 'sheerun/vim-polyglot'
 
 Plug 'leafgarland/typescript-vim'
 "Plug 'valloric/youcompleteme' | " Compile it with './install.py --all' in ycm path
@@ -96,9 +87,7 @@ Plug 'scrooloose/nerdtree' |
       \ Plug 'ryanoasis/vim-devicons'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'arcticicestudio/nord-vim'
 Plug 'tmhedberg/simpylfold'
-Plug 'sheerun/vim-polyglot'
 Plug 'mhinz/vim-startify'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -110,6 +99,7 @@ set spelllang=es,en_us
 
 set shiftwidth=0
 set tabstop=2
+set expandtab
 set linebreak
 set autoindent
 set smartindent
@@ -126,6 +116,7 @@ let g:indentLine_setConceal = 0
 let g:indentLine_concealcursor = 0
 "let g:indentLine_fileTypeExclude = ['markdown']
 set conceallevel=2
+set concealcursor="n-i"
 "let g:vim_markdown_conceal = 0
 
 set guifont=MesloLGS\ NF:h12
@@ -139,8 +130,6 @@ let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 let g:tex_conceal='abdmg'
-let g:vimtex_syntax_conceal_default=1
-set concealcursor="n-i"
 
 " Ultisnips
 let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
@@ -159,7 +148,7 @@ let g:airline_right_sep = "\ue0c7"
 
 " Lua files
 
-luafile ~/.config/nvim/plugins/compe.lua
+luafile ~/.config/nvim/plugins/comp.lua
 luafile ~/.config/nvim/plugins/init.lua
 luafile ~/.config/nvim/plugins/telescope.lua
 
@@ -207,18 +196,10 @@ augroup CursorLine
   au WinLeave * setlocal nocursorline nocursorcolumn
 augroup END
 
-" Documentation on hover
-"augroup hover
-  "autocmd!
-  "autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-  "autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-  "autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-"augroup end
-
 " Ranger
 let g:ranger_map_keys = 0
 
-tnoremap <Esc> <C-\><C-n>
+"tnoremap <Esc> <C-\><C-n>
 map <silent> <A-z> :let &wrap = !&wrap<CR>
 
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>

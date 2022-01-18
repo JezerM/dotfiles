@@ -11,9 +11,9 @@ local on_attach = function(client, bufnr)
     vim.cmd("command! LspRefs lua vim.lsp.buf.references()")
     vim.cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
     vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
-    vim.cmd("command! LspDiagPrev lua vim.lsp.diagnostic.goto_prev()")
-    vim.cmd("command! LspDiagNext lua vim.lsp.diagnostic.goto_next()")
-    vim.cmd("command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
+    vim.cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
+    vim.cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
+    vim.cmd("command! LspDiagLine lua vim.diagnostic.open_float()")
     vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 
     buf_map(bufnr, "n", "gd", ":LspDef<CR>", {silent = true})
@@ -26,19 +26,21 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "gn", ":LspDiagNext<CR>", {silent = true})
     buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>", {silent = true})
     buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>", {silent = true})
+    buf_map(bufnr, "n", "gl", "<cmd> LspSignatureHelp<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", {silent = true})
 
-    --require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
-    vim.api.nvim_exec([[
-            augroup hover
-              autocmd! * <buffer>
-              autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-              autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-              autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-            augroup end
+    if client.resolved_capabilities.hover then
+        vim.api.nvim_exec([[
+              augroup hover
+                autocmd! * <buffer>
+                autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+              augroup end
         ]], true)
+    end
 
+    require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
     --require "lsp_signature".on_attach()
 
     if client.resolved_capabilities.document_formatting then
@@ -50,19 +52,22 @@ local on_attach = function(client, bufnr)
              ]], true)
         end
 end
-
-local format_async = function(err, _, result, _, bufnr)
-    if err ~= nil or result == nil then return end
-    if not vim.api.nvim_buf_get_option(bufnr, "modified") then
+local format_async = function(err, result, ctx, _)
+  if err ~=nil or result == nil then return end
+    if not vim.api.nvim_buf_get_option(ctx.bufnr, "modified") then
         local view = vim.fn.winsaveview()
-        vim.lsp.util.apply_text_edits(result, bufnr)
+        vim.lsp.util.apply_text_edits(result, ctx.bufnr)
         vim.fn.winrestview(view)
-        if bufnr == vim.api.nvim_get_current_buf() then
+        vim.api.nvim_buf_call(ctx.bufnr, function()
             vim.api.nvim_command("noautocmd :update")
-        end
+        end)
     end
 end
+
 vim.lsp.handlers["textDocument/formatting"] = format_async
+vim.lsp.buf.code_action = require("telescope.builtin").lsp_code_actions
+vim.lsp.buf.references = require("telescope.builtin").lsp_references
+vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 
 _G.lsp_organize_imports = function()
     local params = {
@@ -78,7 +83,7 @@ _G.dump = function(...)
     print(unpack(objects))
 end
 
-function merge_table(...)
+local function merge_table(...)
     local ret = {}
     for i = 1, select("#", ...) do
         local t = select(i, ...)
@@ -95,23 +100,40 @@ function merge_table(...)
     return ret
 end
 
+require "lsp_signature".setup({
+    bind = true, -- This is mandatory, otherwise border config won't get registered.
+    floating_window = true,
+    toggle_key = "<M-x>",
+    handler_opts = {
+        border = "single"
+    }
+})
+
 lspconfig.clangd.setup {
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
         on_attach(client)
     end
 }
 lspconfig.pyright.setup {
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
         on_attach(client)
     end
 }
 lspconfig.bashls.setup {
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = false
         on_attach(client)
     end
+}
+require("nvim-treesitter.configs").setup {
+    highlight = {
+        enable = true,
+    },
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -122,6 +144,7 @@ lspconfig.cssls.setup {
     capabilities = capabilities,
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
         on_attach(client)
     end
 }
@@ -131,7 +154,8 @@ lspconfig.jsonls.setup {
 lspconfig.vimls.setup {
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
-        on_attach(client)
+        client.resolved_capabilities.hover = false
+        --on_attach(client)
     end
 }
 lspconfig.html.setup {
@@ -143,38 +167,34 @@ lspconfig.yamlls.setup {
 lspconfig.texlab.setup {
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = false
         on_attach(client)
     end
 }
 
-local lspfuzzy = require "lspfuzzy"
-lspfuzzy.setup {}
+require("lspfuzzy").setup{}
 
---local telescope = require "telescope"
---telescope.setup {}
-
---local lspkind = require "lspkind"
---lspkind.init {}
-
-local lspsaga = require "lspsaga"
-lspsaga.init_lsp_saga {}
-
---vim.lsp.buf.hover = require('lspsaga.hover').render_hover_doc
---vim.lsp.buf.code_action = require('lspsaga.codeaction').code_action
-
-local colorizer = require "colorizer"
-colorizer.setup( {
-  "*";
+require("colorizer").setup({
+    "*";
 }, {
-  RGGBBAA = true;
-  RRGGBB = true;
-  names = false;
-  css = true;
+    RGGBBAA = true;
+    RRGGBB = true;
+    names = false;
+    css = true;
 })
 
 lspconfig.tsserver.setup {
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
+        on_attach(client)
+    end
+}
+lspconfig.vuels.setup {
+    on_attach = function(client)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
         on_attach(client)
     end
 }
@@ -184,6 +204,7 @@ local filetypes = {
     javascript = "eslint",
     typescript = "eslint",
     typescriptreact = "eslint",
+    vue = "eslint",
 }
 local linters = {
     eslint = {
@@ -207,15 +228,14 @@ local linters = {
 local formatters = {
     prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}}
 }
-
 local formatFiletypes = {
     html = "prettier",
     css = "prettier",
     javascript = "prettier",
     typescript = "prettier",
-    typescriptreact = "prettier"
+    typescriptreact = "prettier",
+    vue = "prettier"
 }
-
 lspconfig.diagnosticls.setup {
     on_attach = on_attach,
     filetypes = vim.tbl_keys(filetypes),
@@ -227,41 +247,36 @@ lspconfig.diagnosticls.setup {
     }
 }
 lspconfig.sqlls.setup{
-  cmd = {"sql-language-server", "up", "--method", "stdio"};
-  on_attach = on_attach,
+    cmd = {"sql-language-server", "up", "--method", "stdio"};
+    on_attach = on_attach,
 }
 
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,
-    disable = {  },  -- list of language that will be disabled
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = true,
-  },
+lspconfig.jdtls.setup{
+    cmd = { 'jdtls' },
+    on_attach = function(client)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = false
+        on_attach(client)
+    end
 }
-
-require'lspconfig'.jdtls.setup{
-  cmd = { 'jdtls' },
-  on_attach = function(client)
-    client.resolved_capabilities.document_formatting = false
-    on_attach(client)
-  end
+lspconfig.dockerls.setup{
+    cmd = { 'docker-langserver', "--stdio" },
+    on_attach = function(client)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = false
+        on_attach(client)
+    end
 }
 
 local system_name
 if vim.fn.has("mac") == 1 then
-  system_name = "macOS"
+    system_name = "macOS"
 elseif vim.fn.has("unix") == 1 then
-  system_name = "Linux"
+    system_name = "Linux"
 elseif vim.fn.has('win32') == 1 then
-  system_name = "Windows"
+    system_name = "Windows"
 else
-  print("Unsupported system for sumneko")
+    print("Unsupported system for sumneko")
 end
 
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
@@ -269,72 +284,43 @@ local sumneko_root_path = "/home/jezer/Descargas/lua-language-server"
 local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
 
 local runtime_path = vim.split(package.path, ';')
-local config_path = '--configpath=' .. vim.api.nvim_command_output("pwd") .. "/config.lua"
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
-require'lspconfig'.sumneko_lua.setup {
-  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = runtime_path,
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim', "awesome"},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = merge_table(
-                vim.api.nvim_get_runtime_file("", true),
-                {
-                    "/usr/share/awesome/lib/"
-                }
-            ),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
+lspconfig.sumneko_lua.setup {
+    cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+    settings = {
+        Lua = {
+        runtime = {
+            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT',
+            -- Setup your lua path
+            path = runtime_path,
+        },
+        diagnostics = {
+            -- Get the language server to recognize the `vim` global
+            globals = {'vim', "awesome"},
+        },
+        workspace = {
+            -- Make the server aware of Neovim runtime files
+            library = merge_table(
+                    vim.api.nvim_get_runtime_file("", true),
+                    {
+                        "/usr/share/awesome/lib/"
+                    }
+                ),
+        },
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+            enable = false,
+        },
+        },
     },
-  },
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
         on_attach(client)
     end
 }
 
-require('nvim-autopairs').setup()
-require("nvim-autopairs.completion.cmp").setup({
-	map_cr = true, --  map <CR> on insert mode
-	map_complete = true, -- it will auto insert `(` after select function or method item
-	map_char = {
-			tex = "{"
-	},
-})
-require("nvim-autopairs.completion.compe").setup({
-  map_cr = true, --  map <CR> on insert mode
-  map_complete = true, -- it will auto insert `(` after select function or method item
-  map_char = {
-      tex = "{"
-  },
-})
-
-require('neorg').setup {
-        -- Tell Neorg what modules to load
-        load = {
-            ["core.defaults"] = {}, -- Load all the default modules
-            ["core.norg.concealer"] = {}, -- Allows for use of icons
-            ["core.norg.dirman"] = { -- Manage your directories with Neorg
-                config = {
-                    workspaces = {
-                        my_workspace = "~/neorg"
-                    }
-                }
-            }
-        },
-    }
+-- vim: shiftwidth=4 tabstop=4
