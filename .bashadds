@@ -21,7 +21,7 @@ export DENO_INSTALL="/home/jezer/.deno"
 
 # Path
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig/
-export PATH=$PATH:$HOME/.local/bin/:$HOME/go/bin/:/opt/mssql-tools/bin/:$DENO_INSTALL/bin
+export PATH=$PATH:$HOME/.local/bin/:$HOME/go/bin/:/opt/mssql-tools/bin/:$DENO_INSTALL/bin:~/.cargo/bin
 
 #export MANPAGER="sh -c 'col -bx | bat --paging always -l man -p'"
 export BAT_THEME="gruvbox-dark"
