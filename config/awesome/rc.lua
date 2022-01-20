@@ -10,8 +10,6 @@ local awful         = require("awful")
                       require("awful.autofocus")
 local beautiful     = require("beautiful")
 local naughty       = require("naughty")
---local hotkeys_popup = require("awful.hotkeys_popup")
-                      --require("awful.hotkeys_popup.keys")
 local utils         = require("utils")
 local dpi           = require("beautiful.xresources").apply_dpi
 
@@ -68,10 +66,10 @@ awful.layout.layouts = {
 }
 -- }}}
 
-awful.util.launch_rofi = utils.launch_rofi
+awful.util.launch_rofi = utils.apps.launch_rofi
 
 awful.util.powermenu_buttons = gears.table.join(
-    awful.button({ }, 1, function(a) utils.power_menu() end) ---@diagnostic disable-line: unused-local
+    awful.button({ }, 1, function(a) utils.apps.power_menu() end) ---@diagnostic disable-line: unused-local
 )
 
 awful.util.taglist_buttons = gears.table.join(
@@ -103,9 +101,7 @@ awful.util.tasklist_buttons = gears.table.join(
      awful.button({ }, 5, function() awful.client.focus.byidx(-1) end)
 )
 
-local beautiful_init = beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", home, chosen_theme))
-
-naughty.notify { title = "AAAA", text = "Beautiful: " .. (beautiful_init and "YES" or "NO") }
+beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", home, chosen_theme))
 
 -- {{{ Screen
 
@@ -308,6 +304,8 @@ awful.spawn.with_shell(
        'dex --environment Awesome --autostart --search-paths "~/.config/autostart"' -- https://github.com/jceb/dex
        )
 
+
+require("widgets.dock")
 
 collectgarbage("setpause", 110)
 collectgarbage("setstepmul", 1000)

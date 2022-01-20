@@ -3,6 +3,7 @@ local awful         = require("awful")
 local wibox         = require("wibox")
 local beautiful     = require("beautiful")
 local dpi           = require("beautiful.xresources").apply_dpi
+local widgets       = require("widgets")
 local naughty       = require("naughty")
 local inspect       = require("inspect")
 
@@ -29,6 +30,64 @@ local function at_screen_connect(s)
     local keyboard_layout = awful.widget.keyboardlayout {}
     local text_clock = wibox.widget.textclock("%a %b %d, %H:%M")
     local systray = wibox.widget.systray()
+
+    local battery = widgets.battery:new {
+        widget = wibox.widget {
+            widget = wibox.container.background,
+            bg = "#00000000",
+            {
+                layout = wibox.layout.fixed.horizontal,
+                {
+                    id = "icon",
+                    markup = "  ",
+                    widget = wibox.widget.textbox,
+                },
+                {
+                    id = "text",
+                    markup = " Battery ",
+                    widget = wibox.widget.textbox,
+                },
+            },
+        },
+        settings = function(self)
+            local bat_header = ""
+            if     self.perc >= 99 then bat_header = "  "
+            elseif self.perc >= 90 then bat_header = "  "
+            elseif self.perc >= 80 then bat_header = "  "
+            elseif self.perc >= 70 then bat_header = "  "
+            elseif self.perc >= 60 then bat_header = "  "
+            elseif self.perc >= 50 then bat_header = "  "
+            elseif self.perc >= 40 then bat_header = "  "
+            elseif self.perc >= 30 then bat_header = "  "
+            elseif self.perc >= 20 then bat_header = "  "
+            elseif self.perc >= 10 then bat_header = "  "
+            else                        bat_header = "  " end
+
+            if self.ac_status == 1 then
+                bat_header = bat_header .. " "
+            end
+
+            --if self.perc >= 30 then self.widget.active_bg = beautiful.colors.green
+            --elseif self.perc >= 15 then self.widget.active_bg = beautiful.colors.yellow
+            --else self.widget.active_bg = beautiful.colors.red end
+
+            local text_value = self.perc .. "% "
+
+            self.widget:get_children_by_id("text")[1]:set_markup(text_value)
+            self.widget:get_children_by_id("icon")[1]:set_markup(bat_header)
+        end
+    }
+    battery.widget:buttons(gears.table.join(
+            awful.button({ }, 1, function() battery:full_update() end)
+        ))
+    local battery_t = awful.tooltip {
+        objects = { battery.widget },
+        bg = beautiful.colors.bg1,
+        fg = beautiful.colors.fg,
+    }
+    battery.widget:connect_signal("mouse::enter", function()
+        battery_t.text = battery.status or "N/A"
+    end)
 
     local layoutbox = awful.widget.layoutbox(s)
 
@@ -202,7 +261,7 @@ local function at_screen_connect(s)
             {
                 {
                     {
-                        tasklist,
+                        nil,
                         layout = wibox.layout.flex.horizontal,
                     },
                     left = dpi(8),
@@ -219,6 +278,7 @@ local function at_screen_connect(s)
                     {
                         systray,
                         keyboard_layout,
+                        battery.widget,
                         text_clock,
                         layout = wibox.layout.fixed.horizontal,
                     },

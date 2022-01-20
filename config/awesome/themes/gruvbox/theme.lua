@@ -207,6 +207,7 @@ theme.tabbar_fg_focus  = colors.fg     -- foreground color of unfocused clients 
 theme.tabbar_disable = false           -- disable the tab bar entirely
 
 theme.wallpaper = ""
+theme.dock_size = theme.wibar_height + dpi(5)
 
 
 local function load_random_wallpaper()

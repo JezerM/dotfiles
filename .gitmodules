@@ -22,3 +22,6 @@
 [submodule ".config/awesome/colorise-lua"]
 	path = .config/awesome/colorise-lua
 	url = https://github.com/Perkovec/colorise-lua
+[submodule "config/awesome/lib/rubato"]
+	path = config/awesome/lib/rubato
+	url = https://github.com/andOrlando/rubato

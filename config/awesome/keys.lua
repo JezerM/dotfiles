@@ -13,11 +13,11 @@ local global_keys = gears.table.join(
         { description = "show help", group = "awesome" }),
 
     -- Take a screenshot
-    awful.key({ modkey }, "s", utils.screenshot,
+    awful.key({ modkey }, "s", utils.apps.screenshot,
         { description = "take a screenshot", group = "client" }),
 
     -- Lock screen
-    awful.key({ modkey, altkey }, "l", utils.lockscreen,
+    awful.key({ modkey, altkey }, "l", utils.apps.lockscreen,
         { description = "lock screen", group = "client" }),
 
     -- Layout switching
@@ -109,7 +109,7 @@ local global_keys = gears.table.join(
             }
         end,
         {description = "lua execute prompt", group = "awesome"}),
-    awful.key({ modkey }, "p", utils.launcher,
+    awful.key({ modkey }, "p", utils.apps.launcher,
         {description = "show rofi launcher", group = "launcher"})
 )
 
