@@ -11,7 +11,7 @@ ignore=(
   ".gitignore"
 )
 dorecursive=(
-  ".config"
+  "config"
 )
 
 array_contains () { 
@@ -30,35 +30,39 @@ array_contains () {
 
 recursive() {
   local recurDir=$1
+  local targetDir=$1
+  if [ "$targetDir" == "config" ]; then
+    targetDir=".config"
+  fi
   local recursiveFiles=$(ls -a "$basedir/$recurDir")
-  echo "Trying to add the directory: $baseDir/$recurDir  to  $HOME/$recurDir/"
-  if [ -d "$HOME/$recurDir" ]; then
+  echo "Trying to add the directory: $baseDir/$recurDir  to  $HOME/$targetDir/"
+  if [ -d "$HOME/$targetDir" ]; then
     :
   else
-    mkdir "$HOME/$recurDir/"
-    echo "$HOME/$recurDir created"
+    mkdir "$HOME/$targetDir/"
+    echo "$HOME/$targetDir created"
   fi
 
   local c=0
   for fil in $recursiveFiles; do
-    if [ -d "$HOME/$recurDir/$fil" ]; then
+    if [ -d "$HOME/$targetDir/$fil" ]; then
       continue
     fi
     c=1
-    ln -s "$basedir/$recurDir/$fil" "$HOME/$recurDir/$fil"
-    # echo "$basedir/$recurDir/$fil  to  $HOME/$recurDir/$fil"
-    echo "$HOME/$recurDir/$fil added"
+    ln -sf "$basedir/$recurDir/$fil" "$HOME/$targetDir/$fil"
+    # echo "$basedir/$recurDir/$fil  to  $HOME/$targetDir/$fil"
+    echo "$HOME/$targetDir/$fil added"
   done
 
   if [ $c == "0" ]; then
-    echo "Nothing added to $HOME/$recurDir/"
+    echo "Nothing added to $HOME/$targetDir/"
   fi
 }
 
 install_nvim() {
-	# Taken from vim-plug: https://github.com/junegunn/vim-plug
-	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  # Taken from https://github.com/wbthomason/packer.nvim#quickstart
+  git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+    ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 }
 
 
@@ -80,3 +84,4 @@ done
 
 install_nvim
 
+# vim: expandtab
