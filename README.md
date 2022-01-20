@@ -1,5 +1,5 @@
 # My dotfiles
-These are my dotfiles, on Ubuntu, using AwesomeWM and LightDM.
+These are my dotfiles, in Void Linux, using AwesomeWM and LightDM.
 
 ## Dependencies
 
