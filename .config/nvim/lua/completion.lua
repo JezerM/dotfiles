@@ -20,6 +20,7 @@ cmp.setup({
 			}),
 		},
 		sources = {
+			--{ name = 'cmp_tabnine' },
 			{ name = 'nvim_lua' },
 			{ name = 'nvim_lsp' },
 			{ name = 'ultisnips' },
@@ -30,7 +31,7 @@ cmp.setup({
 		},
 		completion = {
 			keyword_length = 1,
-      autocomplete = true,
+			autocomplete = true,
 		},
 		formatting = {
 			format = lspkind.cmp_format({with_text = false, menu = ({
@@ -42,6 +43,7 @@ cmp.setup({
 				nvim_lua = "[Lua]",
 				latex_symbols = "[Latex]",
 				treesitter = "[TreeS]",
+				cmp_tabnine = "[Nine]",
 			})}),
 		},
 		experimental = {
@@ -57,4 +59,20 @@ require('nvim-autopairs').setup()
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({
   map_char = { tex = '{' }
 }))
+
+--[[
+   [local tabnine = require('cmp_tabnine.config')
+   [tabnine:setup({
+   [    max_lines = 1000;
+   [    max_num_results = 20;
+   [    sort = true;
+   [    run_on_every_keystroke = true;
+   [    snippet_placeholder = '..';
+   [    ignored_file_types = { -- default is not to ignore
+   [        -- uncomment to ignore in lua:
+   [        -- lua = true
+   [    };
+   [})
+   ]]
+
 -- vim: shiftwidth=4 tabstop=4

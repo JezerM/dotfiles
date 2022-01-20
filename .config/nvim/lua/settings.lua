@@ -282,6 +282,15 @@ lspconfig.dockerls.setup{
         on_attach(client)
     end
 }
+require("shade").setup({
+  overlay_opacity = 60,
+  opacity_step = 1,
+  keys = {
+    brightness_up    = '<C-k>',
+    brightness_down  = '<C-j>',
+    toggle           = '<Leader>s',
+  }
+})
 
 local system_name
 if vim.fn.has("mac") == 1 then

@@ -29,9 +29,12 @@ require("packer").startup(function()
   use "hrsh7th/cmp-calc"
   use "ray-x/cmp-treesitter"
   use "quangnguyen30192/cmp-nvim-ultisnips"
+  --use {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
 
   -- Treesitter
-  use { 'nvim-treesitter/nvim-treesitter', run = ":TSUpdate" }
+  use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+  use { "folke/twilight.nvim", config = function() require("twilight").setup { } end }
+  use "sunjon/shade.nvim"
 
   -- Themes
   --use "vim-airline/vim-airline"
@@ -140,7 +143,7 @@ vim.g.suda_smart_edit = 1
 vim.g.indentLine_setConceal = 0
 vim.g.indentLine_concealcursor = 0
 vim.opt.conceallevel = 2
-vim.opt.concealcursor = "ni"
+vim.opt.concealcursor = ""
 
 -- Latex
 vim.g.tex_flavor = "latex"
