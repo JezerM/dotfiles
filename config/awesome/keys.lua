@@ -7,6 +7,8 @@ local utils         = require("utils")
 local modkey = awful.util.keys.modkey
 local altkey = awful.util.keys.altkey
 
+local brightness_controller = require("utils.brightness"):new{}
+
 local global_keys = gears.table.join(
     -- Show help
     awful.key({ modkey }, "d", hotkeys_popup.show_help,
@@ -98,13 +100,11 @@ local global_keys = gears.table.join(
     --
     -- Brightness
     awful.key({}, "XF86MonBrightnessUp", function()
-            local command = "xbacklight -steps 10 -inc 10"
-            --awful.spawn.easy_async_with_shell(command, function() beautiful.brightness_widget:update() end)
+            brightness_controller:inc(10, 10)
         end,
         {description = "increase brightness", group = "client"}),
     awful.key({}, "XF86MonBrightnessDown", function()
-            local command = "xbacklight -steps 10 -dec 10"
-            --awful.spawn.easy_async_with_shell(command, function() beautiful.brightness_widget:update() end)
+            brightness_controller:dec(10, 10)
         end,
         {description = "decrease brightness", group = "client"}),
 

@@ -50,7 +50,15 @@ local tasklist = awful.widget.tasklist {
                     }
                 }
             }
-        }
+        },
+        create_callback = function(self, task, index, object)
+            self:connect_signal("mouse::enter", function()
+                self.bg = beautiful.colors.bg0_h
+            end)
+            self:connect_signal("mouse::leave", function()
+                self.bg = beautiful.colors.bg
+            end)
+        end
     }
 }
 

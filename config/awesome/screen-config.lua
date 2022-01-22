@@ -7,6 +7,21 @@ local widgets       = require("widgets")
 local naughty       = require("naughty")
 local inspect       = require("inspect")
 
+-- Brightness widget
+local brightness_w = widgets.brightness:new {
+    widget = widgets.base:new {
+        icon = { markup = "  ", bg = beautiful.colors.light_aqua },
+        markup = " 0% ",
+        bg_normal = "#00000000",
+        bg_active = beautiful.colors.light_aqua,
+    }.widget,
+    settings = function(self)
+        local text_value = self.brightness .. "%"
+        self.widget:get_children_by_id("text")[1]:set_markup(text_value)
+        --self.widget:get_children_by_id("icon")[1]:set_markup(bat_header)
+    end
+}
+
 -- Function to call on screen startup
 local function at_screen_connect(s)
 
@@ -27,26 +42,43 @@ local function at_screen_connect(s)
         bg_cursor = beautiful.colors.fg1,
     }
 
-    local keyboard_layout_w = awful.widget.keyboardlayout {}
+    -- Keyboard layout
+    local keyboard_layout_w = widgets.base:new {
+        icon = { markup = "  ", bg = beautiful.colors.light_blue },
+        inner_widget = awful.widget.keyboardlayout {},
+        bg_normal = "#00000000",
+        bg_active = beautiful.colors.light_blue,
+        margins = {},
+    }
+
+    -- Date widget
     local date_w = widgets.base:new {
         icon = { markup = "  ", bg = beautiful.colors.light_red },
         inner_widget = wibox.widget.textclock("%a %b %d"),
         bg_normal = "#00000000",
         bg_active = beautiful.colors.light_red,
     }
+
+    -- Time widget
     local time_w = widgets.base:new {
         icon = { markup = "  ", bg = beautiful.colors.light_orange },
         inner_widget = wibox.widget.textclock("%H:%M"),
         bg_normal = "#00000000",
         bg_active = beautiful.colors.light_orange,
     }
+
+    -- Systray widget
     local systray_w = wibox.widget.systray()
+
+    -- Hostname widget
     local hostname_w = widgets.base:new {
         icon = { markup = "  ", bg = beautiful.colors.bg3 },
         inner_widget = wibox.widget.textbox(awful.util.hostname),
         bg_normal = "#00000000",
         bg_active = beautiful.colors.bg3,
     }
+
+    -- Power widget
     local power_w = widgets.base:new {
         markup = "  ",
         --markup = "  ",
@@ -63,6 +95,7 @@ local function at_screen_connect(s)
         power_w_tooltip.text = "Power menu"
     end)
 
+    -- Battery widget
     local battery_w = widgets.battery:new {
         widget = widgets.base:new {
             icon = { markup = "  ", bg = beautiful.colors.light_green },
@@ -92,7 +125,7 @@ local function at_screen_connect(s)
             elseif self.perc >= 15 then self.widget.bg_active = beautiful.colors.yellow
             else self.widget.bg_active = beautiful.colors.red end
 
-            local text_value = self.perc .. "% "
+            local text_value = self.perc .. "%"
 
             self.widget:get_children_by_id("text")[1]:set_markup(text_value)
             self.widget:get_children_by_id("icon")[1]:set_markup(bat_header)
@@ -110,6 +143,7 @@ local function at_screen_connect(s)
         battery_w_tooltip.text = battery_w.status or "N/A"
     end)
 
+    -- Layout widget
     local layoutbox_w = awful.widget.layoutbox(s)
 
     layoutbox_w:buttons(gears.table.join(
@@ -295,7 +329,8 @@ local function at_screen_connect(s)
                     nil,
                     {
                         systray_w,
-                        keyboard_layout_w,
+                        keyboard_layout_w.widget,
+                        brightness_w.widget,
                         battery_w.widget,
                         date_w.widget,
                         time_w.widget,

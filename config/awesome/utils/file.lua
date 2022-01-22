@@ -18,6 +18,9 @@ function Filesystem.scandir_line(directory, callback)
         })
 end
 
+--- Read first line of file
+--- @param path string
+--- @return string|nil
 function Filesystem.read_first_line(path)
     local file, first = io.open(path, "rb"), nil
     if file then
@@ -25,6 +28,15 @@ function Filesystem.read_first_line(path)
         file:close()
     end
     return first
+end
+
+--- Write to file
+--- @param path string
+--- @param text string
+function Filesystem.write(path, text)
+    local file = io.open(path, "w")
+    file:write(text)
+    file:close()
 end
 
 return Filesystem
