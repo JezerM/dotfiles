@@ -21,34 +21,55 @@ local function at_screen_connect(s)
     awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
 
     -- Promptbox
-    local promptbox = awful.widget.prompt {
+    local promptbox_w = awful.widget.prompt {
         screen = s,
         bg = "#00000000",
         bg_cursor = beautiful.colors.fg1,
     }
 
-    local keyboard_layout = awful.widget.keyboardlayout {}
-    local text_clock = wibox.widget.textclock("%a %b %d, %H:%M")
-    local systray = wibox.widget.systray()
+    local keyboard_layout_w = awful.widget.keyboardlayout {}
+    local date_w = widgets.base:new {
+        icon = { markup = "  ", bg = beautiful.colors.light_red },
+        inner_widget = wibox.widget.textclock("%a %b %d"),
+        bg_normal = "#00000000",
+        bg_active = beautiful.colors.light_red,
+    }
+    local time_w = widgets.base:new {
+        icon = { markup = "  ", bg = beautiful.colors.light_orange },
+        inner_widget = wibox.widget.textclock("%H:%M"),
+        bg_normal = "#00000000",
+        bg_active = beautiful.colors.light_orange,
+    }
+    local systray_w = wibox.widget.systray()
+    local hostname_w = widgets.base:new {
+        icon = { markup = "  ", bg = beautiful.colors.bg3 },
+        inner_widget = wibox.widget.textbox(awful.util.hostname),
+        bg_normal = "#00000000",
+        bg_active = beautiful.colors.bg3,
+    }
+    local power_w = widgets.base:new {
+        markup = "  ",
+        --markup = "  ",
+        bg_normal = beautiful.colors.purple,
+        bg_active = beautiful.colors.light_purple,
+        margins = { left = dpi(2), right = dpi(2) },
+    }
+    local power_w_tooltip = awful.tooltip {
+        objects = { power_w.widget },
+        bg = beautiful.colors.bg1,
+        fg = beautiful.colors.fg,
+    }
+    power_w.widget:connect_signal("mouse::enter", function()
+        power_w_tooltip.text = "Power menu"
+    end)
 
-    local battery = widgets.battery:new {
-        widget = wibox.widget {
-            widget = wibox.container.background,
-            bg = "#00000000",
-            {
-                layout = wibox.layout.fixed.horizontal,
-                {
-                    id = "icon",
-                    markup = "  ",
-                    widget = wibox.widget.textbox,
-                },
-                {
-                    id = "text",
-                    markup = " Battery ",
-                    widget = wibox.widget.textbox,
-                },
-            },
-        },
+    local battery_w = widgets.battery:new {
+        widget = widgets.base:new {
+            icon = { markup = "  ", bg = beautiful.colors.light_green },
+            markup = " 0% ",
+            bg_normal = "#00000000",
+            bg_active = beautiful.colors.light_green,
+        }.widget,
         settings = function(self)
             local bat_header = ""
             if     self.perc >= 99 then bat_header = "  "
@@ -67,9 +88,9 @@ local function at_screen_connect(s)
                 bat_header = bat_header .. " "
             end
 
-            --if self.perc >= 30 then self.widget.active_bg = beautiful.colors.green
-            --elseif self.perc >= 15 then self.widget.active_bg = beautiful.colors.yellow
-            --else self.widget.active_bg = beautiful.colors.red end
+            if self.perc >= 30 then self.widget.bg_active = beautiful.colors.green
+            elseif self.perc >= 15 then self.widget.bg_active = beautiful.colors.yellow
+            else self.widget.bg_active = beautiful.colors.red end
 
             local text_value = self.perc .. "% "
 
@@ -77,21 +98,21 @@ local function at_screen_connect(s)
             self.widget:get_children_by_id("icon")[1]:set_markup(bat_header)
         end
     }
-    battery.widget:buttons(gears.table.join(
-            awful.button({ }, 1, function() battery:full_update() end)
+    battery_w.widget:buttons(gears.table.join(
+            awful.button({ }, 1, function() battery_w:full_update() end)
         ))
-    local battery_t = awful.tooltip {
-        objects = { battery.widget },
+    local battery_w_tooltip = awful.tooltip {
+        objects = { battery_w.widget },
         bg = beautiful.colors.bg1,
         fg = beautiful.colors.fg,
     }
-    battery.widget:connect_signal("mouse::enter", function()
-        battery_t.text = battery.status or "N/A"
+    battery_w.widget:connect_signal("mouse::enter", function()
+        battery_w_tooltip.text = battery_w.status or "N/A"
     end)
 
-    local layoutbox = awful.widget.layoutbox(s)
+    local layoutbox_w = awful.widget.layoutbox(s)
 
-    layoutbox:buttons(gears.table.join(
+    layoutbox_w:buttons(gears.table.join(
             awful.button({ }, 1, function() awful.layout.inc(1) end),
             awful.button({ }, 2, function() awful.layout.set(awful.layout.layouts[1]) end),
             awful.button({ }, 3, function() awful.layout.inc(-1) end),
@@ -99,7 +120,7 @@ local function at_screen_connect(s)
             awful.button({ }, 5, function() awful.layout.inc(-1) end)
         ))
 
-    local taglist = awful.widget.taglist {
+    local taglist_w = awful.widget.taglist {
         screen = s,
         filter = awful.widget.taglist.filter.all,
         buttons = awful.util.taglist_buttons,
@@ -170,7 +191,7 @@ local function at_screen_connect(s)
             end
         }
     }
-    local tasklist = awful.widget.tasklist {
+    local tasklist_w = awful.widget.tasklist {
         screen = s,
         filter = awful.widget.tasklist.filter.currenttags,
         buttons = awful.util.tasklist_buttons,
@@ -241,34 +262,31 @@ local function at_screen_connect(s)
         widget = wibox.container.margin,
         left = dpi(8),
         right = dpi(8),
-        top = dpi(2),
-        bottom = dpi(2),
+        top = dpi(6),
+        bottom = dpi(6),
         {
             layout = wibox.layout.align.horizontal,
-            expand = "outsize",
+            expand = "outside",
             { -- Left widget
                 {
-                    taglist,
-                    layoutbox,
-                    promptbox,
+                    hostname_w.widget,
+                    layoutbox_w,
+                    promptbox_w,
 
+                    spacing = dpi(5),
                     layout = wibox.layout.fixed.horizontal,
                 },
-                bg = "#00000000",
                 shape = gears.shape.rectangle,
                 widget = wibox.container.background,
             },
             {
                 {
-                    {
-                        nil,
-                        layout = wibox.layout.flex.horizontal,
-                    },
-                    left = dpi(8),
-                    right = dpi(8),
-                    widget = wibox.container.margin,
+                    taglist_w,
+                    layout = wibox.layout.fixed.horizontal,
                 },
-                widget = wibox.container.background
+                left = dpi(8),
+                right = dpi(8),
+                widget = wibox.container.margin,
             },
             {
                 {
@@ -276,10 +294,14 @@ local function at_screen_connect(s)
                     nil,
                     nil,
                     {
-                        systray,
-                        keyboard_layout,
-                        battery.widget,
-                        text_clock,
+                        systray_w,
+                        keyboard_layout_w,
+                        battery_w.widget,
+                        date_w.widget,
+                        time_w.widget,
+                        power_w.widget,
+
+                        spacing = dpi(5),
                         layout = wibox.layout.fixed.horizontal,
                     },
                 },
@@ -298,7 +320,7 @@ local function at_screen_connect(s)
     client.connect_signal("property::fullscreen", change_wibox_visibility)
     client.connect_signal("focus", change_wibox_visibility)
 
-    s.promptbox = promptbox
+    s.promptbox = promptbox_w
     s.wibox = wibox_bar
 end
 

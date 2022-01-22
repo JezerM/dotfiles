@@ -51,6 +51,7 @@ local editor = os.getenv("EDITOR") or "nvim"
 local home = os.getenv("HOME")
 local editor_cmd = terminal .. " -e " .. editor
 
+awful.util.hostname = utils.file.read_first_line("/etc/hostname") or "AwesomeWM"
 awful.util.terminal = terminal
 awful.util.tagnames = { "1", "2", "3", "4", "5" }
 awful.util.keys = {

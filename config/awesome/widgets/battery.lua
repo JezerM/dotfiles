@@ -3,6 +3,7 @@ local wibox = require("wibox")
 local gears = require("gears")
 local naughty = require("naughty")
 local files = require("utils.file")
+local inspect = require("inspect")
 
 local Battery = {}
 
@@ -175,12 +176,12 @@ function Battery:run_notification()
 end
 
 function Battery:start_timer()
-    local comm = [[bash -c '
-        acpi_listen | grep --line-buffered -E "battery|ac_adapter" >&1
-    ']]
-    awful.spawn.with_line_callback(comm, {
-            stdout = function()
-                self:full_update()
+    local comm = [[acpi_listen]]
+    local pid = awful.spawn.with_line_callback(comm, {
+            stdout = function(line)
+                if string.find(line, "battery") or string.find(line, "ac_adapter") then
+                    self:full_update()
+                end
                 --gears.timer {
                     --timeout = 0.2,
                     --autostart = true,
@@ -194,6 +195,11 @@ function Battery:start_timer()
                 naughty.notify { text = "An error with acpi_listen ocurred", preset = naughty.config.presets.critical }
             end
         })
+    if type(pid) == "number" then
+        awesome.connect_signal("exit", function()
+            awesome.kill(pid, awesome.unix_signal.SIGKILL)
+        end)
+    end
 end
 
 function Battery:new(args)

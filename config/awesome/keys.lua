@@ -95,6 +95,18 @@ local global_keys = gears.table.join(
                 c:emit_signal("request::activate", "key.unminimize", {raise = true})
             end
         end, {description = "restore minimized", group = "client"}),
+    --
+    -- Brightness
+    awful.key({}, "XF86MonBrightnessUp", function()
+            local command = "xbacklight -steps 10 -inc 10"
+            --awful.spawn.easy_async_with_shell(command, function() beautiful.brightness_widget:update() end)
+        end,
+        {description = "increase brightness", group = "client"}),
+    awful.key({}, "XF86MonBrightnessDown", function()
+            local command = "xbacklight -steps 10 -dec 10"
+            --awful.spawn.easy_async_with_shell(command, function() beautiful.brightness_widget:update() end)
+        end,
+        {description = "decrease brightness", group = "client"}),
 
     -- Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().promptbox:run() end,

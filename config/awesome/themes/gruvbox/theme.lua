@@ -57,8 +57,8 @@ theme.dir = os.getenv("HOME") .. "/.config/awesome/themes/gruvbox"
 theme.colors = colors
 
 theme.useless_gap = dpi(3)
-theme.wibar_height = dpi(24)
-theme.wibar_bg = colors.bg .. "dd"
+theme.wibar_height = dpi(30)
+theme.wibar_bg = colors.bg
 
 -- Font
 theme.font = "MesloLGS NF 8"
@@ -207,7 +207,7 @@ theme.tabbar_fg_focus  = colors.fg     -- foreground color of unfocused clients 
 theme.tabbar_disable = false           -- disable the tab bar entirely
 
 theme.wallpaper = ""
-theme.dock_size = theme.wibar_height + dpi(5)
+theme.dock_size = dpi(30)
 
 
 local function load_random_wallpaper()

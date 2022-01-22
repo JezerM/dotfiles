@@ -66,7 +66,7 @@ awful.placement.bottom(dock, {
         attach = true,
         update_workarea = false,
         margins = dpi(5),
-        honor_workarea = true,
+        honor_workarea = false,
     }
 )
 
