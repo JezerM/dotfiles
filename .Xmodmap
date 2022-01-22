@@ -1,0 +1,16 @@
+
+clear lock
+keycode 66 = Mode_switch
+
+!# Vim mode
+keysym h = h H Left
+keysym l = l L Right
+keysym k = k K Up
+keysym j = j J Down
+
+!# Japanese
+keysym n = n N Eisu_toggle
+keysym m = m M Muhenkan
+keysym b = b B Hankaku
+
+keycode 22 = BackSpace BackSpace Delete
