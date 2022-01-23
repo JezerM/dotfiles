@@ -25,16 +25,13 @@ function Battery:get_batteries()
     end)
 end
 
-local last_time = os.time()
 local running = false
 
 -- Taken from "lain" battery widget
 function Battery:full_update()
-    local now_time = os.time()
-    if ((now_time - last_time) < 2) or running then
+    if running then
         return
     end
-    last_time = now_time
     running = true
 
     local sum_rate_current  = 0
