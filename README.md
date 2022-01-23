@@ -35,6 +35,40 @@ cd dotfiles
 
 TODO
 
+## Keybindings
+
+### Global keys
+
+| Keybinding | Action |
+|:----------:|:------:|
+| `Mod4 + [1-9]` | Switch to tag [1-9] |
+| `Mod4 + s` | Take screenshot with rofi and scrot |
+| `Mod4 + Alt + l` | Lock screen with light-locker |
+| `Mod4 + Tab` and `Mod4 + Shift + Tab` | Cycle between layouts |
+| `Mod4 + j` | Focus next client |
+| `Mod4 + k` | Focus previous client |
+| `Mod4 + b` | Toggle awesome bar |
+| `Mod4 + Return` | Spawn terminal |
+| `Mod4 + Ctrl + r` | Reload awesome |
+| `Mod4 + Ctrl + q` | Quit awesome |
+| `Mod4 + Ctrl + n` | Restore minimized client |
+| `Mod4 + r` | Run awesome prompt |
+| `Mod4 + p` | Show rofi's app launcher |
+| `XF86MonBrightnessUp` | Increase brightness by 10 in 10 steps |
+| `XF86MonBrightnessDown` | Decrease brightness by 10 in 10 steps |
+
+### Client keys
+
+| Keybinding | Action |
+|:----------:|:------:|
+| `Mod4 + Shift + [1-9]` | Move client to tag [1-9] |
+| `Mod4 + f` | Toggle fullscreen |
+| `Mod4 + Shift + c` | Close client |
+| `Mod4 + Ctrl + space` | Toggle floating |
+| `Mod4 + m` | (un)Maximize client |
+| `Mod4 + n` | Minimize client |
+
+
 [acpilight]: https://gitlab.com/wavexx/acpilight
 [pulsemixer]: https://github.com/GeorgeFilipkin/pulsemixer
 [playerctl]: https://github.com/altdesktop/playerctl
