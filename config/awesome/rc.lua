@@ -306,7 +306,7 @@ awful.spawn.with_shell(
        )
 
 
-require("widgets.dock")
+--require("widgets.dock")
 
 collectgarbage("setpause", 110)
 collectgarbage("setstepmul", 1000)

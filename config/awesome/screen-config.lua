@@ -372,6 +372,10 @@ local function at_screen_connect(s)
 
     s.promptbox = promptbox_w
     s.wibox = wibox_bar
+
+    s.dock = widgets.dock {
+        screen = s,
+    }
 end
 
 return {
