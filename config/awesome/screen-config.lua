@@ -4,6 +4,7 @@ local wibox         = require("wibox")
 local beautiful     = require("beautiful")
 local dpi           = require("beautiful.xresources").apply_dpi
 local widgets       = require("widgets")
+local utils         = require("utils")
 local naughty       = require("naughty")
 local inspect       = require("inspect")
 
@@ -21,6 +22,68 @@ local brightness_w = widgets.brightness:new {
         --self.widget:get_children_by_id("icon")[1]:set_markup(bat_header)
     end
 }
+brightness_w.widget:buttons(gears.table.join(
+        awful.button({ }, 4, function()
+            local brightness_controller = utils.brightness {}
+            brightness_controller:inc(10)
+        end),
+        awful.button({ }, 5, function()
+            local brightness_controller = utils.brightness {}
+            brightness_controller:dec(10)
+        end)
+    ))
+local brightness_slider = widgets.brightness_slider:new {
+    parent = brightness_w.widget,
+}
+
+-- Battery widget
+local battery_w = widgets.battery:new {
+    widget = widgets.base:new {
+        icon = { markup = "  ", bg = beautiful.colors.light_green },
+        markup = " 0% ",
+        bg_normal = "#00000000",
+        bg_active = beautiful.colors.light_green,
+    }.widget,
+    critic_perc = { 10, 20 },
+    settings = function(self)
+        local bat_header = ""
+        if     self.perc >= 99 then bat_header = "  "
+        elseif self.perc >= 90 then bat_header = "  "
+        elseif self.perc >= 80 then bat_header = "  "
+        elseif self.perc >= 70 then bat_header = "  "
+        elseif self.perc >= 60 then bat_header = "  "
+        elseif self.perc >= 50 then bat_header = "  "
+        elseif self.perc >= 40 then bat_header = "  "
+        elseif self.perc >= 30 then bat_header = "  "
+        elseif self.perc >= 20 then bat_header = "  "
+        elseif self.perc >= 10 then bat_header = "  "
+        else                        bat_header = "  " end
+
+        if self.ac_status == 1 then
+            bat_header = bat_header .. " "
+        end
+
+        if self.perc >= 30 then self.widget.bg_active = beautiful.colors.green
+        elseif self.perc >= 15 then self.widget.bg_active = beautiful.colors.yellow
+        else self.widget.bg_active = beautiful.colors.red end
+
+        local text_value = self.perc .. "%"
+
+        self.widget:get_children_by_id("text")[1]:set_markup(text_value)
+        self.widget:get_children_by_id("icon")[1]:set_markup(bat_header)
+    end
+}
+battery_w.widget:buttons(gears.table.join(
+        awful.button({ }, 1, function() battery_w:full_update() end)
+    ))
+local battery_w_tooltip = awful.tooltip {
+    objects = { battery_w.widget },
+    bg = beautiful.colors.bg1,
+    fg = beautiful.colors.fg,
+}
+battery_w.widget:connect_signal("mouse::enter", function()
+    battery_w_tooltip.text = battery_w.status or "N/A"
+end)
 
 -- Function to call on screen startup
 local function at_screen_connect(s)
@@ -95,53 +158,6 @@ local function at_screen_connect(s)
         power_w_tooltip.text = "Power menu"
     end)
 
-    -- Battery widget
-    local battery_w = widgets.battery:new {
-        widget = widgets.base:new {
-            icon = { markup = "  ", bg = beautiful.colors.light_green },
-            markup = " 0% ",
-            bg_normal = "#00000000",
-            bg_active = beautiful.colors.light_green,
-        }.widget,
-        settings = function(self)
-            local bat_header = ""
-            if     self.perc >= 99 then bat_header = "  "
-            elseif self.perc >= 90 then bat_header = "  "
-            elseif self.perc >= 80 then bat_header = "  "
-            elseif self.perc >= 70 then bat_header = "  "
-            elseif self.perc >= 60 then bat_header = "  "
-            elseif self.perc >= 50 then bat_header = "  "
-            elseif self.perc >= 40 then bat_header = "  "
-            elseif self.perc >= 30 then bat_header = "  "
-            elseif self.perc >= 20 then bat_header = "  "
-            elseif self.perc >= 10 then bat_header = "  "
-            else                        bat_header = "  " end
-
-            if self.ac_status == 1 then
-                bat_header = bat_header .. " "
-            end
-
-            if self.perc >= 30 then self.widget.bg_active = beautiful.colors.green
-            elseif self.perc >= 15 then self.widget.bg_active = beautiful.colors.yellow
-            else self.widget.bg_active = beautiful.colors.red end
-
-            local text_value = self.perc .. "%"
-
-            self.widget:get_children_by_id("text")[1]:set_markup(text_value)
-            self.widget:get_children_by_id("icon")[1]:set_markup(bat_header)
-        end
-    }
-    battery_w.widget:buttons(gears.table.join(
-            awful.button({ }, 1, function() battery_w:full_update() end)
-        ))
-    local battery_w_tooltip = awful.tooltip {
-        objects = { battery_w.widget },
-        bg = beautiful.colors.bg1,
-        fg = beautiful.colors.fg,
-    }
-    battery_w.widget:connect_signal("mouse::enter", function()
-        battery_w_tooltip.text = battery_w.status or "N/A"
-    end)
 
     -- Layout widget
     local layoutbox_w = awful.widget.layoutbox(s)

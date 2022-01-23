@@ -5,7 +5,7 @@ local brightness_controller = require("utils.brightness")
 local Brightness = {}
 
 function Brightness:update()
-    self.brightness = self.controller:get()
+    self.brightness = self.controller.brightness
     --naughty.notify { title = "Brightness", text = "Update: " .. self.brightness }
     self:settings()
 end

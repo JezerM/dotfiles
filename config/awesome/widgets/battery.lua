@@ -2,6 +2,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
 local naughty = require("naughty")
+local beautiful = require("beautiful")
 local files = require("utils.file")
 local acpi = require("utils.acpi")
 local inspect = require("inspect")
@@ -197,27 +198,24 @@ function Battery:new(args)
     b.ac = "AC0"
     b.notify = "on"
     b.status = "N/A"
+    b.critic_perc = args.critic_perc
 
     b.notification_critical_preset = args.notification_critical_preset or {
         title = "Battery exhausted",
         text = "Shutdown inminent",
         timeout = 15,
-        fg = "#000000",
-        bg = "#FFFFFF",
+        bg = beautiful.colors.red,
     }
     b.notification_low_preset = args.notification_low_preset or {
         title = "Battery low",
         text = "Plug the cable!",
         timeout = 15,
-        fg = "#202020",
-        bg = "#CDCDCD",
+        bg = beautiful.colors.yellow,
     }
     b.notification_charged_preset = args.notification_charged_preset or {
         title = "Battery full",
         text = "You can unplug the cable",
         timeout = 15,
-        fg = "#202020",
-        bg = "#CDCDCD",
     }
 
 

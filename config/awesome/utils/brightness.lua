@@ -60,7 +60,8 @@ function Brightness_controller:set(value, step)
     local sleep = self.delay / step
     local current = self:get()
     if step <= 1 then
-        local brightness = string.format("%d", value * self.max_brightness / 100)
+        local brightness = string.format("%d",
+            math.floor(value * self.max_brightness / 100 + 0.5))
         files.write(self.brightness_path, brightness)
         return
     end
@@ -76,9 +77,9 @@ function Brightness_controller:set(value, step)
             return
         end
         local brigh = current + ((value - current) * i) / step
-        local brightness = string.format("%d", math.floor(brigh * self.max_brightness / 100))
+        local brightness = string.format("%d",
+            math.floor(brigh * self.max_brightness / 100 + 0.5))
         files.write(self.brightness_path, brightness)
-        --file:write(brightness)
         i = i + 1
     end)
 end
