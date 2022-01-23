@@ -88,7 +88,7 @@ local function at_screen_connect(s)
             markup = " 0% ",
             bg_normal = "#00000000",
             bg_active = beautiful.colors.light_aqua,
-        }.widget,
+        },
         settings = function(self)
             local text_value = self.brightness .. "%"
             self.widget:get_children_by_id("text")[1]:set_markup(text_value)
@@ -116,7 +116,7 @@ local function at_screen_connect(s)
             markup = " 0% ",
             bg_normal = "#00000000",
             bg_active = beautiful.colors.light_green,
-        }.widget,
+        },
         critic_perc = { 10, 20 },
         settings = function(self)
             local bat_header = ""
@@ -344,12 +344,12 @@ local function at_screen_connect(s)
                     nil,
                     {
                         systray_w,
-                        keyboard_layout_w.widget,
+                        keyboard_layout_w,
                         brightness_w.widget,
                         battery_w.widget,
-                        date_w.widget,
-                        time_w.widget,
-                        power_w.widget,
+                        date_w,
+                        time_w,
+                        power_w,
 
                         spacing = dpi(5),
                         layout = wibox.layout.fixed.horizontal,

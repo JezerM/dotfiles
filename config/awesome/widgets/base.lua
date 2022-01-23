@@ -78,7 +78,7 @@ function Base:new(o)
 
     self.__index = self
         setmetatable(o, self)
-    return o
+    return o.widget
 end
 
 return Base
