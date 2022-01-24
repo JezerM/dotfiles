@@ -15,7 +15,7 @@ These are my dotfiles, in Void Linux, using AwesomeWM and LightDM.
 | [light-locker][light-locker] with [LightDM][lightdm] | :heavy_check_mark: | Lock screen and login manager |
 | [rofi][rofi] | :heavy_check_mark: | Application launcher and other utils |
 | [dex][dex] |  | Desktop entry execution |
-| [pulsemixer][pulsemixer] |  | Sound management |
+| pulseaudio and pactl |  | Sound management |
 | [playerctl][playerctl] |  | Media player controller |
 | [picom-jonaburg][picom-jonaburg] |  | Blurring, shadows, rounded corners, and window animations |
 | [xidlehook][xidlehook] |  | Required to lock session on idle |
@@ -56,6 +56,9 @@ TODO
 | `Mod4 + p` | Show rofi's app launcher |
 | `XF86MonBrightnessUp` | Increase brightness by 10 in 10 steps |
 | `XF86MonBrightnessDown` | Decrease brightness by 10 in 10 steps |
+| `XF86AudioRaiseVolume` | Increase audio volume by 5 |
+| `XF86AudioLowerVolume` | Decrease audio volume by 5 |
+| `XF86AudioMute` | Mute audio |
 
 ### Client keys
 
