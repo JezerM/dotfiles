@@ -9,10 +9,10 @@ local Audio = {
 }
 
 function Audio:watch()
-    local comm = [[pactl subscribe]]
+    local comm = [[bash -c "LANG= pactl subscribe"]]
     local pid = awful.spawn.with_line_callback(comm, {
             stdout = function(line)
-                if string.match(line, "#0") ~= nil then -- Should match a sink number
+                if string.match(line, "sink #0") ~= nil then -- Should match a sink number
                     --naughty.notify { title = "Audio", text = line }
                     self:update()
                 end
@@ -25,6 +25,8 @@ function Audio:watch()
         awesome.connect_signal("exit", function()
             awesome.kill(pid, awesome.unix_signal.SIGKILL)
         end)
+    elseif type(pid) == "string" then
+        naughty.notify { title = "Audio error", text = pid }
     end
 end
 
