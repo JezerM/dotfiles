@@ -109,6 +109,51 @@ local function at_screen_connect(s)
         parent = brightness_w.widget,
     }
 
+    -- Audio widget
+    local audio_w = widgets.audio:new {
+        widget = widgets.base:new {
+            icon = { markup = " 墳 ", bg = beautiful.colors.light_purple },
+            markup = "0%",
+            bg_normal = "#00000000",
+            bg_active = beautiful.colors.light_purple,
+        },
+        settings = function(self)
+            local text_value = ""
+            if self.volume.left == self.volume.right then
+                text_value = self.volume.left .. "%"
+            else
+                text_value = self.volume.left .. "% - " .. self.volume.right .. "%"
+            end
+
+            local background = self.widget:get_children_by_id("background_role")[1]
+            local icon_background = self.widget:get_children_by_id("icon_background_role")[1]
+
+            local icon_value = " 墳 "
+
+            if self.ports[self.active_port].type == "Headphones" then
+                if self.muted then icon_value = " ﳌ "
+                else icon_value = "  " end
+            else
+                if self.muted then icon_value = " 婢 "
+                else icon_value = " 墳 " end
+            end
+
+            if self.muted then
+                background.bg_active = beautiful.colors.light_red
+                icon_background.bg = beautiful.colors.light_red
+            else
+                background.bg_active = beautiful.colors.light_purple
+                icon_background.bg = beautiful.colors.light_purple
+            end
+
+            self.widget:get_children_by_id("text")[1]:set_markup(text_value)
+            self.widget:get_children_by_id("icon")[1]:set_markup(icon_value)
+        end
+    }
+    local audio_slider = widgets.audio_slider:new {
+        parent = audio_w.widget,
+    }
+
     -- Battery widget
     local battery_w = widgets.battery:new {
         widget = widgets.base:new {
@@ -345,6 +390,7 @@ local function at_screen_connect(s)
                     {
                         systray_w,
                         keyboard_layout_w,
+                        audio_w.widget,
                         brightness_w.widget,
                         battery_w.widget,
                         date_w,

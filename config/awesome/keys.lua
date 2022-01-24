@@ -8,6 +8,7 @@ local modkey = awful.util.keys.modkey
 local altkey = awful.util.keys.altkey
 
 local brightness_controller = require("utils.brightness"):new{}
+local audio_controller = require("utils.audio"):new{}
 
 local global_keys = gears.table.join(
     -- Show help
@@ -107,6 +108,23 @@ local global_keys = gears.table.join(
             brightness_controller:dec(10, 10)
         end,
         {description = "decrease brightness", group = "client"}),
+
+    -- Volume
+    awful.key({}, "XF86AudioRaiseVolume",
+        function()
+            audio_controller:inc(5)
+        end,
+        {description = "raise volume", group = "client"}),
+    awful.key({}, "XF86AudioLowerVolume",
+        function()
+            audio_controller:dec(5)
+        end,
+        {description = "lower volume", group = "client"}),
+    awful.key({}, "XF86AudioMute",
+        function()
+            audio_controller:mute(nil)
+        end,
+        {description = "mute volume", group = "client"}),
 
     -- Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().promptbox:run() end,

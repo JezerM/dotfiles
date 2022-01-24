@@ -24,10 +24,11 @@ function Base:new(o)
         }
     end
 
-    o.widget = wibox.widget {
+    local widget = wibox.widget {
         {
             {
                 {
+                    id = "icon_background_role",
                     widget = wibox.container.background,
                     shape = o.icon.shape,
                     bg = o.icon.bg or o.active_bg,
@@ -67,18 +68,16 @@ function Base:new(o)
         margins = o.outer_margins,
         widget = wibox.container.margin,
     }
-    o.widget:connect_signal("mouse::enter", function()
-        local background = o.widget:get_children_by_id("background_role")[1]
+    widget:connect_signal("mouse::enter", function()
+        local background = widget:get_children_by_id("background_role")[1]
         background.bg = background.bg_active
     end)
-    o.widget:connect_signal("mouse::leave", function()
-        local background = o.widget:get_children_by_id("background_role")[1]
+    widget:connect_signal("mouse::leave", function()
+        local background = widget:get_children_by_id("background_role")[1]
         background.bg = background.bg_normal
     end)
 
-    self.__index = self
-        setmetatable(o, self)
-    return o.widget
+    return widget
 end
 
 return Base
