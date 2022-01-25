@@ -9,6 +9,7 @@ ignore=(
   ".."
   ".git"
   ".gitignore"
+  "misc"
 )
 dorecursive=(
   "config"
