@@ -1,7 +1,7 @@
 # My dotfiles
 These are my dotfiles, in Void Linux, using AwesomeWM and LightDM.
 
-![Screenshot_2022-01-21-19_1366x768](https://user-images.githubusercontent.com/59768785/150624457-01cabe8a-04f1-4b76-b613-4544c371be69.png)
+![Desktop_screenshot](./misc/Desktop_screenshot-01.png)
 
 
 ## Dependencies
