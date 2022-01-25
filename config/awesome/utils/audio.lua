@@ -12,7 +12,7 @@ function Audio:watch()
     local comm = [[bash -c "LANG= pactl subscribe"]]
     local pid = awful.spawn.with_line_callback(comm, {
             stdout = function(line)
-                if string.match(line, "sink #0") ~= nil then -- Should match a sink number
+                if string.match(line, "sink #(%d+)") ~= nil then -- Should match a sink number
                     --naughty.notify { title = "Audio", text = line }
                     self:update()
                 end
@@ -38,6 +38,31 @@ function Audio:update()
             return
         end
         running = true
+
+        local sink_pos = 1
+        while sink_pos ~= nil do
+            local state = string.match(stdout, "State: (%S+)", sink_pos) or "SUSPEND"
+            if state == "RUNNING" then
+                break
+            end
+            sink_pos = string.find(stdout, "Sink #(%d+)", sink_pos + 1)
+        end
+        if sink_pos == nil then
+            running = false
+            naughty.notify {
+                title = "Audio error",
+                text = "Couldn't find any running sink"
+            }
+            return
+        end
+
+        local next_sink_pos = string.find(stdout, "Sink #(%d+)", sink_pos + 1)
+        if next_sink_pos ~= nil then
+            stdout = string.sub(stdout, sink_pos, next_sink_pos)
+        else
+            stdout = string.sub(stdout, sink_pos)
+        end
+
         local muted = string.match(stdout, "Mute: (%S+)") or "N/A"
         local index = string.match(stdout, "Sink #(%d+)") or "N/A"
         local name = string.match(stdout, "Name: (%S+)") or "N/A"
@@ -139,7 +164,7 @@ function Audio:new()
     gobj.index = 0
     gobj.muted = false
     gobj.name = ""
-    gobj.volume = { left = nil, right = nil }
+    gobj.volume = { left = 0, right = 0 }
 
     gobj:update()
     gobj:watch()
