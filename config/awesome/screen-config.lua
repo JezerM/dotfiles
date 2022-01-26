@@ -118,6 +118,7 @@ local function at_screen_connect(s)
     local brightness_slider = widgets.brightness_slider:new {
         parent = brightness_w.widget,
     }
+    local brightness_popup = widgets.brightness_popup:new { }
 
     -- Audio widget
     local audio_w = widgets.audio:new {
@@ -163,6 +164,7 @@ local function at_screen_connect(s)
     local audio_slider = widgets.audio_slider:new {
         parent = audio_w.widget,
     }
+    local audio_popup = widgets.audio_popup:new { }
 
     -- Battery widget
     local battery_w = widgets.battery:new {

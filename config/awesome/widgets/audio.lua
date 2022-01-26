@@ -47,3 +47,4 @@ function Audio:new(o)
 end
 
 return Audio
+-- vim: shiftwidth=4: tabstop=4
