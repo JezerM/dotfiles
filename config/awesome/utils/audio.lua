@@ -39,6 +39,7 @@ function Audio:update()
         end
         running = true
 
+        local first_sink_pos = string.find(stdout, "Sink #(%S+)")
         local sink_pos = 1
         while sink_pos ~= nil do
             local state = string.match(stdout, "State: (%S+)", sink_pos) or "SUSPEND"
@@ -47,13 +48,15 @@ function Audio:update()
             end
             sink_pos = string.find(stdout, "Sink #(%d+)", sink_pos + 1)
         end
-        if sink_pos == nil then
+        if sink_pos == nil and first_sink_pos == nil then
             running = false
             naughty.notify {
                 title = "Audio error",
                 text = "Couldn't find any running sink"
             }
             return
+        elseif sink_pos == nil and first_sink_pos ~= nil then
+            sink_pos = first_sink_pos
         end
 
         local next_sink_pos = string.find(stdout, "Sink #(%d+)", sink_pos + 1)

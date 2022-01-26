@@ -4,4 +4,5 @@ return {
     acpi = require("utils.acpi"),
     brightness = require("utils.brightness"),
     audio = require("utils.audio"),
+    power = require("utils.power"),
 }
