@@ -113,7 +113,7 @@ function Brightness_controller:new()
     gears.timer {
         timeout = 1,
         autostart = true,
-        sigle_shot = true,
+        single_shot = true,
         callback = function()
             gobj:update()
         end
@@ -129,3 +129,4 @@ function Brightness_controller.mt:__call()
 end
 
 return setmetatable(Brightness_controller, Brightness_controller.mt)
+-- vim: shiftwidth=4: tabstop=4
