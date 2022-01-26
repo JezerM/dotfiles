@@ -9,7 +9,7 @@
 void handle_event(int fd, char *file_name) {
   char buf[4096]
                __attribute__ ((aligned(__alignof__(struct inotify_event))));
-  int watch = inotify_add_watch(fd, file_name, IN_ALL_EVENTS);
+  int watch = inotify_add_watch(fd, file_name, IN_CLOSE_WRITE);
 
   const struct inotify_event* event;
   int len;
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
   }
 
   char *file_name = argv[1];
-  int fd = inotify_init1(IN_NONBLOCK);
+  int fd = inotify_init();
 
   while (1) {
     handle_event(fd, file_name);
