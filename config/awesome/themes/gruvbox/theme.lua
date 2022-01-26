@@ -165,9 +165,9 @@ theme.notification_max_width = dpi(350)
 theme.notification_min_width = dpi(100)
 theme.notification_bg = colors.bg .. "aa"
 theme.notification_fg = colors.fg
-theme.notification_spacing = dpi(30)
-theme.notification_margin = dpi(20)
-theme.notification_icon_resize_strategy = 'center'
+theme.notification_spacing = dpi(10)
+theme.notification_margin = dpi(10)
+theme.notification_icon_resize_strategy = "center"
 theme.notification_icon_size = dpi(32)
 
 theme.hotkeys_bg = colors.bg0_s .. "cc"

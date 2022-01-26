@@ -21,6 +21,11 @@ local function at_screen_connect(s)
     -- Tags
     awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
 
+    -- Sidebar
+    local sidebar = widgets.sidebar.sidebar:new {
+        screen = s
+    }
+
     -- Promptbox
     local promptbox_w = awful.widget.prompt {
         screen = s,
@@ -66,8 +71,8 @@ local function at_screen_connect(s)
 
     -- Power widget
     local power_w = widgets.base:new {
-        markup = "  ",
-        --markup = "  ",
+        --markup = "  ",
+        markup = "  ",
         bg_normal = beautiful.colors.purple,
         bg_active = beautiful.colors.light_purple,
         margins = { left = dpi(2), right = dpi(2) },
@@ -77,9 +82,14 @@ local function at_screen_connect(s)
         bg = beautiful.colors.bg1,
         fg = beautiful.colors.fg,
     }
-    power_w.widget:connect_signal("mouse::enter", function()
-        power_w_tooltip.text = "Power menu"
+    power_w:connect_signal("mouse::enter", function()
+        power_w_tooltip.text = "Menu"
     end)
+    power_w:buttons(gears.table.join(
+            awful.button({ }, 1, function()
+                sidebar:show(nil)
+            end)
+        ))
 
     -- Brightness widget
     local brightness_w = widgets.brightness:new {
@@ -181,9 +191,19 @@ local function at_screen_connect(s)
                 bat_header = bat_header .. " "
             end
 
-            if self.perc >= 30 then self.widget.bg_active = beautiful.colors.green
-            elseif self.perc >= 15 then self.widget.bg_active = beautiful.colors.yellow
-            else self.widget.bg_active = beautiful.colors.red end
+            local background = self.widget:get_children_by_id("background_role")[1]
+            local icon_background = self.widget:get_children_by_id("icon_background_role")[1]
+
+            if self.perc >= 30 then
+                background.bg_active = beautiful.colors.light_green
+                icon_background.bg = beautiful.colors.light_green
+            elseif self.perc >= 15 then
+                background.bg_active = beautiful.colors.yellow
+                icon_background.bg = beautiful.colors.yellow
+            else
+                background.bg_active = beautiful.colors.red
+                icon_background.bg = beautiful.colors.red
+            end
 
             local text_value = self.perc .. "%"
 
@@ -422,6 +442,7 @@ local function at_screen_connect(s)
     s.dock = widgets.dock {
         screen = s,
     }
+    s.sidebar = sidebar
 end
 
 return {

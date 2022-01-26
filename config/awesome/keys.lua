@@ -126,6 +126,16 @@ local global_keys = gears.table.join(
         end,
         {description = "mute volume", group = "client"}),
 
+    awful.key({ modkey }, "w", function()
+            awful.screen.focused().sidebar:show(nil)
+        end,
+        { description = "Show sidebar", grop = "launcher" }),
+
+    awful.key({ modkey }, "v", function()
+            awful.screen.focused().dock:show(nil)
+        end,
+        { description = "Show dock", grop = "launcher" }),
+
     -- Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().promptbox:run() end,
         {description = "run prompt", group = "launcher"}),
