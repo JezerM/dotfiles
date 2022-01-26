@@ -1,7 +1,9 @@
 # My dotfiles
 These are my dotfiles, in Void Linux, using AwesomeWM and LightDM.
 
-![Desktop_screenshot](./misc/Desktop_screenshot-01.png)
+![Desktop_screenshot_01](./misc/Desktop_screenshot-01.png)
+
+![Desktop_screenshot_02](./misc/Desktop_screenshot-02.png)
 
 
 ## Dependencies
@@ -54,6 +56,8 @@ TODO
 | `Mod4 + Ctrl + n` | Restore minimized client |
 | `Mod4 + r` | Run awesome prompt |
 | `Mod4 + p` | Show rofi's app launcher |
+| `Mod4 + w` | Show/hide sidebar |
+| `Mod4 + v` | Show/hide dock |
 | `XF86MonBrightnessUp` | Increase brightness by 10 in 10 steps |
 | `XF86MonBrightnessDown` | Decrease brightness by 10 in 10 steps |
 | `XF86AudioRaiseVolume` | Increase audio volume by 5 |
