@@ -12,6 +12,28 @@ local Dock = {
     mt = {}
 }
 
+function Dock:adjust()
+    gears.timer {
+        timeout = 3,
+        autostart = true,
+        single_shot = true,
+        callback = function()
+            self.dock:geometry({ y = self.fly_in.target })
+        end
+    }
+end
+
+function Dock:show(value)
+    value = value or ( not self.visible )
+
+    self.visible = value
+    if value == true then
+        self.fly_in.target = self.screen.geometry.height - (self.dock.height + beautiful.useless_gap)
+    else
+        self.fly_in.target = self.screen.geometry.height - beautiful.useless_gap
+    end
+end
+
 function Dock:new(o)
     o.screen = o.screen or screen.primary
 
@@ -83,35 +105,36 @@ function Dock:new(o)
             honor_workarea = false,
         }
     )
-    local function adjust()
-        gears.timer {
-            timeout = 3,
-            autostart = true,
-            single_shot = true,
-            callback = function()
-                dock:geometry({ y = fly_in.target })
-            end
-        }
-    end
 
-    tasklist:connect_signal("widget::layout_changed", function() adjust() end)
-    client.connect_signal("focus", function() adjust() end)
+    local gobj = gears.object {}
+    gears.table.crush(gobj, Dock, true)
+
+    gobj.screen = o.screen
+    gobj.dock = dock
+    gobj.fly_in = fly_in
+    gobj.visible = false
+
+    self.__index = self
+    setmetatable(gobj, self)
+
+    tasklist:connect_signal("widget::layout_changed", function() gobj:adjust() end)
+    client.connect_signal("focus", function() gobj:adjust() end)
+
+    dock:connect_signal("mouse::enter", function()
+        gobj:show(true)
+    end)
+    dock:connect_signal("mouse::leave", function()
+        gobj:show(false)
+    end)
 
     fly_in:subscribe(function(pos)
         dock:geometry({ y = pos })
         dock:draw()
     end)
 
-    dock:connect_signal("mouse::enter", function()
-        fly_in.target = o.screen.geometry.height - (dock.height + beautiful.useless_gap)
-    end)
-    dock:connect_signal("mouse::leave", function()
-        fly_in.target = o.screen.geometry.height - beautiful.useless_gap
-    end)
+    gobj:show(false)
 
-    fly_in.target = o.screen.geometry.height - beautiful.useless_gap
-
-    return dock
+    return gobj
 end
 
 function Dock.mt:__call(...)
