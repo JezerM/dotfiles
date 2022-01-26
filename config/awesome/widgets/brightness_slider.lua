@@ -17,6 +17,7 @@ function Brightness_slider:new(o)
         bar_shape = gears.shape.rectangle,
         bar_height = dpi(4),
         bar_color = beautiful.colors.bg1,
+        bar_active_color = beautiful.colors.light_aqua,
         handle_shape = gears.shape.circle,
         handle_width = dpi(10),
         handle_color = beautiful.colors.light_aqua,
