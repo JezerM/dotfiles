@@ -98,14 +98,16 @@ local global_keys = gears.table.join(
                 c:emit_signal("request::activate", "key.unminimize", {raise = true})
             end
         end, {description = "restore minimized", group = "client"}),
-    --
+
     -- Brightness
     awful.key({}, "XF86MonBrightnessUp", function()
             brightness_controller:inc(10, 10)
+            screen.primary.brightness_popup:show()
         end,
         {description = "increase brightness", group = "client"}),
     awful.key({}, "XF86MonBrightnessDown", function()
             brightness_controller:dec(10, 10)
+            screen.primary.brightness_popup:show()
         end,
         {description = "decrease brightness", group = "client"}),
 
@@ -113,18 +115,29 @@ local global_keys = gears.table.join(
     awful.key({}, "XF86AudioRaiseVolume",
         function()
             audio_controller:inc(5)
+            screen.primary.audio_popup:show()
         end,
         {description = "raise volume", group = "client"}),
     awful.key({}, "XF86AudioLowerVolume",
         function()
             audio_controller:dec(5)
+            screen.primary.audio_popup:show()
         end,
         {description = "lower volume", group = "client"}),
     awful.key({}, "XF86AudioMute",
         function()
             audio_controller:mute(nil)
+            screen.primary.audio_popup:show()
         end,
         {description = "mute volume", group = "client"}),
+
+    -- Media
+    awful.key({}, "XF86AudioPlay", function() awful.spawn("playerctl play-pause") end,
+        {description = "pause/play media", group = "client"}),
+    awful.key({}, "XF86AudioNext", function() awful.spawn("playerctl next") end,
+        {description = "next media", group = "client"}),
+    awful.key({}, "XF86AudioPrev", function() awful.spawn("playerctl previous") end,
+        {description = "prev media", group = "client"}),
 
     awful.key({ modkey }, "w", function()
             awful.screen.focused().sidebar:show(nil)
