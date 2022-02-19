@@ -35,8 +35,10 @@ end
 --- @param text string
 function Filesystem.write(path, text)
     local file = io.open(path, "w")
-    file:write(text)
-    file:close()
+    if file then
+        file:write(text)
+        file:close()
+    end
 end
 
 return Filesystem
