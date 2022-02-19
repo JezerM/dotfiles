@@ -220,6 +220,7 @@ local filetypes = {
     typescript = "eslint",
     typescriptreact = "eslint",
     vue = "eslint",
+    python = "pylint",
 }
 local linters = {
     eslint = {
@@ -238,7 +239,35 @@ local linters = {
             security = "severity"
         },
         securities = {[2] = "error", [1] = "warning"}
-    }
+    },
+    pylint = {
+        sourceName = "pylint",
+        command = "pylint",
+        args = {
+            '--output-format',
+            'text',
+            '--score',
+            'no',
+            '--msg-template',
+            [['{line}:{column}:{category}:{msg} ({msg_id}:{symbol})']],
+            '%file',
+        },
+        offsetColumn = 1,
+        formatLines = 1,
+        formatPattern = {
+            [[^(\d+?):(\d+?):([a-z]+?):(.*)$]],
+            { line = 1, column = 2, security = 3, message = { '[pylint] ', 4 } },
+        },
+        securities = {
+            informational = 'hint',
+            refactor = 'info',
+            convention = 'info',
+            warning = 'warning',
+            error = 'error',
+            fatal = 'error',
+        },
+        rootPatterns = { ".pylintrc", '.git', 'pyproject.toml', 'setup.py' },
+    },
 }
 local formatters = {
     prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}}
