@@ -97,7 +97,7 @@ function Brightness_popup:new()
     brightness_controller:connect_signal("update", function()
         brightness_text.markup = " Brightness: " .. brightness_controller.brightness .. " "
         progress_bar.value = brightness_controller.brightness
-        gobj:show()
+        --gobj:show()
     end)
 
     gears.timer {

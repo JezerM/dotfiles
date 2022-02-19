@@ -108,7 +108,7 @@ function Audio_popup:new()
             else icon_text.markup = " 墳 " end
         end
 
-        gobj:show()
+        --gobj:show()
     end)
 
     gears.timer {

@@ -85,7 +85,7 @@ local function create_sidebar_notification(notification_list, i)
         }
     }
     w:buttons(gears.table.join(
-            awful.button({ }, 1, function()
+            awful.button({ }, 3, function()
                 n:destroy(naughty.notification_closed_reason.dismissed_by_user)
                 table.remove(notifications, i)
                 notification_controller:emit_signal("update")
