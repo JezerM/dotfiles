@@ -23,12 +23,12 @@ cursor:
   blink_interval: 500
 
 draw_bold_text_with_bright_colors: true
-background_opacity: 1
 
 url:
   launcher: xdg-open
 
 window:
+  opacity: 1
   padding:
     x: 8
     y: 8
