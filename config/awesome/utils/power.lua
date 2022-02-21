@@ -12,7 +12,7 @@ end
 
 local function restart()
     naughty.notify { title = "Restart", text = "Your system will be restarted" }
-    awful.spawn.easy_async("loginctl restart", function(_, stderr)
+    awful.spawn.easy_async("loginctl reboot", function(_, stderr)
         if stderr ~= "" then
             naughty.notify { title = "Restart error", text = stderr }
         end
