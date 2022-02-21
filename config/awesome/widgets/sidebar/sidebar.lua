@@ -30,11 +30,11 @@ local function create_power_button(o)
                 widget = wibox.widget.textbox,
                 markup = o.markup,
                 font = o.font or "MesloLGS NF Bold 12",
-                buttons = gears.table.join(
-                    awful.button({ }, 1, o.command)
-                    ),
             }
-        }
+        },
+        buttons = gears.table.join(
+            awful.button({ }, 1, o.command)
+            ),
     }
     local tooltip = awful.tooltip {
         objects = { widget },
