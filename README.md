@@ -3,7 +3,9 @@ These are my dotfiles, in Void Linux, using AwesomeWM and LightDM.
 
 ![Desktop_screenshot_01](./misc/Desktop_screenshot-01.png)
 
-![Desktop_screenshot_02](./misc/Desktop_screenshot-02.png)
+![Desktop_screenshot_04](./misc/Desktop_screenshot-04.png)
+
+![LightDM_screenshot_01](./misc/LightDM_screenshot-01.png)
 
 
 ## Dependencies
