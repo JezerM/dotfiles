@@ -116,24 +116,24 @@ for type, icon in pairs(signs) do
 end
 
 lspconfig.clangd.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 lspconfig.pyright.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 lspconfig.bashls.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = false
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 require("nvim-treesitter.configs").setup {
@@ -148,17 +148,17 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspconfig.cssls.setup {
     cmd = {"vscode-css-language-server", "--stdio"},
     capabilities = capabilities,
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 lspconfig.jsonls.setup {
     capabilities = capabilities,
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.hover = false
-        on_attach(client)
+        on_attach(client, bufnr)
     end,
     settings = {
         json = {
@@ -167,7 +167,7 @@ lspconfig.jsonls.setup {
     },
 }
 lspconfig.vimls.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = false
         --on_attach(client)
@@ -180,10 +180,10 @@ lspconfig.yamlls.setup {
 }
 
 lspconfig.texlab.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = false
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 
@@ -200,17 +200,17 @@ require("colorizer").setup({
 
 lspconfig.tsserver.setup {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 lspconfig.vuels.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 local filetypes = {
@@ -297,18 +297,18 @@ lspconfig.sqlls.setup{
 
 lspconfig.jdtls.setup{
     cmd = { 'jdtls' },
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = false
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 lspconfig.dockerls.setup{
     cmd = { 'docker-langserver', "--stdio" },
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = false
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 require("shade").setup({
@@ -369,10 +369,10 @@ lspconfig.sumneko_lua.setup {
         },
         },
     },
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
-        on_attach(client)
+        on_attach(client, bufnr)
     end
 }
 

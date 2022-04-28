@@ -48,8 +48,10 @@ cmp.setup({
                 cmp_tabnine = "[Nine]",
             })}),
         },
+        view ={
+            entries = "native"
+        },
         experimental = {
-            native_menu = true,
             ghost_text = true,
         },
 })
