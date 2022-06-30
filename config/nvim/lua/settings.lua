@@ -56,7 +56,7 @@ local format_async = function(err, result, ctx, _)
   if err ~=nil or result == nil then return end
     if not vim.api.nvim_buf_get_option(ctx.bufnr, "modified") then
         local view = vim.fn.winsaveview()
-        vim.lsp.util.apply_text_edits(result, ctx.bufnr)
+        vim.lsp.util.apply_text_edits(result, ctx.bufnr, "utf-8")
         vim.fn.winrestview(view)
         vim.api.nvim_buf_call(ctx.bufnr, function()
             vim.api.nvim_command("noautocmd :update")
@@ -175,6 +175,11 @@ lspconfig.vimls.setup {
 }
 lspconfig.html.setup {
     capabilities = capabilities,
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = false
+        on_attach(client, bufnr)
+    end
 }
 lspconfig.yamlls.setup {
 }
@@ -187,6 +192,21 @@ lspconfig.texlab.setup {
     end
 }
 
+local pid = vim.fn.getpid()
+-- On linux/darwin if using a release build, otherwise under scripts/OmniSharp(.Core)(.cmd)
+local omnisharp_bin = os.getenv("HOME") .. "/.local/bin/OmniSharpMono/OmniSharp.exe"
+
+require'lspconfig'.omnisharp.setup{
+    cmd = { "mono", omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+    on_attach = function(client, bufnr)
+       client.resolved_capabilities.document_formatting = false
+       client.resolved_capabilities.hover = false
+       on_attach(client, bufnr)
+       --local buf_map = vim.api.nvim_buf_set_keymap
+       --buf_map(bufnr, "n", "K", ":LspHighlight<CR>", {silent = true})
+    end
+}
+
 lspconfig.tsserver.setup {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
     on_attach = function(client, bufnr)
@@ -195,7 +215,14 @@ lspconfig.tsserver.setup {
         on_attach(client, bufnr)
     end
 }
-lspconfig.vuels.setup {
+--lspconfig.vuels.setup {
+    --on_attach = function(client, bufnr)
+        --client.resolved_capabilities.document_formatting = false
+        --client.resolved_capabilities.hover = true
+        --on_attach(client, bufnr)
+    --end
+--}
+lspconfig.volar.setup {
     on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
