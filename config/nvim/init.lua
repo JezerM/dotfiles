@@ -56,7 +56,7 @@ require("packer").startup(function()
 
   -- Snippets
   use "SirVer/ultisnips"
-  --use "mattn/emmet-vim"
+  use "mattn/emmet-vim"
 
   -- Markdown
   use { "iamcco/markdown-preview.nvim", run = "cd app && npm install" }
@@ -109,7 +109,7 @@ end)
 local cmd = vim.cmd
 
 --vim.opt.language = "en_US.utf8"
-cmd "language en_US.utf8"
+cmd "language en_US.UTF-8"
 vim.opt.spelllang = { "es", "en_us" }
 
 vim.opt.termguicolors = true
