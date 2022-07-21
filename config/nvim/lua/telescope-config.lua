@@ -46,8 +46,16 @@ telescope.setup {
   },
   pickers = {
   },
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+        -- even more opts
+      }
+    }
+  },
 }
 
 require("telescope").load_extension("emoji")
 require("telescope").load_extension("neoclip")
 require("telescope").load_extension("packer")
+require("telescope").load_extension("ui-select")

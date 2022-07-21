@@ -86,6 +86,7 @@ require("packer").startup(function()
   use "xiyaowong/telescope-emoji.nvim"
   use "AckslD/nvim-neoclip.lua"
   use "nvim-telescope/telescope-packer.nvim"
+  use "nvim-telescope/telescope-ui-select.nvim"
 
   -- Syntax
   use "leafOfTree/vim-vue-plugin"

@@ -65,7 +65,6 @@ local format_async = function(err, result, ctx, _)
 end
 
 vim.lsp.handlers["textDocument/formatting"] = format_async
-vim.lsp.buf.code_action = require("telescope.builtin").lsp_code_actions
 vim.lsp.buf.references = require("telescope.builtin").lsp_references
 vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 
@@ -116,6 +115,7 @@ for type, icon in pairs(signs) do
 end
 
 lspconfig.clangd.setup {
+    cmd = { 'clangd', '--offset-encoding=utf-16' },
     on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.hover = true
@@ -286,9 +286,11 @@ local linters = {
     },
 }
 local formatters = {
-    prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}}
+    prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}},
+    clang = {command = "clang-format", args = {"%filepath"}}
 }
 local formatFiletypes = {
+    c = "clang",
     html = "prettier",
     css = "prettier",
     javascript = "prettier",
@@ -298,7 +300,11 @@ local formatFiletypes = {
 }
 lspconfig.diagnosticls.setup {
     on_attach = on_attach,
-    filetypes = vim.tbl_keys(filetypes),
+    filetypes = {
+        "c", "html", "css", "javascript",
+        "typescript", "typescriptreact",
+        "vue", "python"
+    },
     init_options = {
         filetypes = filetypes,
         linters = linters,
