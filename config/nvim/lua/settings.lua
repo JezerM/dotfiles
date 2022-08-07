@@ -229,6 +229,13 @@ lspconfig.volar.setup {
         on_attach(client, bufnr)
     end
 }
+lspconfig.svelte.setup {
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
+        on_attach(client, bufnr)
+    end
+}
 local filetypes = {
     html = "eslint",
     css = "eslint",
