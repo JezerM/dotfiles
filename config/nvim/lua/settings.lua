@@ -244,6 +244,7 @@ local filetypes = {
     typescriptreact = "eslint",
     vue = "eslint",
     python = "pylint",
+    svelte = "eslint",
 }
 local linters = {
     eslint = {
@@ -303,14 +304,15 @@ local formatFiletypes = {
     javascript = "prettier",
     typescript = "prettier",
     typescriptreact = "prettier",
-    vue = "prettier"
+    vue = "prettier",
+    svelte = "prettier",
 }
 lspconfig.diagnosticls.setup {
     on_attach = on_attach,
     filetypes = {
         "c", "html", "css", "javascript",
         "typescript", "typescriptreact",
-        "vue", "python"
+        "vue", "python", "svelte"
     },
     init_options = {
         filetypes = filetypes,
