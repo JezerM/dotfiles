@@ -35,8 +35,8 @@ local on_attach = function(client, bufnr)
         vim.api.nvim_exec([[
               augroup hover
                 autocmd! * <buffer>
-                autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-                autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorHold  <buffer> lua vim.lsp.buf.hover()
+                autocmd CursorHoldI <buffer> lua vim.lsp.buf.hover()
                 autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
               augroup end
         ]], true)
@@ -236,6 +236,13 @@ lspconfig.volar.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.hoverProvider = true
+        on_attach(client, bufnr)
+    end
+}
+lspconfig.svelte.setup {
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.hover = true
         on_attach(client, bufnr)
     end
 }
