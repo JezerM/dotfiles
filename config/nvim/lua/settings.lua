@@ -343,15 +343,15 @@ lspconfig.dockerls.setup{
         on_attach(client, bufnr)
     end
 }
-require("shade").setup({
-  overlay_opacity = 60,
-  opacity_step = 1,
-  keys = {
-    brightness_up    = '<C-k>',
-    brightness_down  = '<C-j>',
-    toggle           = '<Leader>s',
-  }
-})
+--require("shade").setup({
+  --overlay_opacity = 60,
+  --opacity_step = 1,
+  --keys = {
+    --brightness_up    = '<C-k>',
+    --brightness_down  = '<C-j>',
+    --toggle           = '<Leader>s',
+  --}
+--})
 
 require("lspfuzzy").setup{}
 
