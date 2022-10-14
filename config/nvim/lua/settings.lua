@@ -1,9 +1,11 @@
 local lspconfig = require "lspconfig"
 
+--vim.lsp.set_log_level("debug")
+
 local on_attach = function(client, bufnr)
     local buf_map = vim.api.nvim_buf_set_keymap
     vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
-    vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
+    vim.cmd("command! LspFormatting lua vim.lsp.buf.format()")
     vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
     vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
     vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
@@ -43,7 +45,7 @@ local on_attach = function(client, bufnr)
     require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
     --require "lsp_signature".on_attach()
 
-    if client.resolved_capabilities.document_formatting then
+    if client.server_capabilities.documentFormattingProvider then
             vim.api.nvim_exec([[
              augroup LspAutocommands
                  autocmd! * <buffer>
@@ -117,22 +119,22 @@ end
 lspconfig.clangd.setup {
     cmd = { 'clangd', '--offset-encoding=utf-16' },
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = true
+        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
 lspconfig.pyright.setup {
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = true
+        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
 lspconfig.bashls.setup {
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = false
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end
 }
@@ -149,15 +151,15 @@ lspconfig.cssls.setup {
     cmd = {"vscode-css-language-server", "--stdio"},
     capabilities = capabilities,
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = true
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
 lspconfig.jsonls.setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.hover = false
+        client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end,
     settings = {
@@ -168,16 +170,16 @@ lspconfig.jsonls.setup {
 }
 lspconfig.vimls.setup {
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = false
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
         --on_attach(client)
     end
 }
 lspconfig.html.setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = false
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end
 }
@@ -186,8 +188,8 @@ lspconfig.yamlls.setup {
 
 lspconfig.texlab.setup {
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = false
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end
 }
@@ -199,33 +201,41 @@ local omnisharp_bin = os.getenv("HOME") .. "/.local/bin/OmniSharpMono/OmniSharp.
 require'lspconfig'.omnisharp.setup{
     cmd = { "mono", omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
     on_attach = function(client, bufnr)
-       client.resolved_capabilities.document_formatting = false
-       client.resolved_capabilities.hover = false
-       on_attach(client, bufnr)
-       --local buf_map = vim.api.nvim_buf_set_keymap
-       --buf_map(bufnr, "n", "K", ":LspHighlight<CR>", {silent = true})
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
+
+        on_attach(client, bufnr)
+        --local buf_map = vim.api.nvim_buf_set_keymap
+        --buf_map(bufnr, "n", "K", ":LspHighlight<CR>", {silent = true})
     end
 }
 
 lspconfig.tsserver.setup {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = true
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
 --lspconfig.vuels.setup {
     --on_attach = function(client, bufnr)
-        --client.resolved_capabilities.document_formatting = false
-        --client.resolved_capabilities.hover = true
+        --client.server_capabilities.documentFormattingProvider = false
+        --client.server_capabilities.hoverProvider = true
         --on_attach(client, bufnr)
     --end
 --}
 lspconfig.volar.setup {
+    init_options = {
+        typescript = {
+            --serverPath = '/path/to/.npm/lib/node_modules/typescript/lib/tsserverlib.js'
+            -- Alternative location if installed as root:
+             serverPath = "/usr/lib/node_modules/typescript/lib/tsserverlibrary.js"
+        }
+    },
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = true
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
@@ -329,28 +339,28 @@ lspconfig.sqlls.setup{
 lspconfig.jdtls.setup{
     cmd = { 'jdtls' },
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = false
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end
 }
 lspconfig.dockerls.setup{
     cmd = { 'docker-langserver', "--stdio" },
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = false
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end
 }
-require("shade").setup({
-  overlay_opacity = 60,
-  opacity_step = 1,
-  keys = {
-    brightness_up    = '<C-k>',
-    brightness_down  = '<C-j>',
-    toggle           = '<Leader>s',
-  }
-})
+--require("shade").setup({
+  --overlay_opacity = 60,
+  --opacity_step = 1,
+  --keys = {
+    --brightness_up    = '<C-k>',
+    --brightness_down  = '<C-j>',
+    --toggle           = '<Leader>s',
+  --}
+--})
 
 require("lspfuzzy").setup{}
 
@@ -396,8 +406,8 @@ lspconfig.sumneko_lua.setup {
         },
     },
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = true
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
