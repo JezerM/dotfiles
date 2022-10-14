@@ -33,7 +33,10 @@ require("packer").startup(function()
   --use {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
 
   -- Treesitter
-  use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+  }
   use { "folke/twilight.nvim", config = function() require("twilight").setup { } end }
   use "sunjon/shade.nvim"
 
