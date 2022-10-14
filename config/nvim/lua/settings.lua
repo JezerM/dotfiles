@@ -29,16 +29,16 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "gl", "<cmd> LspSignatureHelp<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", {silent = true})
 
-    if client.resolved_capabilities.hover then
-        vim.api.nvim_exec([[
-              augroup hover
-                autocmd! * <buffer>
-                autocmd CursorHold  <buffer> lua vim.lsp.buf.hover()
-                autocmd CursorHoldI <buffer> lua vim.lsp.buf.hover()
-                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-              augroup end
-        ]], true)
-    end
+    --if client.resolved_capabilities.hover then
+        --vim.api.nvim_exec([[
+              --augroup hover
+                --autocmd! * <buffer>
+                --autocmd CursorHold  <buffer> lua vim.lsp.buf.hover()
+                --autocmd CursorHoldI <buffer> lua vim.lsp.buf.hover()
+                --autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+              --augroup end
+        --]], true)
+    --end
 
     require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
     --require "lsp_signature".on_attach()
