@@ -154,7 +154,11 @@ vim.opt.concealcursor = ""
 
 -- Latex
 vim.g.tex_flavor = "latex"
-vim.g.vimtex_view_method = "zathura"
+if (vim.fn.has("linux")) then
+  vim.g.vimtex_view_method = "zathura"
+elseif (vim.fn.has("mac")) then
+  vim.g.vimtex_view_method = "skim"
+end
 vim.g.vimtex_quickfix_mode = 0
 vim.g.tex_conceal = "abdmg"
 
