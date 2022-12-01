@@ -11,6 +11,7 @@ require("packer").startup(function()
   local use = use
   -- Packer can manage itself
   use "wbthomason/packer.nvim"
+  use "dstein64/vim-startuptime"
 
   -- Lua
   use "neovim/nvim-lspconfig"
