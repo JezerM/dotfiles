@@ -18,7 +18,7 @@ require("packer").startup(function()
   use "onsails/lspkind-nvim"
   use "ray-x/lsp_signature.nvim"
   use "windwp/nvim-autopairs"
-  use 'arkav/lualine-lsp-progress'
+  use "arkav/lualine-lsp-progress"
   use "b0o/schemastore.nvim"
 
   -- Completion
@@ -31,12 +31,11 @@ require("packer").startup(function()
   use "f3fora/cmp-spell"
   use "ray-x/cmp-treesitter"
   use "quangnguyen30192/cmp-nvim-ultisnips"
-  --use {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
 
   -- Treesitter
   use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+    "nvim-treesitter/nvim-treesitter",
+    run = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
   }
   use { "folke/twilight.nvim", config = function() require("twilight").setup { } end }
   use "sunjon/shade.nvim"
@@ -50,8 +49,8 @@ require("packer").startup(function()
   use "yggdroot/indentline"
   use "myusuf3/numbers.vim"
   use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    "nvim-lualine/lualine.nvim",
+    requires = { "nvim-tree/nvim-web-devicons", opt = true }
   }
 
   -- Lua colors
@@ -100,7 +99,7 @@ require("packer").startup(function()
   --use "leafgarland/typescript-vim"
   use {
     "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
+    requires = "nvim-tree/nvim-web-devicons",
   }
 
   -- Utils
@@ -139,9 +138,9 @@ vim.opt.linebreak = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.listchars = {
-  --eol = '↲',
-  tab = '▸ ',
-  trail = '·'
+  --eol = "↲",
+  tab = "▸ ",
+  trail = "·"
 }
 vim.opt.list = true
 
