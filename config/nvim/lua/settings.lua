@@ -138,12 +138,6 @@ lspconfig.bashls.setup {
         on_attach(client, bufnr)
     end
 }
-require("nvim-treesitter.configs").setup {
-    highlight = {
-        enable = true,
-    },
-}
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -198,7 +192,7 @@ local pid = vim.fn.getpid()
 -- On linux/darwin if using a release build, otherwise under scripts/OmniSharp(.Core)(.cmd)
 local omnisharp_bin = os.getenv("HOME") .. "/.local/bin/OmniSharpMono/OmniSharp.exe"
 
-require'lspconfig'.omnisharp.setup{
+lspconfig.omnisharp.setup{
     cmd = { "mono", omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
@@ -336,6 +330,28 @@ lspconfig.sqlls.setup{
     on_attach = on_attach,
 }
 
+lspconfig.rust_analyzer.setup {
+    on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.hoverProvider = true
+        on_attach(client, bufnr)
+    end
+}
+--lspconfig.phpactor.setup {
+    --on_attach = function(client, bufnr)
+        --client.server_capabilities.documentFormattingProvider = true
+        --client.server_capabilities.hoverProvider = true
+        --on_attach(client, bufnr)
+    --end
+--}
+lspconfig.phan.setup {
+    cmd = { "phan", "-m", "json", "--no-color", "--no-progress-bar", "-x", "-u", "-S", "--language-server-on-stdin" },
+    on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = false
+        on_attach(client, bufnr)
+    end
+}
 lspconfig.jdtls.setup{
     cmd = { 'jdtls' },
     on_attach = function(client, bufnr)
@@ -344,6 +360,15 @@ lspconfig.jdtls.setup{
         on_attach(client, bufnr)
     end
 }
+--[[
+   [lspconfig.kotlin_language_server.setup{
+   [    on_attach = function(client, bufnr)
+   [        client.resolved_capabilities.document_formatting = false
+   [        client.resolved_capabilities.hover = false
+   [        on_attach(client, bufnr)
+   [    end,
+   [}
+   ]]
 lspconfig.dockerls.setup{
     cmd = { 'docker-langserver', "--stdio" },
     on_attach = function(client, bufnr)
@@ -352,26 +377,6 @@ lspconfig.dockerls.setup{
         on_attach(client, bufnr)
     end
 }
---require("shade").setup({
-  --overlay_opacity = 60,
-  --opacity_step = 1,
-  --keys = {
-    --brightness_up    = '<C-k>',
-    --brightness_down  = '<C-j>',
-    --toggle           = '<Leader>s',
-  --}
---})
-
-require("lspfuzzy").setup{}
-
-require("colorizer").setup({
-    "*";
-}, {
-    RGGBBAA = true;
-    RRGGBB = true;
-    names = false;
-    css = true;
-})
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
