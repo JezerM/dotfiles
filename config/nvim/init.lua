@@ -57,6 +57,7 @@ require("packer").startup(function()
   -- Lua colors
   use "folke/lsp-colors.nvim"
   use "norcalli/nvim-colorizer.lua"
+  use "uga-rosa/ccc.nvim"
 
   -- Snippets
   use "SirVer/ultisnips"
