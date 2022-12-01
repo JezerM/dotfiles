@@ -233,6 +233,6 @@ cmd "colorscheme gruvbox"
 
 require("completion")
 require("general-config")
-require("settings")
+require("lsp-config")
 require("telescope-config")
 require("lualine-config")
