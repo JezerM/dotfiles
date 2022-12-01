@@ -71,8 +71,9 @@ require("packer").startup(function()
   use "lervag/vimtex"
 
   -- Git
-  use "airblade/vim-gitgutter"
+  --use "airblade/vim-gitgutter"
   use "tpope/vim-fugitive"
+  use "lewis6991/gitsigns.nvim"
 
   -- Editor config
   use "editorconfig/editorconfig-vim"
