@@ -15,3 +15,4 @@ require("colorizer").setup({
     css = true;
 })
 
+require('gitsigns').setup()
