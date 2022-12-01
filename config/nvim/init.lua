@@ -232,7 +232,7 @@ cmd "colorscheme gruvbox"
 -- Lua plugins
 
 require("completion")
-require("general-config")
 require("lsp-config")
+require("general-config")
 require("telescope-config")
 require("lualine-config")
