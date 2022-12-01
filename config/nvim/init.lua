@@ -45,6 +45,7 @@ require("packer").startup(function()
   --use "vim-airline/vim-airline-themes"
   --use "morhetz/gruvbox"
   use "ellisonleao/gruvbox.nvim"
+  use "sainnhe/gruvbox-material"
   use "sainnhe/everforest"
   use "yggdroot/indentline"
   use "myusuf3/numbers.vim"
@@ -183,6 +184,34 @@ vim.g.airline_theme = "gruvbox"
 vim.g.gruvbox_contrast_dark = "medium"
 vim.opt.background = "dark"
 
+-- Gruvbox material
+vim.g.gruvbox_material_background = "medium"
+vim.g.gruvbox_material_foreground = "original"
+vim.g.gruvbox_material_enable_bold = 1
+vim.g.gruvbox_material_enable_italic = 1
+vim.g.gruvbox_material_sign_column_background = "grey"
+vim.g.gruvbox_material_menu_selection_background = "blue"
+vim.g.gruvbox_material_ui_contrast = "high"
+vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
+vim.g.gruvbox_material_statusline_style = "original"
+vim.g.gruvbox_material_diagnostic_text_highlight = 1
+
+cmd[[
+function! s:gruvbox_material_custom() abort
+  " Link a highlight group to a predefined highlight group.
+  " See `colors/gruvbox-material.vim` for all predefined highlight groups.
+  highlight! link TelescopeSelection OrangeBold
+  highlight! link TelescopeSelectionCaret Red
+  highlight! link TelescopePromptPrefix Red
+  highlight! link CursorLineNr YellowSign
+endfunction
+
+augroup GruvboxMaterialCustom
+  autocmd!
+  autocmd ColorScheme gruvbox-material call s:gruvbox_material_custom()
+augroup END
+]]
+
 -- Everforest
 vim.g.everforest_background = "hard"
 vim.g.everforest_enable_italic = 1
@@ -230,7 +259,7 @@ vim.api.nvim_set_keymap("n", "<leader>f ",
   [[<Cmd>lua require('telescope.builtin').builtin()<CR>]],
   { expr = false, noremap = true, silent = true })
 
-cmd "colorscheme gruvbox"
+cmd "colorscheme gruvbox-material"
 
 -- Lua plugins
 
