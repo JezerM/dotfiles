@@ -97,6 +97,7 @@ require("packer").startup(function()
   -- Syntax
   use "leafOfTree/vim-vue-plugin"
   use "sheerun/vim-polyglot"
+  use "folke/todo-comments.nvim"
   --use "leafgarland/typescript-vim"
   use {
     "folke/trouble.nvim",
