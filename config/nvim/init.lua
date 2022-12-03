@@ -197,21 +197,21 @@ vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
 vim.g.gruvbox_material_statusline_style = "original"
 vim.g.gruvbox_material_diagnostic_text_highlight = 1
 
-cmd[[
-function! s:gruvbox_material_custom() abort
-  " Link a highlight group to a predefined highlight group.
-  " See `colors/gruvbox-material.vim` for all predefined highlight groups.
-  highlight! link TelescopeSelection OrangeBold
-  highlight! link TelescopeSelectionCaret Red
-  highlight! link TelescopePromptPrefix Red
-  highlight! link CursorLineNr YellowSign
-endfunction
+local gruvbox_material_custom_group = vim.api.nvim_create_augroup("GruvboxMaterialCustom", {})
 
-augroup GruvboxMaterialCustom
-  autocmd!
-  autocmd ColorScheme gruvbox-material call s:gruvbox_material_custom()
-augroup END
-]]
+-- Links highlight groups to some predefined gruvbox-material highlight groups
+local function gruvbox_material_custom()
+  vim.api.nvim_set_hl(0, "TelescopeSelection", { link = "OrangeBold" })
+  vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { link = "Red" })
+  vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "Red" })
+  vim.api.nvim_set_hl(0, "CursorLineNr", { link = "YellowSign" })
+end
+
+vim.api.nvim_create_autocmd({"ColorScheme"}, {
+  group = gruvbox_material_custom_group,
+  pattern = "gruvbox-material",
+  callback = gruvbox_material_custom
+})
 
 -- Everforest
 vim.g.everforest_background = "hard"
@@ -227,7 +227,6 @@ local custom_header = vim.fn["systemlist"]("cat $HOME/.config/nvim/figlet.txt")
 vim.g.startify_custom_header = custom_header
 
 -- Restore cursor position
-
 cmd[[
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
