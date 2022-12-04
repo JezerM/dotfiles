@@ -83,6 +83,16 @@ require("packer").startup(function()
   use "junegunn/fzf.vim"
   use "ojroques/nvim-lspfuzzy"
 
+  -- Explorer
+  use {
+    "nvim-neo-tree/neo-tree.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    }
+  }
+
   -- Telescope
   use "nvim-lua/popup.nvim"
   use {
