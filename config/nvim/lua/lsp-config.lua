@@ -219,12 +219,17 @@ lspconfig.tsserver.setup {
         --on_attach(client, bufnr)
     --end
 --}
+local tsserver_path = "/usr/lib/node_modules/typescript/lib/tsserverlibrary.js"
+if (vim.fn.has("mac")) then
+    tsserver_path = "/opt/homebrew/lib/node_modules/typescript/lib/tsserverlibrary.js"
+end
+
 lspconfig.volar.setup {
     init_options = {
         typescript = {
             --serverPath = '/path/to/.npm/lib/node_modules/typescript/lib/tsserverlib.js'
             -- Alternative location if installed as root:
-             serverPath = "/usr/lib/node_modules/typescript/lib/tsserverlibrary.js"
+            serverPath = tsserver_path,
         }
     },
     on_attach = function(client, bufnr)
