@@ -65,7 +65,7 @@ require("packer").startup(function()
 
   -- Markdown
   use { "iamcco/markdown-preview.nvim", run = "cd app && npm install" }
-  use { "ellisonleao/glow.nvim", run = ":GlowInstall", branch = "main" }
+  use { "ellisonleao/glow.nvim" }
 
   -- LaTex
   use "lervag/vimtex"
@@ -106,7 +106,7 @@ require("packer").startup(function()
 
   -- Syntax
   use "leafOfTree/vim-vue-plugin"
-  use "sheerun/vim-polyglot"
+  --use "sheerun/vim-polyglot"
   use "folke/todo-comments.nvim"
   --use "leafgarland/typescript-vim"
   use {
