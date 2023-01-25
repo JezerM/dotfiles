@@ -117,7 +117,7 @@ for type, icon in pairs(signs) do
 end
 
 lspconfig.clangd.setup {
-    cmd = { 'clangd', '--offset-encoding=utf-16' },
+    cmd = { 'clangd' },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = true
         client.server_capabilities.hoverProvider = true
