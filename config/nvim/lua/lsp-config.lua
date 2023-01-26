@@ -129,6 +129,9 @@ end
 
 lspconfig.clangd.setup {
     cmd = { 'clangd' },
+    capabilities = {
+        offsetEncoding = "utf-8",
+    },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = true
         client.server_capabilities.hoverProvider = true
