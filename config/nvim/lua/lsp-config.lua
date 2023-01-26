@@ -56,7 +56,7 @@ local on_attach = function(client, bufnr)
 
     if client.server_capabilities.documentFormattingProvider then
         local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
-        vim.api.nvim_create_autocmd({"BufWritePost"}, {
+        vim.api.nvim_create_autocmd({"BufWritePre"}, {
             group = LspAutocommands,
             desc = "Format on file save",
             callback = function()
@@ -66,20 +66,7 @@ local on_attach = function(client, bufnr)
         })
     end
 end
-local format_async = function(err, result, ctx, _)
-    if err ~=nil or result == nil then return end
 
-    if not vim.api.nvim_buf_get_option(ctx.bufnr, "modified") then
-        local view = vim.fn.winsaveview()
-        vim.lsp.util.apply_text_edits(result, ctx.bufnr, "utf-8")
-        vim.fn.winrestview(view)
-        vim.api.nvim_buf_call(ctx.bufnr, function()
-            vim.api.nvim_command("noautocmd :update")
-        end)
-    end
-end
-
-vim.lsp.handlers["textDocument/formatting"] = format_async
 vim.lsp.buf.references = require("telescope.builtin").lsp_references
 vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 
