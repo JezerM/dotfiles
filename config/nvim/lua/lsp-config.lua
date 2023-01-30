@@ -17,9 +17,9 @@ local on_attach = function(client, bufnr)
     cmd(bufnr, "LspRefs", function() vim.lsp.buf.references() end, {})
     cmd(bufnr, "LspTypeDef", function() vim.lsp.buf.type_definition() end, {})
     cmd(bufnr, "LspImplementation", function() vim.lsp.buf.implementation() end, {})
-    cmd(bufnr, "LspDiagPrev", function() vim.lsp.buf.goto_prev() end, {})
-    cmd(bufnr, "LspDiagNext", function() vim.lsp.buf.goto_next() end, {})
-    cmd(bufnr, "LspDiagLine", function() vim.lsp.buf.open_float() end, {})
+    cmd(bufnr, "LspDiagPrev", function() vim.diagnostic.goto_prev() end, {})
+    cmd(bufnr, "LspDiagNext", function() vim.diagnostic.goto_next() end, {})
+    cmd(bufnr, "LspDiagLine", function() vim.diagnostic.open_float() end, {})
     cmd(bufnr, "LspSignatureHelp", function() vim.lsp.buf.signature_help() end, {})
     cmd(bufnr, "LspToggleFormat", toggle_format_on_save,
     {
