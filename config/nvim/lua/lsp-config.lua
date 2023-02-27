@@ -380,9 +380,14 @@ lspconfig.phpactor.setup {
 }
 lspconfig.jdtls.setup{
     cmd = { 'jdtls' },
+    settings = {
+        java = {
+            signatureHelp = { enabled = true }
+        }
+    },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.hoverProvider = false
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
