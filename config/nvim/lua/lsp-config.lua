@@ -191,7 +191,13 @@ lspconfig.html.setup {
         on_attach(client, bufnr)
     end
 }
-lspconfig.yamlls.setup {
+lspconfig.yamlls.setup { }
+lspconfig.taplo.setup {
+    on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.hoverProvider = true
+        on_attach(client, bufnr)
+    end
 }
 
 lspconfig.texlab.setup {
