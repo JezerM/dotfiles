@@ -329,13 +329,14 @@ local formatFiletypes = {
     typescriptreact = "prettier",
     vue = "prettier",
     svelte = "prettier",
+    php = "prettier",
 }
 lspconfig.diagnosticls.setup {
     on_attach = on_attach,
     filetypes = {
         "c", "html", "css", "javascript",
         "typescript", "typescriptreact",
-        "vue", "python", "svelte"
+        "vue", "python", "svelte", "php",
     },
     init_options = {
         filetypes = filetypes,
@@ -364,18 +365,10 @@ lspconfig.gdscript.setup {
         on_attach(client, bufnr)
     end
 }
---lspconfig.phpactor.setup {
-    --on_attach = function(client, bufnr)
-        --client.server_capabilities.documentFormattingProvider = true
-        --client.server_capabilities.hoverProvider = true
-        --on_attach(client, bufnr)
-    --end
---}
-lspconfig.phan.setup {
-    cmd = { "phan", "-m", "json", "--no-color", "--no-progress-bar", "-x", "-u", "-S", "--language-server-on-stdin" },
+lspconfig.phpactor.setup {
     on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.hoverProvider = false
+        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
