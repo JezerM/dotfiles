@@ -1,7 +1,5 @@
 local telescope = require("telescope")
 
-require('neoclip').setup()
-
 telescope.setup {
   defaults = {
     prompt_prefix = "> ",
@@ -56,6 +54,5 @@ telescope.setup {
 }
 
 require("telescope").load_extension("emoji")
-require("telescope").load_extension("neoclip")
 require("telescope").load_extension("packer")
 require("telescope").load_extension("ui-select")

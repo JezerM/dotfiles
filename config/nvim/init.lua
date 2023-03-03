@@ -37,12 +37,9 @@ require("packer").startup(function()
     "nvim-treesitter/nvim-treesitter",
     run = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
   }
-  use { "folke/twilight.nvim", config = function() require("twilight").setup { } end }
   use "sunjon/shade.nvim"
 
   -- Themes
-  --use "vim-airline/vim-airline"
-  --use "vim-airline/vim-airline-themes"
   --use "morhetz/gruvbox"
   use "ellisonleao/gruvbox.nvim"
   use "sainnhe/gruvbox-material"
@@ -100,7 +97,6 @@ require("packer").startup(function()
     requires = { {"nvim-lua/plenary.nvim"} }
   }
   use "xiyaowong/telescope-emoji.nvim"
-  use "AckslD/nvim-neoclip.lua"
   use "nvim-telescope/telescope-packer.nvim"
   use "nvim-telescope/telescope-ui-select.nvim"
 
@@ -137,10 +133,6 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
 
--- Searc
---vim.opt.ignorecase = true
---vim.opt.smartcase = true
-
 -- Tabs
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
@@ -160,8 +152,6 @@ vim.opt.list = true
 vim.g.suda_smart_edit = 1
 
 -- Conceal and IndentLine
-vim.g.indentLine_setConceal = 0
-vim.g.indentLine_concealcursor = 0
 vim.opt.conceallevel = 2
 vim.opt.concealcursor = ""
 
@@ -181,14 +171,6 @@ vim.g.UltiSnipsExpandTrigger = "<tab>"
 vim.g.UltiSnipsJumpForwardTrigger = "<tab>"
 vim.g.UltiSnipsJumpBackwardTrigger = "<s-tab>"
 vim.g.UltiSnipsEditSplit = "vertical"
-
--- Powerline
-vim.g.airline_powerline_fonts = 1
-vim.g["airline#extensions#tabline#enabled"] = 1
-vim.g["airline#extensions#tabline#formatter"] = "default"
-vim.g["airline#extensions#tabline#fnamemod"] = ":t"
-vim.g.airline_left_sep = "\u{e0c6}"
-vim.g.airline_right_sep = "\u{e0c7}"
 
 -- Gruvbox
 vim.g.gruvbox_italic = 1
