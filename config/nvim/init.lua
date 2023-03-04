@@ -114,7 +114,12 @@ require("packer").startup(function()
   use "andweeb/presence.nvim"
   use "lambdalisue/suda.vim"
   use "scrooloose/nerdcommenter"
-  use "mhinz/vim-startify"
+  use {
+    "startup-nvim/startup.nvim",
+    config = function()
+      require"startup".setup { theme = "dashboard" }
+    end
+  }
 
 end)
 
@@ -211,10 +216,6 @@ vim.g.everforest_enable_italic = 1
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 --cmd "set foldexpr=nvim_treesitter#foldexpr()"
-
--- Startify
-local custom_header = vim.fn["systemlist"]("cat $HOME/.config/nvim/figlet.txt")
-vim.g.startify_custom_header = custom_header
 
 -- Restore cursor position
 cmd[[
