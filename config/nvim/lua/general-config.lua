@@ -16,7 +16,7 @@ require("colorizer").setup({
 })
 
 require("gitsigns").setup {
-    word_diff = true,
+    word_diff = false,
     current_line_blame = true,
 }
 
