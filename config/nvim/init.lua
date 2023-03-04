@@ -185,12 +185,12 @@ vim.g.gruvbox_material_background = "medium"
 vim.g.gruvbox_material_foreground = "original"
 vim.g.gruvbox_material_enable_bold = 1
 vim.g.gruvbox_material_enable_italic = 1
-vim.g.gruvbox_material_sign_column_background = "grey"
+vim.g.gruvbox_material_sign_column_background = "none"
 vim.g.gruvbox_material_menu_selection_background = "blue"
 vim.g.gruvbox_material_ui_contrast = "high"
 vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
 vim.g.gruvbox_material_statusline_style = "original"
-vim.g.gruvbox_material_diagnostic_text_highlight = 1
+vim.g.gruvbox_material_diagnostic_text_highlight = 0
 
 local gruvbox_material_custom_group = vim.api.nvim_create_augroup("GruvboxMaterialCustom", {})
 
