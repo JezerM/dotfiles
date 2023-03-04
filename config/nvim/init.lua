@@ -113,13 +113,10 @@ require("packer").startup(function()
   -- Utils
   use "andweeb/presence.nvim"
   use "lambdalisue/suda.vim"
-  use "tmhedberg/simpylfold"
   use "scrooloose/nerdcommenter"
   use "mhinz/vim-startify"
 
 end)
-
---vim.call("colorscheme gruvbox")
 
 local cmd = vim.cmd
 
