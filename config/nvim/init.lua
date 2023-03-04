@@ -44,7 +44,7 @@ require("packer").startup(function()
   use "ellisonleao/gruvbox.nvim"
   use "sainnhe/gruvbox-material"
   use "sainnhe/everforest"
-  use "yggdroot/indentline"
+  use "lukas-reineke/indent-blankline.nvim"
   use "myusuf3/numbers.vim"
   use {
     "nvim-lualine/lualine.nvim",
