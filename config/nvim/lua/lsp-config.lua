@@ -1,5 +1,7 @@
 local lspconfig = require "lspconfig"
 
+require('lspconfig.ui.windows').default_options.border = 'rounded'
+
 --vim.lsp.set_log_level("debug")
 
 local on_attach = function(client, bufnr)
@@ -117,7 +119,7 @@ require "lsp_signature".setup({
     floating_window = true,
     toggle_key = "<M-x>",
     handler_opts = {
-        border = "single"
+        border = "rounded"
     }
 })
 
