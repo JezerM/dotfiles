@@ -134,6 +134,7 @@ vim.opt.hidden = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
+vim.opt.scrolloff = 4
 
 -- Tabs
 vim.opt.shiftwidth = 2
