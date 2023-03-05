@@ -197,9 +197,13 @@ local gruvbox_material_custom_group = vim.api.nvim_create_augroup("GruvboxMateri
 
 -- Links highlight groups to some predefined gruvbox-material highlight groups
 local function gruvbox_material_custom()
-    vim.api.nvim_set_hl(0, "TelescopeSelection", { link = "OrangeBold" })
+    vim.api.nvim_set_hl(0, "TelescopeSelection", { link = "Visual" })
     vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { link = "Red" })
-    vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "Red" })
+    vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "BlueBold" })
+    vim.api.nvim_set_hl(0, "TelescopePromptTitle", { link = "BlueBold" })
+    vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { link = "BlueBold" })
+    vim.api.nvim_set_hl(0, "TelescopeResultsTitle", { link = "BlueBold" })
+
     vim.api.nvim_set_hl(0, "CursorLineNr", { link = "YellowSign" })
     vim.api.nvim_set_hl(0, "FloatBorder", { link = "Grey" })
     vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })

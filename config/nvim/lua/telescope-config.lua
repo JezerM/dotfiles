@@ -6,21 +6,25 @@ local actions_layout = require("telescope.actions.layout")
 
 telescope.setup {
     defaults = {
-        prompt_prefix = "> ",
-        selection_caret = "> ",
+        prompt_prefix = "   ",
+        selection_caret = "  ",
         entry_prefix = "  ",
         initial_mode = "insert",
         selection_strategy = "reset",
-        sorting_strategy = "descending",
-        layout_strategy = "flex",
+        sorting_strategy = "ascending",
+        layout_strategy = "horizontal",
         layout_config = {
             horizontal = {
-                mirror = false,
+                prompt_position = "top",
+                preview_width = 0.55,
+                results_width = 0.8,
             },
             vertical = {
                 mirror = false,
-                preview_cutoff = 20,
             },
+            width = 0.87,
+            height = 0.80,
+            preview_cutoff = 120,
         },
         file_sorter =  sorters.get_fuzzy_file,
         file_ignore_patterns = { },
