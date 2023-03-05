@@ -2,6 +2,18 @@ local lspconfig = require "lspconfig"
 
 require('lspconfig.ui.windows').default_options.border = 'rounded'
 
+vim.diagnostic.config({
+    virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
+    severity_sort = false,
+    float = {
+        border = "rounded",
+        padding = 4,
+    }
+})
+
 --vim.lsp.set_log_level("debug")
 
 local on_attach = function(client, bufnr)
@@ -69,8 +81,14 @@ local on_attach = function(client, bufnr)
     end
 end
 
+local handler_override_config = {
+    border = "rounded",
+}
+
 vim.lsp.buf.references = require("telescope.builtin").lsp_references
 vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_override_config)
 
 _G.lsp_organize_imports = function()
     local params = {

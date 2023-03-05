@@ -200,9 +200,14 @@ local function gruvbox_material_custom()
   vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { link = "Red" })
   vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "Red" })
   vim.api.nvim_set_hl(0, "CursorLineNr", { link = "YellowSign" })
-  vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })
+  vim.api.nvim_set_hl(0, "FloatBorder", { link = "Grey" })
   vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
-  vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Normal" })
+  vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Grey" })
+
+  vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { link = "Red" })
+  vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn", { link = "Yellow" })
+  vim.api.nvim_set_hl(0, "DiagnosticFloatingInfo", { link = "Blue" })
+  vim.api.nvim_set_hl(0, "DiagnosticFloatingHint", { link = "Green" })
 end
 
 vim.api.nvim_create_autocmd({"ColorScheme"}, {

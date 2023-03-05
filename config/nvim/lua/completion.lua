@@ -37,22 +37,18 @@ cmp.setup({
             autocomplete = true,
         },
         formatting = {
-            format = lspkind.cmp_format({with_text = false, menu = ({
-                buffer = "[Buffer]",
-                calc = "[Calc]",
-                spell = "[Spell]",
-                nvim_lsp = "[LSP]",
-                luasnip = "[LSnippet]",
-                ultisnips = "[USnippet]",
-                nvim_lua = "[Lua]",
-                latex_symbols = "[Latex]",
-                treesitter = "[TreeS]",
-                cmp_tabnine = "[Nine]",
-            })}),
+            format = lspkind.cmp_format({
+                mode = "symbol_text",
+                preset = "default",
+            }),
         },
         window = {
-            completion = cmp.config.window.bordered(),
-            documentation = cmp.config.window.bordered(),
+            completion = cmp.config.window.bordered({
+                winhighlight = 'NormalFloat:NormalFloat,FloatBorder:FloatBorder,CursorLine:DiffText',
+            }),
+            documentation = cmp.config.window.bordered({
+                winhighlight = 'NormalFloat:NormalFloat,FloatBorder:FloatBorder',
+            }),
         },
         view = {
             entries = "custom"
