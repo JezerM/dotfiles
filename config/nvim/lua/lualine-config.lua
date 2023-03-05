@@ -1,11 +1,11 @@
 local custom_gruvbox = require('lualine.themes.gruvbox')
 
 local function line_count()
-  local win = vim.api.nvim_get_current_win()
-  local buf = vim.api.nvim_get_current_buf()
-  local lines = vim.api.nvim_buf_line_count(buf)
-  local y, x = unpack(vim.api.nvim_win_get_cursor(win))
-  return ":" .. y .. "/" .. lines .. "☰  :" .. ( x + 1 )
+    local win = vim.api.nvim_get_current_win()
+    local buf = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_line_count(buf)
+    local y, x = unpack(vim.api.nvim_win_get_cursor(win))
+    return ":" .. y .. "/" .. lines .. "☰  :" .. ( x + 1 )
 end
 
 local gruvbox_colors = {
@@ -55,46 +55,50 @@ custom_gruvbox.command.a.bg = gruvbox_colors.aqua
 custom_gruvbox.command.c = { bg = gruvbox_colors.bg1, fg = gruvbox_colors.gray1 }
 
 require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = "auto",
-    component_separators = { left = "", right = ""},
-    section_separators = { left = "\u{e0c6}", right = "\u{e0c7}"},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = { "mode" },
-    lualine_b = { "branch", "diff" },
-    lualine_c = { "filename", "lsp_progress" },
-    lualine_x = { "filetype", "encoding", "fileformat" },
-    lualine_y = { "progress", line_count },
-    lualine_z = { {
-      "diagnostics",
-      diagnostics_color = {
-        -- Same values as the general color option can be used here.
-        error = "DiagnosticError", -- Changes diagnostics' error color.
-        warn  = "DiagnosticWarn",  -- Changes diagnostics' warn color.
-        info  = "DiagnosticInfo",  -- Changes diagnostics' info color.
-        hint  = "DiagnosticHint",  -- Changes diagnostics' hint color.
-      },
-      colored = false,
-    } }
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { "filename" },
-    lualine_x = { line_count },
-    lualine_y = {},
-    lualine_z = {}
-  },
-    tabline = {
-    lualine_a = {{ "buffers" }},
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = { "tabs" }
-  }
+    options = {
+        icons_enabled = true,
+        theme = "auto",
+        component_separators = { left = "", right = ""},
+        section_separators = { left = "\u{e0c6}", right = "\u{e0c7}"},
+        disabled_filetypes = {},
+        always_divide_middle = true,
+    },
+    sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch", "diff" },
+        lualine_c = { "filename", "lsp_progress" },
+        lualine_x = { "filetype", "encoding", "fileformat" },
+        lualine_y = { "progress", line_count },
+        lualine_z = {
+            {
+                "diagnostics",
+                diagnostics_color = {
+                -- Same values as the general color option can be used here.
+                error = "DiagnosticError", -- Changes diagnostics' error color.
+                warn  = "DiagnosticWarn",  -- Changes diagnostics' warn color.
+                info  = "DiagnosticInfo",  -- Changes diagnostics' info color.
+                hint  = "DiagnosticHint",  -- Changes diagnostics' hint color.
+                },
+                colored = false,
+            }
+        }
+    },
+    inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { "filename" },
+        lualine_x = { line_count },
+        lualine_y = {},
+        lualine_z = {}
+    },
+        tabline = {
+        lualine_a = {{ "buffers" }},
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = { "tabs" }
+    }
 }
+
+-- vim: shiftwidth=4 tabstop=4

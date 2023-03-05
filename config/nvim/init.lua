@@ -8,118 +8,118 @@ vim.cmd [[packadd packer.nvim]]
 --vim._update_package_paths()
 
 require("packer").startup(function()
-  local use = use
-  -- Packer can manage itself
-  use "wbthomason/packer.nvim"
-  use "dstein64/vim-startuptime"
+    local use = use
+    -- Packer can manage itself
+    use "wbthomason/packer.nvim"
+    use "dstein64/vim-startuptime"
 
-  -- Lua
-  use "neovim/nvim-lspconfig"
-  use "onsails/lspkind-nvim"
-  use "ray-x/lsp_signature.nvim"
-  use "windwp/nvim-autopairs"
-  use "arkav/lualine-lsp-progress"
-  use "b0o/schemastore.nvim"
+    -- Lua
+    use "neovim/nvim-lspconfig"
+    use "onsails/lspkind-nvim"
+    use "ray-x/lsp_signature.nvim"
+    use "windwp/nvim-autopairs"
+    use "arkav/lualine-lsp-progress"
+    use "b0o/schemastore.nvim"
 
-  -- Completion
-  use "hrsh7th/nvim-cmp"
-  use "hrsh7th/cmp-nvim-lsp"
-  use "hrsh7th/cmp-nvim-lua"
-  use "hrsh7th/cmp-buffer"
-  use "hrsh7th/cmp-path"
-  use "hrsh7th/cmp-calc"
-  use "f3fora/cmp-spell"
-  use "ray-x/cmp-treesitter"
-  use "quangnguyen30192/cmp-nvim-ultisnips"
+    -- Completion
+    use "hrsh7th/nvim-cmp"
+    use "hrsh7th/cmp-nvim-lsp"
+    use "hrsh7th/cmp-nvim-lua"
+    use "hrsh7th/cmp-buffer"
+    use "hrsh7th/cmp-path"
+    use "hrsh7th/cmp-calc"
+    use "f3fora/cmp-spell"
+    use "ray-x/cmp-treesitter"
+    use "quangnguyen30192/cmp-nvim-ultisnips"
 
-  -- Treesitter
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    run = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
-  }
-  use "sunjon/shade.nvim"
-
-  -- Themes
-  --use "morhetz/gruvbox"
-  use "ellisonleao/gruvbox.nvim"
-  use "sainnhe/gruvbox-material"
-  use "sainnhe/everforest"
-  use "lukas-reineke/indent-blankline.nvim"
-  use "myusuf3/numbers.vim"
-  use {
-    "nvim-lualine/lualine.nvim",
-    requires = { "nvim-tree/nvim-web-devicons", opt = true }
-  }
-
-  -- Lua colors
-  use "folke/lsp-colors.nvim"
-  use "norcalli/nvim-colorizer.lua"
-  use "uga-rosa/ccc.nvim"
-
-  -- Snippets
-  use "SirVer/ultisnips"
-  use "mattn/emmet-vim"
-
-  -- Markdown
-  use { "iamcco/markdown-preview.nvim", run = "cd app && npm install" }
-  use { "ellisonleao/glow.nvim" }
-
-  -- LaTex
-  use "lervag/vimtex"
-
-  -- Git
-  --use "airblade/vim-gitgutter"
-  use "tpope/vim-fugitive"
-  use "lewis6991/gitsigns.nvim"
-
-  -- Editor config
-  use "editorconfig/editorconfig-vim"
-
-  -- FZF
-  use { "junegunn/fzf", run = function() vim.fn["fzf#install"]() end }
-  use "junegunn/fzf.vim"
-  use "ojroques/nvim-lspfuzzy"
-
-  -- Explorer
-  use {
-    "nvim-neo-tree/neo-tree.nvim",
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
+    -- Treesitter
+    use {
+        "nvim-treesitter/nvim-treesitter",
+        run = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
     }
-  }
+    use "sunjon/shade.nvim"
 
-  -- Telescope
-  use "nvim-lua/popup.nvim"
-  use {
-    "nvim-telescope/telescope.nvim",
-    requires = { {"nvim-lua/plenary.nvim"} }
-  }
-  use "xiyaowong/telescope-emoji.nvim"
-  use "nvim-telescope/telescope-packer.nvim"
-  use "nvim-telescope/telescope-ui-select.nvim"
+    -- Themes
+    --use "morhetz/gruvbox"
+    use "ellisonleao/gruvbox.nvim"
+    use "sainnhe/gruvbox-material"
+    use "sainnhe/everforest"
+    use "lukas-reineke/indent-blankline.nvim"
+    use "myusuf3/numbers.vim"
+    use {
+        "nvim-lualine/lualine.nvim",
+        requires = { "nvim-tree/nvim-web-devicons", opt = true }
+    }
 
-  -- Syntax
-  use "leafOfTree/vim-vue-plugin"
-  --use "sheerun/vim-polyglot"
-  use "folke/todo-comments.nvim"
-  --use "leafgarland/typescript-vim"
-  use {
-    "folke/trouble.nvim",
-    requires = "nvim-tree/nvim-web-devicons",
-  }
+    -- Lua colors
+    use "folke/lsp-colors.nvim"
+    use "norcalli/nvim-colorizer.lua"
+    use "uga-rosa/ccc.nvim"
 
-  -- Utils
-  use "andweeb/presence.nvim"
-  use "lambdalisue/suda.vim"
-  use "scrooloose/nerdcommenter"
-  use {
-    "startup-nvim/startup.nvim",
-    config = function()
-      require"startup".setup { theme = "dashboard" }
-    end
-  }
+    -- Snippets
+    use "SirVer/ultisnips"
+    use "mattn/emmet-vim"
+
+    -- Markdown
+    use { "iamcco/markdown-preview.nvim", run = "cd app && npm install" }
+    use { "ellisonleao/glow.nvim" }
+
+    -- LaTex
+    use "lervag/vimtex"
+
+    -- Git
+    --use "airblade/vim-gitgutter"
+    use "tpope/vim-fugitive"
+    use "lewis6991/gitsigns.nvim"
+
+    -- Editor config
+    use "editorconfig/editorconfig-vim"
+
+    -- FZF
+    use { "junegunn/fzf", run = function() vim.fn["fzf#install"]() end }
+    use "junegunn/fzf.vim"
+    use "ojroques/nvim-lspfuzzy"
+
+    -- Explorer
+    use {
+        "nvim-neo-tree/neo-tree.nvim",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons",
+            "MunifTanjim/nui.nvim",
+        }
+    }
+
+    -- Telescope
+    use "nvim-lua/popup.nvim"
+    use {
+        "nvim-telescope/telescope.nvim",
+        requires = { {"nvim-lua/plenary.nvim"} }
+    }
+    use "xiyaowong/telescope-emoji.nvim"
+    use "nvim-telescope/telescope-packer.nvim"
+    use "nvim-telescope/telescope-ui-select.nvim"
+
+    -- Syntax
+    use "leafOfTree/vim-vue-plugin"
+    --use "sheerun/vim-polyglot"
+    use "folke/todo-comments.nvim"
+    --use "leafgarland/typescript-vim"
+    use {
+        "folke/trouble.nvim",
+        requires = "nvim-tree/nvim-web-devicons",
+    }
+
+    -- Utils
+    use "andweeb/presence.nvim"
+    use "lambdalisue/suda.vim"
+    use "scrooloose/nerdcommenter"
+    use {
+        "startup-nvim/startup.nvim",
+        config = function()
+            require"startup".setup { theme = "dashboard" }
+        end
+    }
 
 end)
 
@@ -145,9 +145,9 @@ vim.opt.linebreak = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.listchars = {
-  --eol = "↲",
-  tab = "▸ ",
-  trail = "·"
+    --eol = "↲",
+    tab = "▸ ",
+    trail = "·"
 }
 vim.opt.list = true
 
@@ -160,9 +160,9 @@ vim.opt.concealcursor = ""
 -- Latex
 vim.g.tex_flavor = "latex"
 if (vim.fn.has("linux")) then
-  vim.g.vimtex_view_method = "zathura"
+    vim.g.vimtex_view_method = "zathura"
 elseif (vim.fn.has("mac")) then
-  vim.g.vimtex_view_method = "skim"
+    vim.g.vimtex_view_method = "skim"
 end
 vim.g.vimtex_quickfix_mode = 0
 vim.g.tex_conceal = "abdmg"
@@ -196,18 +196,18 @@ local gruvbox_material_custom_group = vim.api.nvim_create_augroup("GruvboxMateri
 
 -- Links highlight groups to some predefined gruvbox-material highlight groups
 local function gruvbox_material_custom()
-  vim.api.nvim_set_hl(0, "TelescopeSelection", { link = "OrangeBold" })
-  vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { link = "Red" })
-  vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "Red" })
-  vim.api.nvim_set_hl(0, "CursorLineNr", { link = "YellowSign" })
-  vim.api.nvim_set_hl(0, "FloatBorder", { link = "Grey" })
-  vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
-  vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Grey" })
+    vim.api.nvim_set_hl(0, "TelescopeSelection", { link = "OrangeBold" })
+    vim.api.nvim_set_hl(0, "TelescopeSelectionCaret", { link = "Red" })
+    vim.api.nvim_set_hl(0, "TelescopePromptPrefix", { link = "Red" })
+    vim.api.nvim_set_hl(0, "CursorLineNr", { link = "YellowSign" })
+    vim.api.nvim_set_hl(0, "FloatBorder", { link = "Grey" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
+    vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Grey" })
 
-  vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { link = "Red" })
-  vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn", { link = "Yellow" })
-  vim.api.nvim_set_hl(0, "DiagnosticFloatingInfo", { link = "Blue" })
-  vim.api.nvim_set_hl(0, "DiagnosticFloatingHint", { link = "Green" })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { link = "Red" })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn", { link = "Yellow" })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingInfo", { link = "Blue" })
+    vim.api.nvim_set_hl(0, "DiagnosticFloatingHint", { link = "Green" })
 end
 
 vim.api.nvim_create_autocmd({"ColorScheme"}, {
@@ -223,7 +223,6 @@ vim.g.everforest_enable_italic = 1
 -- Folding
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
---cmd "set foldexpr=nvim_treesitter#foldexpr()"
 
 -- Restore cursor position
 cmd[[
@@ -240,23 +239,23 @@ augroup END
 ]]
 
 vim.api.nvim_set_keymap("n", "<leader>ff",
-  [[<Cmd>lua require('telescope.builtin').find_files()<CR>]],
-  { expr = false, noremap = true, silent = true })
+    [[<Cmd>lua require('telescope.builtin').find_files()<CR>]],
+    { expr = false, noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>fg",
-  [[<Cmd>lua require('telescope.builtin').live_grep()<CR>]],
-  { expr = false, noremap = true, silent = true })
+    [[<Cmd>lua require('telescope.builtin').live_grep()<CR>]],
+    { expr = false, noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>fb",
-  [[<Cmd>lua require('telescope.builtin').buffers()<CR>]],
-  { expr = false, noremap = true, silent = true })
+    [[<Cmd>lua require('telescope.builtin').buffers()<CR>]],
+    { expr = false, noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>fk",
-  [[<Cmd>lua require('telescope.builtin').treesitter()<CR>]],
-  { expr = false, noremap = true, silent = true })
+    [[<Cmd>lua require('telescope.builtin').treesitter()<CR>]],
+    { expr = false, noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>fh",
-  [[<Cmd>lua require('telescope.builtin').help_tags()<CR>]],
-  { expr = false, noremap = true, silent = true })
+    [[<Cmd>lua require('telescope.builtin').help_tags()<CR>]],
+    { expr = false, noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>f ",
-  [[<Cmd>lua require('telescope.builtin').builtin()<CR>]],
-  { expr = false, noremap = true, silent = true })
+    [[<Cmd>lua require('telescope.builtin').builtin()<CR>]],
+    { expr = false, noremap = true, silent = true })
 
 cmd "colorscheme gruvbox-material"
 
@@ -267,3 +266,5 @@ require("lsp-config")
 require("general-config")
 require("telescope-config")
 require("lualine-config")
+
+-- vim: shiftwidth=4 tabstop=4
