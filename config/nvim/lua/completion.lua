@@ -9,7 +9,7 @@ cmp.setup({
             vim.fn["UltiSnips#Anon"](args.body)
         end
     },
-    mapping = {
+    mapping = cmp.mapping.preset.insert({
         ['<Tab>'] = cmp.mapping.select_next_item(),
         ['<S-Tab>'] = cmp.mapping.select_prev_item(),
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -20,8 +20,8 @@ cmp.setup({
             select = false,
             behavior = cmp.ConfirmBehavior.Replace,
         }),
-    },
-    sources = {
+    }),
+    sources = cmp.config.sources({
         --{ name = 'cmp_tabnine' },
         { name = 'nvim_lua' },
         { name = 'nvim_lsp' },
@@ -31,10 +31,10 @@ cmp.setup({
         { name = 'spell' },
         { name = 'buffer' },
         --{ name = 'treesitter' },
-    },
+    }),
     completion = {
         keyword_length = 1,
-        autocomplete = true,
+        autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
     },
     formatting = {
         format = lspkind.cmp_format({
