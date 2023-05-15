@@ -45,11 +45,12 @@ require("packer").startup(function()
     use "sainnhe/gruvbox-material"
     use "sainnhe/everforest"
     use "lukas-reineke/indent-blankline.nvim"
-    use "myusuf3/numbers.vim"
+    use "nkakouros-original/numbers.nvim"
     use {
         "nvim-lualine/lualine.nvim",
         requires = { "nvim-tree/nvim-web-devicons", opt = true }
     }
+    use "b0o/incline.nvim"
 
     -- Lua colors
     use "folke/lsp-colors.nvim"
@@ -114,12 +115,8 @@ require("packer").startup(function()
     use "andweeb/presence.nvim"
     use "lambdalisue/suda.vim"
     use "scrooloose/nerdcommenter"
-    use {
-        "startup-nvim/startup.nvim",
-        config = function()
-            require"startup".setup { theme = "dashboard" }
-        end
-    }
+    use "startup-nvim/startup.nvim"
+    use "tummetott/reticle.nvim"
 
 end)
 
@@ -135,6 +132,10 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.scrolloff = 4
+
+vim.opt.cursorline = true
+vim.opt.cursorcolumn = true
+vim.opt.laststatus = 3
 
 -- Tabs
 vim.opt.shiftwidth = 2
@@ -234,13 +235,6 @@ cmd[[
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
-]]
-cmd[[
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline cursorcolumn
-  au WinLeave * setlocal nocursorline nocursorcolumn
-augroup END
 ]]
 
 vim.api.nvim_set_keymap("n", "<leader>ff",
