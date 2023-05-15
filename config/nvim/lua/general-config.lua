@@ -4,8 +4,6 @@ require("nvim-treesitter.configs").setup {
     },
 }
 
-require("lspfuzzy").setup{}
-
 require("colorizer").setup({
     "*";
 }, {
@@ -31,4 +29,40 @@ require("indent_blankline").setup {
     char = "┆";
     context_char = "│"
 }
+
+require("numbers").setup {
+    excluded_filetypes = {
+        "neo-tree", "neo-tree-popup",
+        "startup"
+    }
+}
+
+require("startup").setup {
+    theme = "default",
+    options = {
+        after = function()
+            vim.opt.fillchars:append { eob = " " }
+            vim.api.nvim_create_autocmd({"BufDelete"}, {
+                buffer = vim.api.nvim_get_current_buf(),
+                callback = function()
+                    vim.opt.fillchars:append { eob = "~" }
+                    return true
+                end
+            })
+        end
+    }
+}
+
+require("reticle").setup {
+    always_highlight_number = true,
+    never = {
+        cursorcolumn = {
+            "neo-tree",
+            "startup",
+        },
+    },
+}
+
+require("incline").setup()
+
 -- vim: shiftwidth=4 tabstop=4
