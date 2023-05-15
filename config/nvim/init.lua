@@ -73,14 +73,6 @@ require("packer").startup(function()
     use "tpope/vim-fugitive"
     use "lewis6991/gitsigns.nvim"
 
-    -- Editor config
-    use "editorconfig/editorconfig-vim"
-
-    -- FZF
-    use { "junegunn/fzf", run = function() vim.fn["fzf#install"]() end }
-    use "junegunn/fzf.vim"
-    use "ojroques/nvim-lspfuzzy"
-
     -- Explorer
     use {
         "nvim-neo-tree/neo-tree.nvim",
