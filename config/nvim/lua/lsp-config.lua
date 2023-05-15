@@ -54,7 +54,7 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "gl", "<cmd> LspSignatureHelp<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", {silent = true})
 
-    --if client.resolved_capabilities.hover then
+    --if client.server_capabilities.hover then
         --vim.api.nvim_exec([[
               --augroup hover
                 --autocmd! * <buffer>
@@ -66,7 +66,6 @@ local on_attach = function(client, bufnr)
     --end
 
     require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-    --require "lsp_signature".on_attach()
 
     if client.server_capabilities.documentFormattingProvider then
         local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
@@ -229,14 +228,31 @@ lspconfig.texlab.setup {
 }
 
 local pid = vim.fn.getpid()
--- On linux/darwin if using a release build, otherwise under scripts/OmniSharp(.Core)(.cmd)
-local omnisharp_bin = os.getenv("HOME") .. "/.local/bin/OmniSharpMono/OmniSharp.exe"
+
+local function file_exists(name)
+   local f = io.open(name,"r")
+   if f ~= nil then io.close(f) return true else return false end
+end
+
+local omnisharp_mono_bin = os.getenv("HOME") .. "/.local/bin/OmniSharpMono/OmniSharp.exe"
+local omnisharp_net_bin = os.getenv("HOME") .. "/.local/bin/OmniSharp/OmniSharp.dll"
+
+local omnisharp_bin = { }
+if file_exists(omnisharp_net_bin) then
+    omnisharp_bin = { "dotnet", omnisharp_net_bin }
+elseif file_exists(omnisharp_mono_bin) then
+    omnisharp_bin = { "mono", omnisharp_mono_bin }
+end
 
 lspconfig.omnisharp.setup{
-    cmd = { "mono", omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
+    use_mono = true,
+    cmd = merge_table(
+        omnisharp_bin,
+        { "--languageserver", "--hostPID", tostring(pid) }
+    ),
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.hoverProvider = false
+        client.server_capabilities.hoverProvider = true
 
         on_attach(client, bufnr)
         --local buf_map = vim.api.nvim_buf_set_keymap
@@ -280,8 +296,8 @@ lspconfig.volar.setup {
 }
 lspconfig.svelte.setup {
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.hover = true
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.hover = true
         on_attach(client, bufnr)
     end
 }
@@ -350,6 +366,8 @@ local formatFiletypes = {
     c = "clang",
     html = "prettier",
     css = "prettier",
+    less = "prettier",
+    sass = "prettier",
     javascript = "prettier",
     typescript = "prettier",
     typescriptreact = "prettier",
@@ -361,6 +379,7 @@ lspconfig.diagnosticls.setup {
     on_attach = on_attach,
     filetypes = {
         "c", "html", "css", "javascript",
+        "less", "sass",
         "typescript", "typescriptreact",
         "vue", "python", "svelte", "php",
     },
@@ -414,8 +433,8 @@ lspconfig.jdtls.setup{
 --[[
    [lspconfig.kotlin_language_server.setup{
    [    on_attach = function(client, bufnr)
-   [        client.resolved_capabilities.document_formatting = false
-   [        client.resolved_capabilities.hover = false
+   [        client.server_capabilities.document_formatting = false
+   [        client.server_capabilities.hover = false
    [        on_attach(client, bufnr)
    [    end,
    [}
