@@ -271,5 +271,6 @@ require("lsp-config")
 require("general-config")
 require("telescope-config")
 require("lualine-config")
+require("neo-tree-config")
 
 -- vim: shiftwidth=4 tabstop=4
