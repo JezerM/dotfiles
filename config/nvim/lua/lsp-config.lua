@@ -1,15 +1,16 @@
 local lspconfig = require "lspconfig"
 
-require('lspconfig.ui.windows').default_options.border = 'rounded'
+require("lspconfig.ui.windows").default_options.border = "rounded"
 
 vim.diagnostic.config({
     virtual_text = true,
     signs = true,
     underline = true,
     update_in_insert = false,
-    severity_sort = false,
+    severity_sort = true,
     float = {
         border = "rounded",
+        focusable = true,
         padding = 4,
     }
 })
