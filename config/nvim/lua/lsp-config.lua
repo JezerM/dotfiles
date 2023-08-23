@@ -110,7 +110,7 @@ for type, numhl in pairs(sign_numhl) do
 end
 
 lspconfig.clangd.setup {
-    cmd = { 'clangd' },
+    cmd = { "clangd" },
     capabilities = {
         offsetEncoding = "utf-8",
     },
@@ -154,7 +154,7 @@ lspconfig.jsonls.setup {
     end,
     settings = {
         json = {
-            schemas = require('schemastore').json.schemas(),
+            schemas = require("schemastore").json.schemas(),
         },
     },
 }
@@ -294,29 +294,29 @@ local linters = {
         sourceName = "pylint",
         command = "pylint",
         args = {
-            '--output-format',
-            'text',
-            '--score',
-            'no',
-            '--msg-template',
+            "--output-format",
+            "text",
+            "--score",
+            "no",
+            "--msg-template",
             [['{line}:{column}:{category}:{msg} ({msg_id}:{symbol})']],
-            '%file',
+            "%file",
         },
         offsetColumn = 1,
         formatLines = 1,
         formatPattern = {
             [[^(\d+?):(\d+?):([a-z]+?):(.*)$]],
-            { line = 1, column = 2, security = 3, message = { '[pylint] ', 4 } },
+            { line = 1, column = 2, security = 3, message = { "[pylint] ", 4 } },
         },
         securities = {
-            informational = 'hint',
-            refactor = 'info',
-            convention = 'info',
-            warning = 'warning',
-            error = 'error',
-            fatal = 'error',
+            informational = "hint",
+            refactor = "info",
+            convention = "info",
+            warning = "warning",
+            error = "error",
+            fatal = "error",
         },
-        rootPatterns = { ".pylintrc", '.git', 'pyproject.toml', 'setup.py' },
+        rootPatterns = { ".pylintrc", ".git", "pyproject.toml", "setup.py" },
     },
 }
 local formatters = {
@@ -379,7 +379,7 @@ lspconfig.phpactor.setup {
     end
 }
 lspconfig.jdtls.setup{
-    cmd = { 'jdtls' },
+    cmd = { "jdtls" },
     settings = {
         java = {
             signatureHelp = { enabled = true }
@@ -401,7 +401,7 @@ lspconfig.jdtls.setup{
    [}
    ]]
 lspconfig.dockerls.setup{
-    cmd = { 'docker-langserver', "--stdio" },
+    cmd = { "docker-langserver", "--stdio" },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.hoverProvider = false
