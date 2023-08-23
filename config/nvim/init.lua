@@ -132,10 +132,15 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.scrolloff = 4
+vim.g.mapleader = ","
 
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 vim.opt.laststatus = 3
+
+-- Search
+vim.opt.incsearch = true
+vim.opt.hlsearch = false
 
 -- Tabs
 vim.opt.shiftwidth = 2
@@ -238,23 +243,7 @@ if has("autocmd")
 endif
 ]]
 
-vim.api.nvim_set_keymap("n", "<leader>ff",
-    [[<Cmd>lua require('telescope.builtin').find_files()<CR>]],
-    { expr = false, noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>fg",
-    [[<Cmd>lua require('telescope.builtin').live_grep()<CR>]],
-    { expr = false, noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>fb",
-    [[<Cmd>lua require('telescope.builtin').buffers()<CR>]],
-    { expr = false, noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>fk",
-    [[<Cmd>lua require('telescope.builtin').treesitter()<CR>]],
-    { expr = false, noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>fh",
-    [[<Cmd>lua require('telescope.builtin').help_tags()<CR>]],
-    { expr = false, noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>f ",
-    [[<Cmd>lua require('telescope.builtin').builtin()<CR>]],
+vim.keymap.set("t", "<C-Esc>", [[<C-\><C-n>]],
     { expr = false, noremap = true, silent = true })
 
 cmd "colorscheme gruvbox-material"
@@ -264,6 +253,7 @@ cmd "colorscheme gruvbox-material"
 require("completion")
 require("lsp-config")
 require("general-config")
+require("treesitter-config")
 require("telescope-config")
 require("lualine-config")
 require("neo-tree-config")

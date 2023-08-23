@@ -3,6 +3,7 @@ local telescope = require("telescope")
 local sorters = require("telescope.sorters")
 local previewers = require("telescope.previewers")
 local actions_layout = require("telescope.actions.layout")
+local builtin = require("telescope.builtin")
 
 telescope.setup {
     defaults = {
@@ -58,8 +59,20 @@ telescope.setup {
     },
 }
 
-require("telescope").load_extension("emoji")
 require("telescope").load_extension("packer")
 require("telescope").load_extension("ui-select")
+
+vim.keymap.set("n", "<leader>ff", builtin.find_files,
+    { expr = false, noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fg", builtin.git_files,
+    { expr = false, noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fs", builtin.live_grep,
+    { expr = false, noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fb", builtin.buffers,
+    { expr = false, noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ft", builtin.treesitter,
+    { expr = false, noremap = true, silent = true })
+vim.keymap.set("n", "<leader>f ", builtin.builtin,
+    { expr = false, noremap = true, silent = true })
 
 -- vim: shiftwidth=4 tabstop=4

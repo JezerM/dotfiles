@@ -1,8 +1,4 @@
-require("nvim-treesitter.configs").setup {
-    highlight = {
-        enable = true,
-    },
-}
+vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 require("colorizer").setup({
     "*";
@@ -60,9 +56,40 @@ require("reticle").setup {
             "neo-tree",
             "startup",
         },
+        cursorline = {
+            "startup"
+        }
     },
 }
 
-require("incline").setup()
+require("incline").setup {
+    hide = {
+        cursorline = true,
+    }
+}
+
+require("treesitter-context").setup {
+    enable = true,
+
+}
+
+require("neorg").setup {
+    load = {
+        ["core.defaults"] = {}, -- Loads default behaviour
+        ["core.concealer"] = {}, -- Adds pretty icons to your documents
+        ["core.dirman"] = { -- Manages Neorg workspaces
+            config = {
+                workspaces = {
+                    notes = "~/notes",
+                },
+            },
+        },
+        ["core.presenter"] = {
+            config = {
+                zen_mode = "truezen"
+            }
+        },
+    },
+}
 
 -- vim: shiftwidth=4 tabstop=4
