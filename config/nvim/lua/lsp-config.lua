@@ -247,7 +247,26 @@ lspconfig.volar.setup {
             --serverPath = '/path/to/.npm/lib/node_modules/typescript/lib/tsserverlib.js'
             -- Alternative location if installed as root:
             serverPath = tsserver_path,
-        }
+        },
+        languageFeatures = {
+            implementation = true, -- new in @volar/vue-language-server v0.33
+            references = true,
+            definition = true,
+            typeDefinition = true,
+            callHierarchy = true,
+            hover = true,
+            rename = true,
+            renameFileRefactoring = true,
+            signatureHelp = true,
+            codeAction = true,
+            workspaceSymbol = true,
+            completion = {
+                defaultTagNameCase = "both",
+                defaultAttrNameCase = "kebabCase",
+                getDocumentNameCasesRequest = false,
+                getDocumentSelectionRequest = false,
+            },
+          }
     },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
