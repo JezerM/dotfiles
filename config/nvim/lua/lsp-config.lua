@@ -19,54 +19,27 @@ vim.diagnostic.config({
 
 local on_attach = function(client, bufnr)
     local cmd = vim.api.nvim_buf_create_user_command
-    local buf_map = vim.api.nvim_buf_set_keymap
+    local opts = { buffer = bufnr, remap = false, silent = true }
 
     vim.b.can_format = true
 
-    cmd(bufnr, "LspDef", function() vim.lsp.buf.definition() end, {})
-    cmd(bufnr, "LspFormatting", function() vim.lsp.buf.format() end, {})
-    cmd(bufnr, "LspCodeAction", function() vim.lsp.buf.code_action() end, {})
-    cmd(bufnr, "LspHover", function() vim.lsp.buf.hover() end, {})
-    cmd(bufnr, "LspRename", function() vim.lsp.buf.rename() end, {})
-    cmd(bufnr, "LspOrganize", function() lsp_organize_imports() end, {})
-    cmd(bufnr, "LspRefs", function() vim.lsp.buf.references() end, {})
-    cmd(bufnr, "LspTypeDef", function() vim.lsp.buf.type_definition() end, {})
-    cmd(bufnr, "LspImplementation", function() vim.lsp.buf.implementation() end, {})
-    cmd(bufnr, "LspDiagPrev", function() vim.diagnostic.goto_prev() end, {})
-    cmd(bufnr, "LspDiagNext", function() vim.diagnostic.goto_next() end, {})
-    cmd(bufnr, "LspDiagLine", function() vim.diagnostic.open_float() end, {})
-    cmd(bufnr, "LspSignatureHelp", function() vim.lsp.buf.signature_help() end, {})
-    cmd(bufnr, "LspToggleFormat", toggle_format_on_save,
+    cmd(bufnr, "LspToggleFormat", function(input) toggle_format_on_save(input) end,
     {
         complete = function() return {"enable", "disable"} end,
         nargs = "?",
     })
 
-    buf_map(bufnr, "n", "gd", ":LspDef<CR>", {silent = true})
-    buf_map(bufnr, "n", "gr", ":LspRename<CR>", {silent = true})
-    buf_map(bufnr, "n", "gR", ":LspRefs<CR>", {silent = true})
-    buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>", {silent = true})
-    buf_map(bufnr, "n", "K", ":LspHover<CR>", {silent = true})
-    buf_map(bufnr, "n", "gs", ":LspOrganize<CR>", {silent = true})
-    buf_map(bufnr, "n", "gN", ":LspDiagPrev<CR>", {silent = true})
-    buf_map(bufnr, "n", "gn", ":LspDiagNext<CR>", {silent = true})
-    buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>", {silent = true})
-    buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>", {silent = true})
-    buf_map(bufnr, "n", "gl", "<cmd> LspSignatureHelp<CR>", {silent = true})
-    buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", {silent = true})
+    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+    vim.keymap.set("n", "gr", function() vim.lsp.buf.rename() end, opts)
+    vim.keymap.set("n", "ga", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<Leader>vr", function() vim.lsp.buf.references() end, opts)
+    vim.keymap.set("n", "<Leader>a", function() vim.diagnostic.open_float() end, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+    vim.keymap.set("n", "<Leader>vtf", function() toggle_format_on_save() end, opts)
 
-    --if client.server_capabilities.hover then
-        --vim.api.nvim_exec([[
-              --augroup hover
-                --autocmd! * <buffer>
-                --autocmd CursorHold  <buffer> lua vim.lsp.buf.hover()
-                --autocmd CursorHoldI <buffer> lua vim.lsp.buf.hover()
-                --autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-              --augroup end
-        --]], true)
-    --end
-
-    require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
     if client.server_capabilities.documentFormattingProvider then
         local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
@@ -90,29 +63,17 @@ vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_override_config)
 
-_G.lsp_organize_imports = function()
-    local params = {
-        command = "_typescript.organizeImports",
-        arguments = {vim.api.nvim_buf_get_name(0)},
-        title = ""
-    }
-    vim.lsp.buf.execute_command(params)
-  end
-
-_G.dump = function(...)
-    local objects = vim.tbl_map(vim.inspect, {...})
-    print(unpack(objects))
-end
-
-_G.toggle_format_on_save = function(input)
-    if input.args == "enable" then
-        vim.b.can_format = true
-    elseif input.args == "disable" then
-        vim.b.can_format = false
-    else
-        vim.b.can_format = not vim.b.can_format
-        print("Can format file on save:", vim.b.can_format)
+function toggle_format_on_save(input)
+    if input ~= nil and input.args ~= nil then
+        if input.args == "enable" then
+            vim.b.can_format = true
+        elseif input.args == "disable" then
+            vim.b.can_format = false
+        end
     end
+
+    vim.b.can_format = not vim.b.can_format
+    print("Can format file on save:", vim.b.can_format)
 end
 
 local function merge_table(...)
@@ -256,8 +217,6 @@ lspconfig.omnisharp.setup{
         client.server_capabilities.hoverProvider = true
 
         on_attach(client, bufnr)
-        --local buf_map = vim.api.nvim_buf_set_keymap
-        --buf_map(bufnr, "n", "K", ":LspHighlight<CR>", {silent = true})
     end
 }
 
