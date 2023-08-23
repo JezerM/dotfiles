@@ -387,6 +387,8 @@ lspconfig.gdscript.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = true
         client.server_capabilities.hoverProvider = true
+        vim.api.nvim_buf_set_option(bufnr, "tabstop", 4)
+        vim.api.nvim_buf_set_option(bufnr, "shiftwidth", 4)
         on_attach(client, bufnr)
     end
 }
