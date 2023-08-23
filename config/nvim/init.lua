@@ -18,7 +18,6 @@ require("packer").startup(function()
     use "onsails/lspkind-nvim"
     use "ray-x/lsp_signature.nvim"
     use "windwp/nvim-autopairs"
-    use "arkav/lualine-lsp-progress"
     use "b0o/schemastore.nvim"
 
     -- Completion
@@ -28,6 +27,7 @@ require("packer").startup(function()
     use "hrsh7th/cmp-buffer"
     use "hrsh7th/cmp-path"
     use "hrsh7th/cmp-calc"
+    use "hrsh7th/cmp-cmdline"
     use "f3fora/cmp-spell"
     use "ray-x/cmp-treesitter"
     use "quangnguyen30192/cmp-nvim-ultisnips"
@@ -35,9 +35,8 @@ require("packer").startup(function()
     -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
-        run = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
+        run = function() require("nvim-treesitter.install").update({ with_sync = false }) end,
     }
-    use "sunjon/shade.nvim"
 
     -- Themes
     --use "morhetz/gruvbox"
@@ -48,9 +47,13 @@ require("packer").startup(function()
     use "nkakouros-original/numbers.nvim"
     use {
         "nvim-lualine/lualine.nvim",
-        requires = { "nvim-tree/nvim-web-devicons", opt = true }
+        requires = {
+            "nvim-tree/nvim-web-devicons",
+            "arkav/lualine-lsp-progress"
+        }
     }
     use "b0o/incline.nvim"
+    use "nvim-treesitter/nvim-treesitter-context"
 
     -- Lua colors
     use "folke/lsp-colors.nvim"
@@ -64,6 +67,11 @@ require("packer").startup(function()
     -- Markdown
     use { "iamcco/markdown-preview.nvim", run = "cd app && npm install" }
     use { "ellisonleao/glow.nvim" }
+    use {
+        "nvim-neorg/neorg",
+        run = ":Neorg sync-parsers",
+        requires = "nvim-lua/plenary.nvim",
+    }
 
     -- LaTex
     use "lervag/vimtex"
@@ -89,7 +97,6 @@ require("packer").startup(function()
         "nvim-telescope/telescope.nvim",
         requires = { {"nvim-lua/plenary.nvim"} }
     }
-    use "xiyaowong/telescope-emoji.nvim"
     use "nvim-telescope/telescope-packer.nvim"
     use "nvim-telescope/telescope-ui-select.nvim"
 
@@ -105,6 +112,7 @@ require("packer").startup(function()
 
     -- Utils
     use "andweeb/presence.nvim"
+    use "mbbill/undotree"
     use "lambdalisue/suda.vim"
     use "scrooloose/nerdcommenter"
     use "startup-nvim/startup.nvim"
@@ -201,6 +209,7 @@ local function gruvbox_material_custom()
     vim.api.nvim_set_hl(0, "FloatBorder", { link = "Grey" })
     vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
     vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Grey" })
+    vim.api.nvim_set_hl(0, "TreesitterContext", { link = "Folded" })
 
     vim.api.nvim_set_hl(0, "DiagnosticFloatingError", { link = "Red" })
     vim.api.nvim_set_hl(0, "DiagnosticFloatingWarn", { link = "Yellow" })
