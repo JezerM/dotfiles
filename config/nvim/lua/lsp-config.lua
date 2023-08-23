@@ -102,10 +102,11 @@ require "lsp_signature".setup({
     }
 })
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-for type, icon in pairs(signs) do
+--local sign_icons = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
+local sign_numhl = { Error = "TSDanger", Warn = "TSWarning", Hint = "TSTodo", Info = "TSNote" }
+for type, numhl in pairs(sign_numhl) do
   local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  vim.fn.sign_define(hl, { text = "", texthl = hl, numhl = numhl })
 end
 
 lspconfig.clangd.setup {
