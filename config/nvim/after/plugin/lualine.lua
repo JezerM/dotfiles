@@ -30,12 +30,12 @@ require("lualine").setup {
                 "filetype",
                 colored = true,
                 icon_only = false,
-                icon = { align = "right" },
+                icon = { align = "left" },
             },
             "encoding",
             "fileformat"
         },
-        lualine_y = { "progress", line_count },
+        lualine_y = { line_count },
         lualine_z = {
             {
                 "diagnostics",
@@ -58,8 +58,8 @@ require("lualine").setup {
         lualine_y = {},
         lualine_z = {}
     },
-        tabline = {
-        lualine_a = {{ "buffers" }},
+    tabline = {
+        lualine_a = { "buffers" },
         lualine_b = {},
         lualine_c = {},
         lualine_x = {},
