@@ -14,9 +14,13 @@ require("packer").startup(function()
     use "dstein64/vim-startuptime"
 
     -- Lua
-    use "neovim/nvim-lspconfig"
-    use "ray-x/lsp_signature.nvim"
-    use "b0o/schemastore.nvim"
+    use {
+        "neovim/nvim-lspconfig",
+        requires = {
+            "ray-x/lsp_signature.nvim",
+            "b0o/schemastore.nvim",
+        }
+    }
 
     -- Completion
     use {

@@ -58,8 +58,6 @@ local handler_override_config = {
     border = "rounded",
 }
 
-vim.lsp.buf.references = require("telescope.builtin").lsp_references
-vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_override_config)
 
@@ -91,13 +89,6 @@ local function merge_table(...)
         end
     end
     return ret
-end
-
---local sign_icons = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
-local sign_numhl = { Error = "TSDanger", Warn = "TSWarning", Hint = "TSTodo", Info = "TSNote" }
-for type, numhl in pairs(sign_numhl) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = "", texthl = hl, numhl = numhl })
 end
 
 lspconfig.clangd.setup {
