@@ -15,23 +15,27 @@ require("packer").startup(function()
 
     -- Lua
     use "neovim/nvim-lspconfig"
-    use "onsails/lspkind-nvim"
     use "ray-x/lsp_signature.nvim"
-    use "windwp/nvim-autopairs"
     use "b0o/schemastore.nvim"
 
     -- Completion
-    use "hrsh7th/nvim-cmp"
-    use "hrsh7th/cmp-nvim-lsp"
-    use "hrsh7th/cmp-nvim-lua"
-    use "hrsh7th/cmp-buffer"
-    use "hrsh7th/cmp-path"
-    use "hrsh7th/cmp-calc"
-    use "hrsh7th/cmp-cmdline"
-    use "f3fora/cmp-spell"
-    use "ray-x/cmp-treesitter"
-    use "quangnguyen30192/cmp-nvim-ultisnips"
+    use {
+        "hrsh7th/nvim-cmp",
+        requires = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-calc",
+            "hrsh7th/cmp-cmdline",
+            "f3fora/cmp-spell",
+            "ray-x/cmp-treesitter",
+            "quangnguyen30192/cmp-nvim-ultisnips",
 
+            "onsails/lspkind-nvim",
+            "windwp/nvim-autopairs",
+        }
+    }
     -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
@@ -125,6 +129,7 @@ local cmd = vim.cmd
 --vim.opt.language = "en_US.utf8"
 cmd "language en_US.UTF-8"
 vim.opt.spelllang = { "es", "en_us" }
+--vim.g.vimspector_base_dir = "/Users/jezerm/.local/share/nvim/site/pack/packer/start/vimspector"
 
 vim.opt.termguicolors = true
 vim.opt.hidden = true
@@ -159,6 +164,7 @@ vim.opt.listchars = {
 vim.opt.list = true
 
 vim.g.suda_smart_edit = 1
+vim.g.mkdp_open_to_the_world = 1
 
 -- Conceal and IndentLine
 vim.opt.conceallevel = 2
@@ -247,15 +253,5 @@ vim.keymap.set("t", "<C-Esc>", [[<C-\><C-n>]],
     { expr = false, noremap = true, silent = true })
 
 cmd "colorscheme gruvbox-material"
-
--- Lua plugins
-
-require("completion")
-require("lsp-config")
-require("general-config")
-require("treesitter-config")
-require("telescope-config")
-require("lualine-config")
-require("neo-tree-config")
 
 -- vim: shiftwidth=4 tabstop=4

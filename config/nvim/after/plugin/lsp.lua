@@ -93,15 +93,6 @@ local function merge_table(...)
     return ret
 end
 
-require "lsp_signature".setup({
-    bind = true, -- This is mandatory, otherwise border config won't get registered.
-    floating_window = true,
-    toggle_key = "<M-x>",
-    handler_opts = {
-        border = "rounded"
-    }
-})
-
 --local sign_icons = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
 local sign_numhl = { Error = "TSDanger", Warn = "TSWarning", Hint = "TSTodo", Info = "TSNote" }
 for type, numhl in pairs(sign_numhl) do
