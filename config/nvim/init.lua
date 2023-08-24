@@ -1,14 +1,7 @@
--- This file can be loaded by calling `lua require("plugins")` from your init.vim
-
-local vim = vim
-
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
--- Only if your version of Neovim doesn"t have https://github.com/neovim/neovim/pull/12632 merged
---vim._update_package_paths()
 
-require("packer").startup(function()
-    local use = use
+require("packer").startup(function(use)
     -- Packer can manage itself
     use "wbthomason/packer.nvim"
     use "dstein64/vim-startuptime"
