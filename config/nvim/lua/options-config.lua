@@ -13,6 +13,10 @@ vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 vim.opt.laststatus = 3
 
+-- Timeout
+vim.opt.timeout = true
+vim.opt.timeoutlen = 300
+
 -- Search
 vim.opt.incsearch = true
 vim.opt.hlsearch = false
