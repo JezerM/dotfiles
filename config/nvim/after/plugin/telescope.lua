@@ -67,16 +67,16 @@ require("telescope").load_extension("packer")
 require("telescope").load_extension("ui-select")
 
 vim.keymap.set("n", "<leader>ff", builtin.find_files,
-    { expr = false, noremap = true, silent = true })
+    { expr = false, noremap = true, silent = true, desc = "Find file" })
 vim.keymap.set("n", "<leader>fg", builtin.git_files,
-    { expr = false, noremap = true, silent = true })
+    { expr = false, noremap = true, silent = true, desc = "Find git file" })
 vim.keymap.set("n", "<leader>fs", builtin.live_grep,
-    { expr = false, noremap = true, silent = true })
+    { expr = false, noremap = true, silent = true, desc = "Search text" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers,
-    { expr = false, noremap = true, silent = true })
+    { expr = false, noremap = true, silent = true, desc = "Find buffer" })
 vim.keymap.set("n", "<leader>ft", builtin.treesitter,
-    { expr = false, noremap = true, silent = true })
+    { expr = false, noremap = true, silent = true, desc = "Find treesitter symbols" })
 vim.keymap.set("n", "<leader>f ", builtin.builtin,
-    { expr = false, noremap = true, silent = true })
+    { expr = false, noremap = true, silent = true, desc = "Show telescope builtins" })
 
 -- vim: shiftwidth=4 tabstop=4

@@ -17,6 +17,23 @@ vim.diagnostic.config({
 
 --vim.lsp.set_log_level("debug")
 
+local function merge_table(...)
+    local ret = {}
+    for i = 1, select("#", ...) do
+        local t = select(i, ...)
+        if t then
+            for k, v in pairs(t) do
+                if type(k) == "number" then
+                    table.insert(ret, v)
+                else
+                    ret[k] = v
+                end
+            end
+        end
+    end
+    return ret
+end
+
 local on_attach = function(client, bufnr)
     local cmd = vim.api.nvim_buf_create_user_command
     local opts = { buffer = bufnr, remap = false, silent = true }
@@ -29,17 +46,19 @@ local on_attach = function(client, bufnr)
         nargs = "?",
     })
 
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "gr", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("n", "ga", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<Leader>vr", function() vim.lsp.buf.references() end, opts)
-    vim.keymap.set("n", "<Leader>a", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "<Leader>vtf", function() toggle_format_on_save() end, opts)
+    if client.server_capabilities.hoverProvider then
+        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, merge_table(opts, { desc = "Hover symbol" }))
+    end
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, merge_table(opts, { desc = "Show definition" }))
+    vim.keymap.set("n", "gr", function() vim.lsp.buf.rename() end, merge_table(opts, { desc = "Rename symbol" }))
+    vim.keymap.set("n", "ga", function() vim.lsp.buf.code_action() end, merge_table(opts, { desc = "Show code actions" }))
+    vim.keymap.set("n", "<Leader>vr", function() vim.lsp.buf.references() end, merge_table(opts, { desc = "Show references" }))
+    vim.keymap.set("n", "<Leader>a", function() vim.diagnostic.open_float() end, merge_table(opts, { desc = "Show diagnostics" }))
+    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, merge_table(opts, { desc = "Previous diagnostic" }))
+    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, merge_table(opts, { desc = "Next diagnostic" }))
+    vim.keymap.set("n", "<Leader>vtf", function() toggle_format_on_save() end, merge_table(opts, { desc = "Toggle format on save" }))
 
-    require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    --require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
     if client.server_capabilities.documentFormattingProvider then
         local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
@@ -72,23 +91,6 @@ function toggle_format_on_save(input)
 
     vim.b.can_format = not vim.b.can_format
     print("Can format file on save:", vim.b.can_format)
-end
-
-local function merge_table(...)
-    local ret = {}
-    for i = 1, select("#", ...) do
-        local t = select(i, ...)
-        if t then
-            for k, v in pairs(t) do
-                if type(k) == "number" then
-                    table.insert(ret, v)
-                else
-                    ret[k] = v
-                end
-            end
-        end
-    end
-    return ret
 end
 
 lspconfig.clangd.setup {
