@@ -324,7 +324,8 @@ local linters = {
 }
 local formatters = {
     prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}},
-    clang = {command = "clang-format", args = {"%filepath"}}
+    clang = {command = "clang-format", args = {"%filepath"}},
+    phpcbf = {command = "phpcbf", args = {"-"}, isStdout = true, ignoreExitCode = true, }
 }
 local formatFiletypes = {
     c = "clang",
@@ -337,7 +338,7 @@ local formatFiletypes = {
     typescriptreact = "prettier",
     vue = "prettier",
     svelte = "prettier",
-    php = "prettier",
+    php = "phpcbf",
 }
 lspconfig.diagnosticls.setup {
     on_attach = on_attach,
