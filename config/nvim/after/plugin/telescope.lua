@@ -63,7 +63,7 @@ vim.lsp.buf.definition = require("telescope.builtin").lsp_definitions
 vim.lsp.buf.references = require("telescope.builtin").lsp_references
 vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 
-require("telescope").load_extension("packer")
+--require("telescope").load_extension("packer")
 require("telescope").load_extension("ui-select")
 
 vim.keymap.set("n", "<leader>ff", builtin.find_files,
