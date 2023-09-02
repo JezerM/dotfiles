@@ -47,9 +47,17 @@ return {
         },
         cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
         opts = function() return require("plugins.configs.treesitter") end,
+        config = function(_, opts)
+            require("nvim-treesitter.configs").setup(opts)
+        end,
         build = function()
             require("nvim-treesitter.install").update({ with_sync = false })
         end,
+    },
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        lazy = true,
+        opts = function() return require("plugins.configs.treesitter-context") end,
     },
 
     -- Themes
