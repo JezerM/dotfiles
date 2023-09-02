@@ -65,7 +65,6 @@ return {
     "ellisonleao/gruvbox.nvim",
     "sainnhe/gruvbox-material",
     "sainnhe/everforest",
-    "lukas-reineke/indent-blankline.nvim",
     "nkakouros-original/numbers.nvim",
     {
         "nvim-lualine/lualine.nvim",
@@ -74,10 +73,26 @@ return {
             "arkav/lualine-lsp-progress"
         }
     },
-    "b0o/incline.nvim",
+    {
+        "b0o/incline.nvim",
+        event = "BufReadPre",
+        opts = function() return require("plugins.configs.incline") end
+    },
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        event = "BufReadPre",
+        opts = function() return require("plugins.configs.indent-blankline") end,
+    },
 
     -- Lua colors
-    "norcalli/nvim-colorizer.lua",
+    {
+        "norcalli/nvim-colorizer.lua",
+        event = "BufReadPre",
+        opts = function() return require("plugins.configs.colorizer") end,
+        config = function(_, opts)
+            require("colorizer").setup(opts.filetypes, opts.options)
+        end
+    },
 
     -- Snippets
     "SirVer/ultisnips",
@@ -114,7 +129,11 @@ return {
         "tpope/vim-fugitive",
         cmd = { "Git", "G" }
     },
-    "lewis6991/gitsigns.nvim",
+    {
+        "lewis6991/gitsigns.nvim",
+        event = "BufReadPre",
+        opts = function() return require("plugins.configs.gitsigns") end,
+    },
 
     -- Explorer
     {
@@ -165,10 +184,17 @@ return {
         ft = "vue"
     },
     --"sheerun/vim-polyglot",
-    "folke/todo-comments.nvim",
+    {
+        "folke/todo-comments.nvim",
+        event = "BufReadPost",
+        config = function (_)
+            require("todo-comments").setup()
+        end
+    },
     --"leafgarland/typescript-vim",
     {
         "folke/trouble.nvim",
+        cmd = "Trouble",
         dependencies = {
             "nvim-tree/nvim-web-devicons"
         }
@@ -183,8 +209,7 @@ return {
     },
     {
         "andweeb/presence.nvim",
-        lazy = true,
-        event = "BufEnter",
+        event = "BufReadPost",
     },
     {
         "mbbill/undotree",
