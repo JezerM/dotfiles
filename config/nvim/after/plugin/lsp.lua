@@ -1,4 +1,6 @@
 local lspconfig = require "lspconfig"
+local lspconfig_configs = require "lspconfig.configs"
+local lspconfig_util = require "lspconfig.util"
 
 require("lspconfig.ui.windows").default_options.border = "rounded"
 
@@ -142,18 +144,11 @@ lspconfig.jsonls.setup {
         },
     },
 }
-lspconfig.vimls.setup {
-    on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.hoverProvider = false
-        --on_attach(client)
-    end
-}
 lspconfig.html.setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.hoverProvider = false
+        client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
 }
@@ -225,33 +220,53 @@ if (vim.fn.has("mac")) then
     tsserver_path = "/opt/homebrew/lib/node_modules/typescript/lib/tsserverlibrary.js"
 end
 
-lspconfig.volar.setup {
-    init_options = {
-        typescript = {
-            --serverPath = '/path/to/.npm/lib/node_modules/typescript/lib/tsserverlib.js'
-            -- Alternative location if installed as root:
-            serverPath = tsserver_path,
-        },
-        languageFeatures = {
-            implementation = true, -- new in @volar/vue-language-server v0.33
-            references = true,
-            definition = true,
-            typeDefinition = true,
-            callHierarchy = true,
-            hover = true,
-            rename = true,
-            renameFileRefactoring = true,
-            signatureHelp = true,
-            codeAction = true,
-            workspaceSymbol = true,
-            completion = {
-                defaultTagNameCase = "both",
-                defaultAttrNameCase = "kebabCase",
-                getDocumentNameCasesRequest = false,
-                getDocumentSelectionRequest = false,
+local function get_typescript_server_path(root_dir)
+    local project_root = lspconfig_util.find_node_modules_ancestor(root_dir)
+    return project_root and (lspconfig_util.path.join(project_root, 'node_modules', 'typescript', 'lib'))
+        or tsserver_path
+end
+
+lspconfig_configs.volar_api = {
+    default_config = {
+        cmd = { "vue-language-server", "--stdio" },
+        root_dir = lspconfig_util.root_pattern("package.json"),
+        on_new_config = function(new_config, new_root_dir)
+          if
+            new_config.init_options
+            and new_config.init_options.typescript
+            and new_config.init_options.typescript.tsdk == ''
+          then
+            new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
+          end
+        end,
+        filetypes = { "vue" },
+        init_options = {
+            typescript = {
+                tsdk = ''
             },
-          }
+            languageFeatures = {
+                implementation = true, -- new in @volar/vue-language-server v0.33
+                references = true,
+                definition = true,
+                typeDefinition = true,
+                callHierarchy = true,
+                hover = true,
+                rename = true,
+                renameFileRefactoring = true,
+                signatureHelp = true,
+                codeAction = true,
+                workspaceSymbol = true,
+                completion = {
+                    defaultTagNameCase = 'both',
+                    defaultAttrNameCase = 'kebabCase',
+                    getDocumentNameCasesRequest = false,
+                    getDocumentSelectionRequest = false,
+                },
+            }
+        },
     },
+}
+lspconfig.volar_api.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.hoverProvider = true
