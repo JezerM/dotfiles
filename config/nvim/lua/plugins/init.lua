@@ -217,9 +217,12 @@ return {
             { "<leader>u", vim.cmd.UndotreeToggle, desc = "Toggle undo-tre" }
         },
     },
+    {
+        "tummetott/reticle.nvim",
+        opts = function() return require("plugins.configs.reticle") end
+    },
     "lambdalisue/suda.vim",
     "scrooloose/nerdcommenter",
     "startup-nvim/startup.nvim",
-    "tummetott/reticle.nvim",
 }
 -- vim: shiftwidth=4 tabstop=4

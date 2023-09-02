@@ -1,4 +1,4 @@
-require("reticle").setup {
+return {
     always_highlight_number = true,
     never = {
         cursorcolumn = {
@@ -10,5 +10,4 @@ require("reticle").setup {
         }
     },
 }
-
 -- vim: shiftwidth=4 tabstop=4
