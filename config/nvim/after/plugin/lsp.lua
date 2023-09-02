@@ -19,26 +19,14 @@ vim.diagnostic.config({
 
 --vim.lsp.set_log_level("debug")
 
-local function merge_table(...)
-    local ret = {}
-    for i = 1, select("#", ...) do
-        local t = select(i, ...)
-        if t then
-            for k, v in pairs(t) do
-                if type(k) == "number" then
-                    table.insert(ret, v)
-                else
-                    ret[k] = v
-                end
-            end
-        end
-    end
-    return ret
-end
-
 local on_attach = function(client, bufnr)
     local cmd = vim.api.nvim_buf_create_user_command
-    local opts = { buffer = bufnr, remap = false, silent = true }
+    local default_opts = { buffer = bufnr, remap = false, silent = true }
+    local function map(mode, key, command, opts)
+        vim.keymap.set(mode, key, command, vim.tbl_extend("force", default_opts, opts))
+    end
+
+    require("lazy").load({ plugins = { "telescope.nvim" } })
 
     vim.b.can_format = true
 
@@ -49,16 +37,16 @@ local on_attach = function(client, bufnr)
     })
 
     if client.server_capabilities.hoverProvider then
-        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, merge_table(opts, { desc = "Hover symbol" }))
+        map("n", "K", function() vim.lsp.buf.hover() end, { desc = "Hover symbol" })
     end
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, merge_table(opts, { desc = "Show definition" }))
-    vim.keymap.set("n", "gr", function() vim.lsp.buf.rename() end, merge_table(opts, { desc = "Rename symbol" }))
-    vim.keymap.set("n", "ga", function() vim.lsp.buf.code_action() end, merge_table(opts, { desc = "Show code actions" }))
-    vim.keymap.set("n", "<Leader>vr", function() vim.lsp.buf.references() end, merge_table(opts, { desc = "Show references" }))
-    vim.keymap.set("n", "<Leader>a", function() vim.diagnostic.open_float() end, merge_table(opts, { desc = "Show diagnostics" }))
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, merge_table(opts, { desc = "Previous diagnostic" }))
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, merge_table(opts, { desc = "Next diagnostic" }))
-    vim.keymap.set("n", "<Leader>vtf", function() toggle_format_on_save() end, merge_table(opts, { desc = "Toggle format on save" }))
+    map("n", "gd", function() vim.lsp.buf.definition() end, { desc = "Show definition" })
+    map("n", "gr", function() vim.lsp.buf.rename() end, { desc = "Rename symbol" })
+    map("n", "ga", function() vim.lsp.buf.code_action() end, { desc = "Show code actions" })
+    map("n", "<Leader>vr", function() vim.lsp.buf.references() end, { desc = "Show references" })
+    map("n", "<Leader>a", function() vim.diagnostic.open_float() end, { desc = "Show diagnostics" })
+    map("n", "[d", function() vim.diagnostic.goto_prev() end, { desc = "Previous diagnostic" })
+    map("n", "]d", function() vim.diagnostic.goto_next() end, { desc = "Next diagnostic" })
+    map("n", "<Leader>vtf", function() toggle_format_on_save() end, { desc = "Toggle format on save" })
 
     --require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
@@ -81,6 +69,10 @@ local handler_override_config = {
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_override_config)
+
+vim.lsp.buf.definition = require("telescope.builtin").lsp_definitions
+vim.lsp.buf.references = require("telescope.builtin").lsp_references
+vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 
 function toggle_format_on_save(input)
     if input ~= nil and input.args ~= nil then
@@ -188,7 +180,8 @@ end
 
 lspconfig.omnisharp.setup{
     use_mono = true,
-    cmd = merge_table(
+    cmd = vim.tbl_extend(
+        "keep",
         omnisharp_bin,
         { "--languageserver", "--hostPID", tostring(pid) }
     ),
@@ -443,7 +436,8 @@ lspconfig.lua_ls.setup {
             },
             workspace = {
                 -- Make the server aware of Neovim runtime files
-                library = merge_table(
+                library = vim.tbl_extend(
+                        "keep",
                         vim.api.nvim_get_runtime_file("", true),
                         {
                             "/usr/share/awesome/lib/"
