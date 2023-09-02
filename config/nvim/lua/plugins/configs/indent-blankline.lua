@@ -1,4 +1,4 @@
-require("indent_blankline").setup {
+return {
     show_current_context = true,
     show_current_context_start = false,
     show_trailing_blankline_indent = false,
@@ -7,5 +7,4 @@ require("indent_blankline").setup {
     char = "┆";
     context_char = "│"
 }
-
 -- vim: shiftwidth=4 tabstop=4

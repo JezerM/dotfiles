@@ -1,10 +1,5 @@
 local gitsigns = require("gitsigns")
 
-gitsigns.setup {
-    word_diff = false,
-    current_line_blame = true,
-}
-
 vim.keymap.set("n", "<leader>hs", function() gitsigns.stage_hunk() end ,
     { desc = "Stage hunk" })
 vim.keymap.set("n", "<leader>hr", function() gitsigns.reset_hunk() end ,
@@ -26,4 +21,8 @@ vim.keymap.set("n", "<leader>hS", function() gitsigns.stage_buffer() end ,
 vim.keymap.set("n", "<leader>hR", function() gitsigns.reset_buffer() end ,
     { desc = "Reset buffer" })
 
+return {
+    word_diff = false,
+    current_line_blame = true,
+}
 -- vim: shiftwidth=4 tabstop=4
