@@ -221,8 +221,22 @@ return {
         "tummetott/reticle.nvim",
         opts = function() return require("plugins.configs.reticle") end
     },
+    {
+        "numToStr/Comment.nvim",
+        keys = {
+            { "<leader>cc", mode = "n", desc = "Comment toggle current line" },
+            { "<leader>cb", mode = "n", desc = "Comment toggle current block" },
+            { "<leader>c", mode = { "n", "o" }, desc = "Comment toggle linewise" },
+            { "<leader>c", mode = "x", desc = "Comment toggle linewise (visual)" },
+            { "<leader>b", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
+            { "<leader>b", mode = "x", desc = "Comment toggle blockwise (visual)" },
+        },
+        opts = function() return require("plugins.configs.comment") end,
+        config = function(_, opts)
+            require("Comment").setup(opts)
+        end,
+  },
     "lambdalisue/suda.vim",
-    "scrooloose/nerdcommenter",
     "startup-nvim/startup.nvim",
 }
 -- vim: shiftwidth=4 tabstop=4
