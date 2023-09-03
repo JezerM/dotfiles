@@ -203,7 +203,10 @@ return {
     -- Utils
     {
         "folke/which-key.nvim",
-        keys = { "<leader>", "<c-r>", '"', "'", "`", "c", "v", "g" },
+        keys = function()
+            local k = { "<leader>", "<c-r>", '"', "'", "`", "c", "v", "g" }
+            return vim.tbl_map(function(v) return { v, mode = { "n", "v" } } end, k)
+        end,
         cmd = "WhichKey",
         opts = function() return require("plugins.configs.which-key") end
     },
