@@ -124,6 +124,17 @@ return {
         ft = "tex",
     },
 
+    -- Databases
+    {
+        "tpope/vim-dadbod",
+    },
+    {
+        "kristijanhusak/vim-dadbod-ui",
+        config = function(_, opts)
+            require("plugins.configs.dadbod-ui")
+        end
+    },
+
     -- Git
     {
         "tpope/vim-fugitive",
@@ -180,7 +191,6 @@ return {
         "leafOfTree/vim-vue-plugin",
         ft = "vue"
     },
-    --"sheerun/vim-polyglot",
     {
         "folke/todo-comments.nvim",
         event = "BufReadPost",
@@ -188,7 +198,6 @@ return {
             require("todo-comments").setup()
         end
     },
-    --"leafgarland/typescript-vim",
     {
         "folke/trouble.nvim",
         cmd = "Trouble",
