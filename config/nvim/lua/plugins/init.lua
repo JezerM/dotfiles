@@ -159,17 +159,14 @@ return {
             "nvim-telescope/telescope-ui-select.nvim",
         },
         cmd = "Telescope",
-        keys = function()
-            local builtin = require("telescope.builtin")
-            return {
-                { "<leader>ff", builtin.find_files, desc = "Find file" },
-                { "<leader>fg", builtin.git_files, desc = "Find git file" },
-                { "<leader>fs", builtin.live_grep, desc = "Search text" },
-                { "<leader>fb", builtin.buffers, desc = "Find buffer" },
-                { "<leader>ft", builtin.treesitter, desc = "Find treesitter symbols" },
-                { "<leader>f ", builtin.builtin, desc = "Show telescope builtins" },
-            }
-        end,
+        keys = {
+            { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find file" },
+            { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Find git file" },
+            { "<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Search text" },
+            { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffer" },
+            { "<leader>ft", "<cmd>Telescope treesitter<cr>", desc = "Find treesitter symbols" },
+            { "<leader>f ", "<cmd>Telescope builtin<cr>", desc = "Show telescope builtins" },
+        },
         opts = function() return require("plugins.configs.telescope") end,
         config = function(_, opts)
             local telescope = require("telescope")
