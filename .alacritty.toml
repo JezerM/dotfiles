@@ -1,0 +1,54 @@
+import = ["~/.config/alacritty/gruvbox.toml"]
+
+[bell]
+animation = "EaseOutExpo"
+color = "#FFFFFF"
+duration = 0
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[cursor.style]
+blinking = "Off"
+shape = "Block"
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+[font]
+builtin_box_drawing = true
+size = 12
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.normal]
+family = "MesloLGSDZ Nerd Font"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 0
+
+[[hints.enabled]]
+command = "open"
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.mouse]
+enabled = true
+mods = "Command"
+
+[mouse]
+leader_mod = "Command"
+
+[window]
+decorations = "buttonless"
+opacity = 1
+option_as_alt = "OnlyLeft"
+
+[window.padding]
+x = 8
+y = 8
