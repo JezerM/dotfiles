@@ -13,6 +13,10 @@ vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 vim.opt.laststatus = 3
 
+-- Undo
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
+
 -- Timeout
 vim.opt.timeout = true
 vim.opt.timeoutlen = 300
