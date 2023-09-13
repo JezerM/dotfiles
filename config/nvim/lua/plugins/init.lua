@@ -65,13 +65,17 @@ return {
     "ellisonleao/gruvbox.nvim",
     "sainnhe/gruvbox-material",
     "sainnhe/everforest",
-    "nkakouros-original/numbers.nvim",
+    {
+        "nkakouros-original/numbers.nvim",
+        opts = function() return require("plugins.configs.numbers") end,
+    },
     {
         "nvim-lualine/lualine.nvim",
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             "arkav/lualine-lsp-progress"
-        }
+        },
+        opts = function() return require("plugins.configs.lualine") end,
     },
     {
         "b0o/incline.nvim",

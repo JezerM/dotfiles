@@ -6,7 +6,7 @@ local function line_count()
     return ":" .. y .. "/" .. lines .. "☰  :" .. ( x + 1 )
 end
 
-require("lualine").setup {
+return {
     options = {
         icons_enabled = true,
         theme = "auto",
