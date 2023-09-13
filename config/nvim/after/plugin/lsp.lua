@@ -19,6 +19,10 @@ vim.diagnostic.config({
 
 --vim.lsp.set_log_level("debug")
 
+local handler_override_config = {
+    border = "rounded",
+}
+
 local on_attach = function(client, bufnr)
     local cmd = vim.api.nvim_buf_create_user_command
     local default_opts = { buffer = bufnr, remap = false, silent = true }
@@ -27,6 +31,13 @@ local on_attach = function(client, bufnr)
     end
 
     require("lazy").load({ plugins = { "telescope.nvim" } })
+
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_override_config)
+
+    vim.lsp.buf.definition = require("telescope.builtin").lsp_definitions
+    vim.lsp.buf.references = require("telescope.builtin").lsp_references
+    vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 
     vim.b.can_format = true
 
@@ -62,17 +73,6 @@ local on_attach = function(client, bufnr)
         })
     end
 end
-
-local handler_override_config = {
-    border = "rounded",
-}
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_override_config)
-
-vim.lsp.buf.definition = require("telescope.builtin").lsp_definitions
-vim.lsp.buf.references = require("telescope.builtin").lsp_references
-vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
 
 function toggle_format_on_save(input)
     if input ~= nil and input.args ~= nil then
