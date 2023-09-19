@@ -9,6 +9,11 @@ vim.keymap.set("v", "<leader>hs", function() gitsigns.stage_hunk({ vim.fn.line("
 vim.keymap.set("v", "<leader>hr", function() gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end ,
     { desc = "Reset hunk" })
 
+vim.keymap.set("n", "<leader>hN", function() gitsigns.prev_hunk() end ,
+    { desc = "Undo stage hunk" })
+vim.keymap.set("n", "<leader>hn", function() gitsigns.next_hunk() end ,
+    { desc = "Undo stage hunk" })
+
 vim.keymap.set("n", "<leader>hu", function() gitsigns.undo_stage_hunk() end ,
     { desc = "Undo stage hunk" })
 vim.keymap.set("n", "<leader>hp", function() gitsigns.preview_hunk() end ,
