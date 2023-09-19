@@ -190,6 +190,24 @@ return {
         end,
     },
 
+    -- Harpoon
+    {
+        "ThePrimeagen/harpoon",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        keys = {
+            { "<leader>la", function() require("harpoon.mark").add_file() end, desc = "Add file to Harpoon" },
+            { "<leader>ll", function() require("harpoon.ui").toggle_quick_menu() end, desc = "Toogle Harpoon menu" },
+            { "<leader>lp", function() require("harpoon.ui").nav_next() end, desc = "Navigate to next file" },
+            { "<leader>lo", function() require("harpoon.ui").nav_prev() end, desc = "Navigate to previous file" },
+            { "<leader>l1", function() require("harpoon.ui").nav_file(1) end, desc = "Navigate to file #1" },
+            { "<leader>l2", function() require("harpoon.ui").nav_file(2) end, desc = "Navigate to file #2" },
+            { "<leader>l3", function() require("harpoon.ui").nav_file(3) end, desc = "Navigate to file #3" },
+            { "<leader>l4", function() require("harpoon.ui").nav_file(4) end, desc = "Navigate to file #4" },
+        }
+    },
+
     -- Syntax
     {
         "leafOfTree/vim-vue-plugin",
