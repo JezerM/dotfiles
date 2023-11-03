@@ -1,4 +1,8 @@
 return {
+    on_startup = {
+        cursorline = true,
+        cursorcolumn = true,
+    },
     always_highlight_number = true,
     never = {
         cursorcolumn = {
