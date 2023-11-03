@@ -193,6 +193,8 @@ lspconfig.omnisharp.setup{
     end
 }
 
+lspconfig.tailwindcss.setup {}
+
 lspconfig.tsserver.setup {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
     on_attach = function(client, bufnr)

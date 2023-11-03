@@ -86,6 +86,9 @@ return {
         "lukas-reineke/indent-blankline.nvim",
         event = "BufReadPre",
         opts = function() return require("plugins.configs.indent-blankline") end,
+        config = function(_, opts)
+            require("ibl").setup(opts)
+        end
     },
 
     -- Lua colors
