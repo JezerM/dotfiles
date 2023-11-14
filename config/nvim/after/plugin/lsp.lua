@@ -281,6 +281,7 @@ local filetypes = {
     javascript = "eslint",
     typescript = "eslint",
     typescriptreact = "eslint",
+    react = "eslint",
     vue = "eslint",
     python = "pylint",
     svelte = "eslint",
@@ -347,6 +348,7 @@ local formatFiletypes = {
     typescript = "prettier",
     typescriptreact = "prettier",
     vue = "prettier",
+    react = "prettier",
     svelte = "prettier",
     php = "phpcbf",
 }
@@ -356,7 +358,7 @@ lspconfig.diagnosticls.setup {
         "c", "html", "css", "javascript",
         "less", "sass",
         "typescript", "typescriptreact",
-        "vue", "python", "svelte", "php",
+        "vue", "python", "svelte", "react", "php",
     },
     init_options = {
         filetypes = filetypes,
