@@ -1,6 +1,9 @@
 return {
     filetypes = {
-        "*",
+        "html", "css", "javascript",
+        "less", "sass",
+        "typescript", "typescriptreact",
+        "vue", "svelte", "react"
     },
     options = {
         RGGBBAA = true,
