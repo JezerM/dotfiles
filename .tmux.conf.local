@@ -365,8 +365,8 @@ set -g mouse on
 #set -g status-keys vi
 #set -g mode-keys vi
 
-# replace C-b by C-a instead of using both prefixes
-# set -gu prefix2
+# replace C-b by C-s instead of using both prefixes
+set -gu prefix2
 unbind C-a
 unbind C-b
 set -g prefix C-s
@@ -376,7 +376,7 @@ bind C-s send-prefix
 # bind c new-window -c '#{pane_current_path}' #!important
 
 # move status line to top
-# set -g status-position bottom
+set -g status-position top
 
 
 # -- tpm -----------------------------------------------------------------------
