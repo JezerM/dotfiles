@@ -68,6 +68,9 @@ local on_attach = function(client, bufnr)
             desc = "Format on file save",
             callback = function()
                 if not vim.b.can_format then return end
+                if client.name == "eslint" then
+                    vim.cmd("EslintFixAll")
+                end
                 vim.lsp.buf.format()
             end
         })
@@ -276,34 +279,9 @@ lspconfig.svelte.setup {
     end
 }
 local filetypes = {
-    html = "eslint",
-    css = "eslint",
-    javascript = "eslint",
-    typescript = "eslint",
-    typescriptreact = "eslint",
-    react = "eslint",
-    vue = "eslint",
     python = "pylint",
-    svelte = "eslint",
 }
 local linters = {
-    eslint = {
-        sourceName = "eslint",
-        command = "eslint_d",
-        rootPatterns = {".eslintrc.js", "package.json"},
-        debounce = 100,
-        args = {"--stdin", "--stdin-filename", "%filepath", "--format", "json"},
-        parseJson = {
-            errorsRoot = "[0].messages",
-            line = "line",
-            column = "column",
-            endLine = "endLine",
-            endColumn = "endColumn",
-            message = "${message} [${ruleId}]",
-            security = "severity"
-        },
-        securities = {[2] = "error", [1] = "warning"}
-    },
     pylint = {
         sourceName = "pylint",
         command = "pylint",
@@ -366,6 +344,13 @@ lspconfig.diagnosticls.setup {
         formatters = formatters,
         formatFiletypes = formatFiletypes
     }
+}
+lspconfig.eslint.setup {
+    on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.hoverProvider = true
+        on_attach(client, bufnr)
+    end
 }
 lspconfig.sqlls.setup{
     cmd = {"sql-language-server", "up", "--method", "stdio"};
@@ -447,14 +432,12 @@ lspconfig.lua_ls.setup {
                 globals = {"vim", "awesome"},
             },
             workspace = {
+                checkThirdParty = false,
                 -- Make the server aware of Neovim runtime files
-                library = vim.tbl_extend(
-                        "keep",
-                        vim.api.nvim_get_runtime_file("", true),
-                        {
-                            "/usr/share/awesome/lib/"
-                        }
-                    ),
+                library = {
+                    vim.env.VIMRUNTIME,
+                    "/usr/share/awesome/lib/"
+                }
             },
             -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {

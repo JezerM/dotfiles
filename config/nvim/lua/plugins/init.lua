@@ -42,6 +42,7 @@ return {
     -- Treesitter
     {
         "nvim-treesitter/nvim-treesitter",
+        event = "BufEnter",
         dependencies = {
             "nvim-treesitter/nvim-treesitter-context",
         },
