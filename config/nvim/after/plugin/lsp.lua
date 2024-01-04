@@ -65,8 +65,9 @@ local on_attach = function(client, bufnr)
         local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
         vim.api.nvim_create_autocmd({"BufWritePre"}, {
             group = LspAutocommands,
+            buffer = bufnr,
             desc = "Format on file save",
-            callback = function()
+            callback = function(ev)
                 if not vim.b.can_format then return end
                 if client.name == "eslint" then
                     vim.cmd("EslintFixAll")
@@ -224,6 +225,20 @@ local function get_typescript_server_path(root_dir)
         or tsserver_path
 end
 
+lspconfig.volar.setup{
+    filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+    init_options = {
+        typescript = {
+            tsdk = tsserver_path,
+            -- Alternative location if installed as root:
+            -- tsdk = '/usr/local/lib/node_modules/typescript/lib'
+        }
+    },
+    on_new_config = function(new_config, new_root_dir)
+        new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
+    end,
+}
+
 lspconfig_configs.volar_api = {
     default_config = {
         cmd = { "vue-language-server", "--stdio" },
@@ -264,13 +279,13 @@ lspconfig_configs.volar_api = {
         },
     },
 }
-lspconfig.volar_api.setup {
-    on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.hoverProvider = true
-        on_attach(client, bufnr)
-    end
-}
+-- lspconfig.volar_api.setup {
+--     on_attach = function(client, bufnr)
+--         client.server_capabilities.documentFormattingProvider = false
+--         client.server_capabilities.hoverProvider = true
+--         on_attach(client, bufnr)
+--     end
+-- }
 lspconfig.svelte.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.document_formatting = false
@@ -340,11 +355,12 @@ lspconfig.diagnosticls.setup {
     },
     init_options = {
         filetypes = filetypes,
-        linters = linters,
+        -- linters = linters,
         formatters = formatters,
         formatFiletypes = formatFiletypes
     }
 }
+
 lspconfig.eslint.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = true
@@ -352,6 +368,7 @@ lspconfig.eslint.setup {
         on_attach(client, bufnr)
     end
 }
+
 lspconfig.sqlls.setup{
     cmd = {"sql-language-server", "up", "--method", "stdio"};
     on_attach = on_attach,
