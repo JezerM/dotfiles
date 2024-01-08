@@ -61,6 +61,9 @@ return {
         opts = function() return require("plugins.configs.treesitter-context") end,
     },
 
+    -- Bigfiles
+    "LunarVim/bigfile.nvim",
+
     -- Themes
     --"morhetz/gruvbox"
     "ellisonleao/gruvbox.nvim",

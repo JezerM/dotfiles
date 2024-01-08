@@ -40,9 +40,6 @@ regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|g
 [hints.enabled.mouse]
 enabled = true
 
-[mouse]
-# leader_mod = "Command"
-
 [window]
 decorations = "buttonless"
 opacity = 1
