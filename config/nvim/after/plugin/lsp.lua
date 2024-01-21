@@ -68,10 +68,7 @@ local on_attach = function(client, bufnr)
             desc = "Format on file save",
             callback = function()
                 if not vim.b.can_format then return end
-                if client.name == "eslint" then
-                    vim.cmd("EslintFixAll")
-                end
-                vim.lsp.buf.format()
+                vim.lsp.buf.format({ bufnr = bufnr })
             end
         })
     end
@@ -201,7 +198,7 @@ lspconfig.tailwindcss.setup {}
 lspconfig.tsserver.setup {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
     on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentFormattingProvider = true
         client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
@@ -278,39 +275,6 @@ lspconfig.svelte.setup {
         on_attach(client, bufnr)
     end
 }
-local filetypes = {
-    python = "pylint",
-}
-local linters = {
-    pylint = {
-        sourceName = "pylint",
-        command = "pylint",
-        args = {
-            "--output-format",
-            "text",
-            "--score",
-            "no",
-            "--msg-template",
-            [['{line}:{column}:{category}:{msg} ({msg_id}:{symbol})']],
-            "%file",
-        },
-        offsetColumn = 1,
-        formatLines = 1,
-        formatPattern = {
-            [[^(\d+?):(\d+?):([a-z]+?):(.*)$]],
-            { line = 1, column = 2, security = 3, message = { "[pylint] ", 4 } },
-        },
-        securities = {
-            informational = "hint",
-            refactor = "info",
-            convention = "info",
-            warning = "warning",
-            error = "error",
-            fatal = "error",
-        },
-        rootPatterns = { ".pylintrc", ".git", "pyproject.toml", "setup.py" },
-    },
-}
 local formatters = {
     prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}},
     clang = {command = "clang-format", args = {"%filepath"}},
@@ -336,11 +300,9 @@ lspconfig.diagnosticls.setup {
         "c", "html", "css", "javascript",
         "less", "sass",
         "typescript", "typescriptreact",
-        "vue", "python", "svelte", "react", "php",
+        "vue",  "svelte", "react", "php",
     },
     init_options = {
-        filetypes = filetypes,
-        linters = linters,
         formatters = formatters,
         formatFiletypes = formatFiletypes
     }
@@ -348,7 +310,7 @@ lspconfig.diagnosticls.setup {
 lspconfig.eslint.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = true
-        client.server_capabilities.hoverProvider = true
+        client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end
 }
