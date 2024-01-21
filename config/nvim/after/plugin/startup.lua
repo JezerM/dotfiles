@@ -3,7 +3,7 @@ require("startup").setup {
     options = {
         after = function()
             vim.opt.fillchars:append { eob = " " }
-            vim.api.nvim_create_autocmd({"BufDelete"}, {
+            vim.api.nvim_create_autocmd({ "BufDelete" }, {
                 buffer = vim.api.nvim_get_current_buf(),
                 callback = function()
                     vim.opt.fillchars:append { eob = "~" }

@@ -24,15 +24,15 @@ local config = {
             height = 0.80,
             preview_cutoff = 120,
         },
-        file_sorter =  sorters.get_fuzzy_file,
-        file_ignore_patterns = { },
-        generic_sorter =  sorters.get_generic_fuzzy_sorter,
+        file_sorter = sorters.get_fuzzy_file,
+        file_ignore_patterns = {},
+        generic_sorter = sorters.get_generic_fuzzy_sorter,
         winblend = 0,
-        border = { },
+        border = {},
         borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
         color_devicons = true,
         use_less = true,
-        path_display = { },
+        path_display = {},
         set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
         file_previewer = previewers.vim_buffer_cat.new,
         grep_previewer = previewers.vim_buffer_vimgrep.new,
@@ -48,10 +48,10 @@ local config = {
             },
         },
     },
-    pickers = { },
+    pickers = {},
     extensions = {
         ["ui-select"] = {
-            require("telescope.themes").get_dropdown { }
+            require("telescope.themes").get_dropdown {}
         }
     },
 }

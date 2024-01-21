@@ -5,5 +5,5 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({
     map_char = { tex = "{" }
 }))
 
-return { }
+return {}
 -- vim: shiftwidth=4 tabstop=4

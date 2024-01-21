@@ -3,15 +3,15 @@ local function line_count()
     local buf = vim.api.nvim_get_current_buf()
     local lines = vim.api.nvim_buf_line_count(buf)
     local y, x = unpack(vim.api.nvim_win_get_cursor(win))
-    return ":" .. y .. "/" .. lines .. "☰  :" .. ( x + 1 )
+    return ":" .. y .. "/" .. lines .. "☰  :" .. (x + 1)
 end
 
 return {
     options = {
         icons_enabled = true,
         theme = "auto",
-        component_separators = { left = "", right = ""},
-        section_separators = { left = "\u{e0c6}", right = "\u{e0c7}"},
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "\u{e0c6}", right = "\u{e0c7}" },
         disabled_filetypes = {},
         always_divide_middle = true,
     },

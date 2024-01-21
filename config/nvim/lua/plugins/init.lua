@@ -24,7 +24,7 @@ return {
             "hrsh7th/cmp-calc",
             "hrsh7th/cmp-cmdline",
             "f3fora/cmp-spell",
-            "ray-x/cmp-treesitter",
+            -- "ray-x/cmp-treesitter",
             "quangnguyen30192/cmp-nvim-ultisnips",
 
             "onsails/lspkind-nvim",
@@ -42,14 +42,13 @@ return {
     -- Treesitter
     {
         "nvim-treesitter/nvim-treesitter",
-        event = "BufEnter",
         dependencies = {
             "nvim-treesitter/nvim-treesitter-context",
         },
         cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
         opts = function() return require("plugins.configs.treesitter") end,
         config = function(_, opts)
-            require("nvim-treesitter.configs").setup(opts)
+            -- require("nvim-treesitter.configs").setup(opts)
         end,
         build = function()
             require("nvim-treesitter.install").update({ with_sync = false })
@@ -183,11 +182,11 @@ return {
         cmd = "Telescope",
         keys = {
             { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find file" },
-            { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Find git file" },
-            { "<leader>fs", "<cmd>Telescope live_grep<cr>", desc = "Search text" },
-            { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffer" },
+            { "<leader>fg", "<cmd>Telescope git_files<cr>",  desc = "Find git file" },
+            { "<leader>fs", "<cmd>Telescope live_grep<cr>",  desc = "Search text" },
+            { "<leader>fb", "<cmd>Telescope buffers<cr>",    desc = "Find buffer" },
             { "<leader>ft", "<cmd>Telescope treesitter<cr>", desc = "Find treesitter symbols" },
-            { "<leader>f ", "<cmd>Telescope builtin<cr>", desc = "Show telescope builtins" },
+            { "<leader>f ", "<cmd>Telescope builtin<cr>",    desc = "Show telescope builtins" },
         },
         opts = function() return require("plugins.configs.telescope") end,
         config = function(_, opts)
@@ -204,14 +203,14 @@ return {
             "nvim-lua/plenary.nvim",
         },
         keys = {
-            { "<leader>la", function() require("harpoon.mark").add_file() end, desc = "Add file to Harpoon" },
+            { "<leader>la", function() require("harpoon.mark").add_file() end,        desc = "Add file to Harpoon" },
             { "<leader>ll", function() require("harpoon.ui").toggle_quick_menu() end, desc = "Toogle Harpoon menu" },
-            { "<leader>lp", function() require("harpoon.ui").nav_next() end, desc = "Navigate to next file" },
-            { "<leader>lo", function() require("harpoon.ui").nav_prev() end, desc = "Navigate to previous file" },
-            { "<leader>l1", function() require("harpoon.ui").nav_file(1) end, desc = "Navigate to file #1" },
-            { "<leader>l2", function() require("harpoon.ui").nav_file(2) end, desc = "Navigate to file #2" },
-            { "<leader>l3", function() require("harpoon.ui").nav_file(3) end, desc = "Navigate to file #3" },
-            { "<leader>l4", function() require("harpoon.ui").nav_file(4) end, desc = "Navigate to file #4" },
+            { "<leader>lp", function() require("harpoon.ui").nav_next() end,          desc = "Navigate to next file" },
+            { "<leader>lo", function() require("harpoon.ui").nav_prev() end,          desc = "Navigate to previous file" },
+            { "<leader>l1", function() require("harpoon.ui").nav_file(1) end,         desc = "Navigate to file #1" },
+            { "<leader>l2", function() require("harpoon.ui").nav_file(2) end,         desc = "Navigate to file #2" },
+            { "<leader>l3", function() require("harpoon.ui").nav_file(3) end,         desc = "Navigate to file #3" },
+            { "<leader>l4", function() require("harpoon.ui").nav_file(4) end,         desc = "Navigate to file #4" },
         }
     },
 
@@ -223,7 +222,7 @@ return {
     {
         "folke/todo-comments.nvim",
         event = "BufReadPost",
-        config = function (_)
+        config = function(_)
             require("todo-comments").setup()
         end
     },
@@ -262,18 +261,18 @@ return {
     {
         "numToStr/Comment.nvim",
         keys = {
-            { "<leader>cc", mode = "n", desc = "Comment toggle current line" },
-            { "<leader>cb", mode = "n", desc = "Comment toggle current block" },
-            { "<leader>c", mode = { "n", "o" }, desc = "Comment toggle linewise" },
-            { "<leader>c", mode = "x", desc = "Comment toggle linewise (visual)" },
-            { "<leader>b", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
-            { "<leader>b", mode = "x", desc = "Comment toggle blockwise (visual)" },
+            { "<leader>cc", mode = "n",          desc = "Comment toggle current line" },
+            { "<leader>cb", mode = "n",          desc = "Comment toggle current block" },
+            { "<leader>c",  mode = { "n", "o" }, desc = "Comment toggle linewise" },
+            { "<leader>c",  mode = "x",          desc = "Comment toggle linewise (visual)" },
+            { "<leader>b",  mode = { "n", "o" }, desc = "Comment toggle blockwise" },
+            { "<leader>b",  mode = "x",          desc = "Comment toggle blockwise (visual)" },
         },
         opts = function() return require("plugins.configs.comment") end,
         config = function(_, opts)
             require("Comment").setup(opts)
         end,
-  },
+    },
     "lambdalisue/suda.vim",
     "startup-nvim/startup.nvim",
 }

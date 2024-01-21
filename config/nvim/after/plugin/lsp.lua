@@ -33,7 +33,8 @@ local on_attach = function(client, bufnr)
     require("lazy").load({ plugins = { "telescope.nvim" } })
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_override_config)
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help,
+        handler_override_config)
 
     vim.lsp.buf.definition = require("telescope.builtin").lsp_definitions
     vim.lsp.buf.references = require("telescope.builtin").lsp_references
@@ -42,10 +43,10 @@ local on_attach = function(client, bufnr)
     vim.b.can_format = true
 
     cmd(bufnr, "LspToggleFormat", function(input) toggle_format_on_save(input) end,
-    {
-        complete = function() return {"enable", "disable"} end,
-        nargs = "?",
-    })
+        {
+            complete = function() return { "enable", "disable" } end,
+            nargs = "?",
+        })
 
     if client.server_capabilities.hoverProvider then
         map("n", "K", function() vim.lsp.buf.hover() end, { desc = "Hover symbol" })
@@ -63,7 +64,7 @@ local on_attach = function(client, bufnr)
 
     if client.server_capabilities.documentFormattingProvider then
         local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
-        vim.api.nvim_create_autocmd({"BufWritePre"}, {
+        vim.api.nvim_create_autocmd({ "BufWritePre" }, {
             group = LspAutocommands,
             buffer = bufnr,
             desc = "Format on file save",
@@ -117,7 +118,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.cssls.setup {
-    cmd = {"vscode-css-language-server", "--stdio"},
+    cmd = { "vscode-css-language-server", "--stdio" },
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
@@ -145,7 +146,7 @@ lspconfig.html.setup {
         on_attach(client, bufnr)
     end
 }
-lspconfig.yamlls.setup { }
+lspconfig.yamlls.setup {}
 lspconfig.taplo.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
@@ -165,21 +166,26 @@ lspconfig.texlab.setup {
 local pid = vim.fn.getpid()
 
 local function file_exists(name)
-   local f = io.open(name,"r")
-   if f ~= nil then io.close(f) return true else return false end
+    local f = io.open(name, "r")
+    if f ~= nil then
+        io.close(f)
+        return true
+    else
+        return false
+    end
 end
 
 local omnisharp_mono_bin = os.getenv("HOME") .. "/.local/bin/OmniSharpMono/OmniSharp.exe"
 local omnisharp_net_bin = os.getenv("HOME") .. "/.local/bin/OmniSharp/OmniSharp.dll"
 
-local omnisharp_bin = { }
+local omnisharp_bin = {}
 if file_exists(omnisharp_net_bin) then
     omnisharp_bin = { "dotnet", omnisharp_net_bin }
 elseif file_exists(omnisharp_mono_bin) then
     omnisharp_bin = { "mono", omnisharp_mono_bin }
 end
 
-lspconfig.omnisharp.setup{
+lspconfig.omnisharp.setup {
     use_mono = true,
     cmd = vim.tbl_extend(
         "keep",
@@ -205,11 +211,11 @@ lspconfig.tsserver.setup {
     end
 }
 --lspconfig.vuels.setup {
-    --on_attach = function(client, bufnr)
-        --client.server_capabilities.documentFormattingProvider = false
-        --client.server_capabilities.hoverProvider = true
-        --on_attach(client, bufnr)
-    --end
+--on_attach = function(client, bufnr)
+--client.server_capabilities.documentFormattingProvider = false
+--client.server_capabilities.hoverProvider = true
+--on_attach(client, bufnr)
+--end
 --}
 local tsserver_path = "/usr/lib/node_modules/typescript/lib/tsserverlibrary.js"
 if (vim.fn.has("mac")) then
@@ -218,12 +224,12 @@ end
 
 local function get_typescript_server_path(root_dir)
     local project_root = lspconfig_util.find_node_modules_ancestor(root_dir)
-    return project_root and (lspconfig_util.path.join(project_root, 'node_modules', 'typescript', 'lib'))
+    return project_root and (lspconfig_util.path.join(project_root, "node_modules", "typescript", "lib"))
         or tsserver_path
 end
 
-lspconfig.volar.setup{
-    filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+lspconfig.volar.setup {
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
     init_options = {
         typescript = {
             tsdk = tsserver_path,
@@ -241,18 +247,18 @@ lspconfig_configs.volar_api = {
         cmd = { "vue-language-server", "--stdio" },
         root_dir = lspconfig_util.root_pattern("package.json"),
         on_new_config = function(new_config, new_root_dir)
-          if
-            new_config.init_options
-            and new_config.init_options.typescript
-            and new_config.init_options.typescript.tsdk == ''
-          then
-            new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
-          end
+            if
+                new_config.init_options
+                and new_config.init_options.typescript
+                and new_config.init_options.typescript.tsdk == ""
+            then
+                new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
+            end
         end,
         filetypes = { "vue" },
         init_options = {
             typescript = {
-                tsdk = ''
+                tsdk = ""
             },
             languageFeatures = {
                 implementation = true, -- new in @volar/vue-language-server v0.33
@@ -267,8 +273,8 @@ lspconfig_configs.volar_api = {
                 codeAction = true,
                 workspaceSymbol = true,
                 completion = {
-                    defaultTagNameCase = 'both',
-                    defaultAttrNameCase = 'kebabCase',
+                    defaultTagNameCase = "both",
+                    defaultAttrNameCase = "kebabCase",
                     getDocumentNameCasesRequest = false,
                     getDocumentSelectionRequest = false,
                 },
@@ -291,9 +297,9 @@ lspconfig.svelte.setup {
     end
 }
 local formatters = {
-    prettier = {command = "prettier", args = {"--stdin-filepath", "%filepath"}},
-    clang = {command = "clang-format", args = {"%filepath"}},
-    phpcbf = {command = "phpcbf", args = {"-"}, isStdout = true, ignoreExitCode = true, }
+    prettier = { command = "prettier", args = { "--stdin-filepath", "%filepath" } },
+    clang = { command = "clang-format", args = { "%filepath" } },
+    phpcbf = { command = "phpcbf", args = { "-" }, isStdout = true, ignoreExitCode = true, }
 }
 local formatFiletypes = {
     c = "clang",
@@ -315,7 +321,7 @@ lspconfig.diagnosticls.setup {
         "c", "html", "css", "javascript",
         "less", "sass",
         "typescript", "typescriptreact",
-        "vue",  "svelte", "react", "php",
+        "vue", "svelte", "react", "php",
     },
     init_options = {
         formatters = formatters,
@@ -329,8 +335,8 @@ lspconfig.eslint.setup {
         on_attach(client, bufnr)
     end
 }
-lspconfig.sqlls.setup{
-    cmd = {"sql-language-server", "up", "--method", "stdio"};
+lspconfig.sqlls.setup {
+    cmd = { "sql-language-server", "up", "--method", "stdio" },
     on_attach = on_attach,
 }
 
@@ -341,7 +347,7 @@ lspconfig.rust_analyzer.setup {
         on_attach(client, bufnr)
     end
 }
-lspconfig.sourcekit.setup{
+lspconfig.sourcekit.setup {
     cmd = { "/Library/Developer/CommandLineTools/usr/bin/sourcekit-lsp" },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
@@ -366,7 +372,7 @@ lspconfig.phpactor.setup {
         on_attach(client, bufnr)
     end
 }
-lspconfig.jdtls.setup{
+lspconfig.jdtls.setup {
     cmd = { "jdtls" },
     settings = {
         java = {
@@ -388,7 +394,7 @@ lspconfig.jdtls.setup{
    [    end,
    [}
    ]]
-lspconfig.dockerls.setup{
+lspconfig.dockerls.setup {
     cmd = { "docker-langserver", "--stdio" },
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
@@ -406,7 +412,7 @@ lspconfig.lua_ls.setup {
             },
             diagnostics = {
                 -- Get the language server to recognize the `vim` global
-                globals = {"vim", "awesome"},
+                globals = { "vim", "awesome" },
             },
             workspace = {
                 checkThirdParty = false,
@@ -423,7 +429,7 @@ lspconfig.lua_ls.setup {
         },
     },
     on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentFormattingProvider = true
         client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
