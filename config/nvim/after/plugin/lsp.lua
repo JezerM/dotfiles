@@ -23,6 +23,8 @@ local handler_override_config = {
     border = "rounded",
 }
 
+local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
+
 local on_attach = function(client, bufnr)
     local cmd = vim.api.nvim_buf_create_user_command
     local default_opts = { buffer = bufnr, remap = false, silent = true }
@@ -63,14 +65,13 @@ local on_attach = function(client, bufnr)
     --require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
     if client.server_capabilities.documentFormattingProvider then
-        local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
         vim.api.nvim_create_autocmd({ "BufWritePre" }, {
             group = LspAutocommands,
             buffer = bufnr,
-            desc = "Format on file save",
+            desc = ("Format on file save (" .. client.name .. ")"),
             callback = function()
                 if not vim.b.can_format then return end
-                vim.lsp.buf.format({ bufnr = bufnr })
+                vim.lsp.buf.format()
             end
         })
     end
@@ -205,7 +206,7 @@ lspconfig.tailwindcss.setup {}
 lspconfig.tsserver.setup {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
     on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.hoverProvider = true
         on_attach(client, bufnr)
     end
@@ -316,12 +317,16 @@ local formatFiletypes = {
     php = "phpcbf",
 }
 lspconfig.diagnosticls.setup {
-    on_attach = on_attach,
+    on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.hoverProvider = false
+        on_attach(client, bufnr)
+    end,
     filetypes = {
         "c", "html", "css", "javascript",
         "less", "sass",
         "typescript", "typescriptreact",
-        "vue", "svelte", "react", "php",
+        "vue", "react", "php",
     },
     init_options = {
         formatters = formatters,
@@ -329,8 +334,9 @@ lspconfig.diagnosticls.setup {
     }
 }
 lspconfig.eslint.setup {
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "astro" },
     on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = true
+        client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.hoverProvider = false
         on_attach(client, bufnr)
     end
