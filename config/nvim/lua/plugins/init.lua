@@ -48,7 +48,7 @@ return {
         cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
         opts = function() return require("plugins.configs.treesitter") end,
         config = function(_, opts)
-            -- require("nvim-treesitter.configs").setup(opts)
+            require("nvim-treesitter.configs").setup(opts)
         end,
         build = function()
             require("nvim-treesitter.install").update({ with_sync = false })
@@ -96,11 +96,18 @@ return {
 
     -- Lua colors
     {
-        "norcalli/nvim-colorizer.lua",
+        "NvChad/nvim-colorizer.lua",
         event = "BufReadPre",
-        opts = function() return require("plugins.configs.colorizer") end,
         config = function(_, opts)
-            require("colorizer").setup(opts.filetypes, opts.options)
+            require("colorizer").setup({
+                user_default_options = {
+                    rgb_fn = true,
+                    hsl_fn = true,
+                    tailwind = "lsp",
+                    always_update = true,
+                    names = false,
+                }
+            })
         end
     },
 

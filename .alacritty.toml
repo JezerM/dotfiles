@@ -41,7 +41,7 @@ regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|g
 enabled = true
 
 [window]
-decorations = "buttonless"
+decorations = "Buttonless"
 opacity = 1
 option_as_alt = "OnlyLeft"
 
