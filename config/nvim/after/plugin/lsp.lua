@@ -25,7 +25,20 @@ local handler_override_config = {
 
 local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
 
-local on_attach = function(client, bufnr)
+local function toggle_format_on_save(input)
+    if input ~= nil and input.args ~= nil then
+        if input.args == "enable" then
+            vim.b.can_format = true
+        elseif input.args == "disable" then
+            vim.b.can_format = false
+        end
+    end
+
+    vim.b.can_format = not vim.b.can_format
+    print("Can format file on save:", vim.b.can_format)
+end
+
+local function on_attach(client, bufnr)
     local cmd = vim.api.nvim_buf_create_user_command
     local default_opts = { buffer = bufnr, remap = false, silent = true }
     local function map(mode, key, command, opts)
@@ -62,8 +75,6 @@ local on_attach = function(client, bufnr)
     map("n", "]d", function() vim.diagnostic.goto_next() end, { desc = "Next diagnostic" })
     map("n", "<Leader>vtf", function() toggle_format_on_save() end, { desc = "Toggle format on save" })
 
-    --require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-
     if client.server_capabilities.documentFormattingProvider then
         vim.api.nvim_create_autocmd({ "BufWritePre" }, {
             group = LspAutocommands,
@@ -75,19 +86,6 @@ local on_attach = function(client, bufnr)
             end
         })
     end
-end
-
-function toggle_format_on_save(input)
-    if input ~= nil and input.args ~= nil then
-        if input.args == "enable" then
-            vim.b.can_format = true
-        elseif input.args == "disable" then
-            vim.b.can_format = false
-        end
-    end
-
-    vim.b.can_format = not vim.b.can_format
-    print("Can format file on save:", vim.b.can_format)
 end
 
 lspconfig.clangd.setup {
@@ -211,13 +209,6 @@ lspconfig.tsserver.setup {
         on_attach(client, bufnr)
     end
 }
---lspconfig.vuels.setup {
---on_attach = function(client, bufnr)
---client.server_capabilities.documentFormattingProvider = false
---client.server_capabilities.hoverProvider = true
---on_attach(client, bufnr)
---end
---}
 local tsserver_path = "/usr/lib/node_modules/typescript/lib/tsserverlibrary.js"
 if (vim.fn.has("mac")) then
     tsserver_path = "/opt/homebrew/lib/node_modules/typescript/lib/tsserverlibrary.js"
@@ -242,54 +233,6 @@ lspconfig.volar.setup {
         new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
     end,
 }
-
-lspconfig_configs.volar_api = {
-    default_config = {
-        cmd = { "vue-language-server", "--stdio" },
-        root_dir = lspconfig_util.root_pattern("package.json"),
-        on_new_config = function(new_config, new_root_dir)
-            if
-                new_config.init_options
-                and new_config.init_options.typescript
-                and new_config.init_options.typescript.tsdk == ""
-            then
-                new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
-            end
-        end,
-        filetypes = { "vue" },
-        init_options = {
-            typescript = {
-                tsdk = ""
-            },
-            languageFeatures = {
-                implementation = true, -- new in @volar/vue-language-server v0.33
-                references = true,
-                definition = true,
-                typeDefinition = true,
-                callHierarchy = true,
-                hover = true,
-                rename = true,
-                renameFileRefactoring = true,
-                signatureHelp = true,
-                codeAction = true,
-                workspaceSymbol = true,
-                completion = {
-                    defaultTagNameCase = "both",
-                    defaultAttrNameCase = "kebabCase",
-                    getDocumentNameCasesRequest = false,
-                    getDocumentSelectionRequest = false,
-                },
-            }
-        },
-    },
-}
--- lspconfig.volar_api.setup {
---     on_attach = function(client, bufnr)
---         client.server_capabilities.documentFormattingProvider = false
---         client.server_capabilities.hoverProvider = true
---         on_attach(client, bufnr)
---     end
--- }
 lspconfig.svelte.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.document_formatting = false
@@ -391,15 +334,13 @@ lspconfig.jdtls.setup {
         on_attach(client, bufnr)
     end
 }
---[[
-   [lspconfig.kotlin_language_server.setup{
-   [    on_attach = function(client, bufnr)
-   [        client.server_capabilities.document_formatting = false
-   [        client.server_capabilities.hover = false
-   [        on_attach(client, bufnr)
-   [    end,
-   [}
-   ]]
+lspconfig.kotlin_language_server.setup {
+    on_attach = function(client, bufnr)
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.hover = false
+        on_attach(client, bufnr)
+    end,
+}
 lspconfig.dockerls.setup {
     cmd = { "docker-langserver", "--stdio" },
     on_attach = function(client, bufnr)
