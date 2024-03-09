@@ -45,9 +45,11 @@ local options = {
     window = {
         completion = cmp.config.window.bordered({
             winhighlight = 'NormalFloat:NormalFloat,FloatBorder:FloatBorder,CursorLine:DiffText',
+            border = "rounded"
         }),
         documentation = cmp.config.window.bordered({
             winhighlight = 'NormalFloat:NormalFloat,FloatBorder:FloatBorder',
+            border = "rounded",
         }),
     },
     view = {

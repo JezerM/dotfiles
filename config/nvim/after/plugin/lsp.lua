@@ -21,6 +21,8 @@ vim.diagnostic.config({
 
 local handler_override_config = {
     border = "rounded",
+    style = "minimal",
+    focusable = true,
 }
 
 local LspAutocommands = vim.api.nvim_create_augroup("LspAutocommands", {})
