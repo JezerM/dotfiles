@@ -6,6 +6,15 @@ local function line_count()
     return ":" .. y .. "/" .. lines .. "☰  :" .. (x + 1)
 end
 
+require("lsp-progress").setup {}
+
+vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+    group = "lualine_augroup",
+    pattern = "LspProgressStatusUpdated",
+    callback = require("lualine").refresh,
+})
+
 return {
     options = {
         icons_enabled = true,
@@ -23,7 +32,7 @@ return {
                 "filename",
                 path = 1,
             },
-            "lsp_progress"
+            require("lsp-progress").progress,
         },
         lualine_x = {
             {
