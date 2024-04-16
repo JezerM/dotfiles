@@ -1,5 +1,4 @@
 local lspconfig = require "lspconfig"
-local lspconfig_configs = require "lspconfig.configs"
 local lspconfig_util = require "lspconfig.util"
 
 require("lspconfig.ui.windows").default_options.border = "rounded"
@@ -234,6 +233,11 @@ lspconfig.volar.setup {
     on_new_config = function(new_config, new_root_dir)
         new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
     end,
+    on_attach = function(client, bufnr)
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.hover = true
+        on_attach(client, bufnr)
+    end
 }
 lspconfig.svelte.setup {
     on_attach = function(client, bufnr)
