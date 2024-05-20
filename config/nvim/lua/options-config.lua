@@ -59,7 +59,7 @@ vim.g.vimtex_quickfix_mode = 0
 vim.g.tex_conceal = "abdmg"
 
 -- UltiSnips
-vim.g.UltiSnipsSnippetDirectories = {"config/nvim/UltiSnips/", "UltiSnips"}
+vim.g.UltiSnipsSnippetDirectories = { "config/nvim/UltiSnips/", "UltiSnips" }
 vim.g.UltiSnipsExpandTrigger = "<tab>"
 vim.g.UltiSnipsJumpForwardTrigger = "<tab>"
 vim.g.UltiSnipsJumpBackwardTrigger = "<s-tab>"
@@ -95,8 +95,8 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 --local sign_icons = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
 local sign_numhl = { Error = "TSDanger", Warn = "TSWarning", Hint = "TSTodo", Info = "TSNote" }
 for type, numhl in pairs(sign_numhl) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = "", texthl = hl, numhl = numhl })
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = "", texthl = hl, numhl = numhl })
 end
 
 -- vim: shiftwidth=4 tabstop=4
