@@ -1,32 +1,31 @@
 #!/bin/zsh
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
+ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+source "${ZINIT_HOME}/zinit.zsh"
+
+zi light zsh-users/zsh-completions
+zi light zsh-users/zsh-autosuggestions
+zi light zsh-users/zsh-syntax-highlighting
+
+zi light lukechilds/zsh-better-npm-completion
+zi light zsh-users/zsh-history-substring-search
+
+zi snippet PZTM::completion
+zi snippet PZTM::history
+zi snippet PZTM::directory
+zi snippet PZTM::history-substring-search
 
 zi snippet OMZP::git
 zi snippet OMZP::brew
-
-export LS_COLORS=" "
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
-
-zinit ice blockf
-zi snippet PZTM::completion
-
-zi snippet PZTM::history
-zi snippet PZTM::directory
-
-zi light lukechilds/zsh-better-npm-completion
-zi light zsh-users/zsh-completions
+zi snippet OMZP::sudo
 
 zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
 zinit light g-plane/pnpm-shell-completion
-
-zi light zsh-users/zsh-history-substring-search
-zi snippet PZTM::history-substring-search
-
-zi ice as"completion"
-zi snippet OMZP::docker/_docker
 
 zi ice as"completion"
 zi snippet OMZP::fd/_fd
@@ -37,30 +36,27 @@ zi snippet OMZP::ripgrep/_ripgrep
 zinit ice blockf completions
 zi light rust-zinit
 
+if type vivid &> /dev/null
+then
+  export LS_COLORS="$(vivid generate gruvbox)"
+fi
+
 if type brew &>/dev/null
 then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-  autoload -Uz compinit
-  compinit
 fi
-
-ls -G . &>/dev/null && alias ls='ls -G'
 
 bindkey -v
 
-alias libreoffice="/Applications/LibreOffice.app/Contents/MacOS/soffice"
-alias playit="/Applications/playit.app/Contents/MacOS/playit"
-
-function docxtopdf() {
-  libreoffice --headless --convert-to pdf --outdir . $1
-}
-
+source ~/.zsh-syntax
 source ~/.profile
+source ~/.zsh-alias
 
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.2.2
+
+autoload -Uz compinit && compinit
 
 eval "$(starship init zsh)"
 

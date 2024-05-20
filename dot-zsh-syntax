@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+typeset -A ZSH_HIGHLIGHT_STYLES
+
+ZSH_HIGHLIGHT_STYLES[command]="none"
+ZSH_HIGHLIGHT_STYLES[function]="none"
+ZSH_HIGHLIGHT_STYLES[alias]="none"
+ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=9"
+ZSH_HIGHLIGHT_STYLES[path]="none"
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=12"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=12"

@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+alias ls="gls --color"
+alias ll="gls --color -l"
+alias clifm="clifm --lscolors"
+
+alias libreoffice="/Applications/LibreOffice.app/Contents/MacOS/soffice"
+alias playit="/Applications/playit.app/Contents/MacOS/playit"
+
+function docxtopdf() {
+  libreoffice --headless --convert-to pdf --outdir . $1
+}
+

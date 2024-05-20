@@ -11,6 +11,7 @@ These are my dotfiles.
 | [Alacritty][alacritty]  | :heavy_check_mark: | A fast terminal emulator |
 | [Neovim][nvim]     | :heavy_check_mark: | Nice editor |
 | [zsh][zsh] with [zinit][zinit] |  | Z shell and ZSH plugin manager |
+| [vivid][vivid] |  | LS_COLORS generator |
 
 ## Install
 
@@ -25,3 +26,4 @@ stow --dotfiles .
 [zsh]: https://www.zsh.org/
 [zinit]: https://github.com/zdharma-continuum/zinit
 [stow]: https://www.gnu.org/software/stow/manual/
+[vivid]: https://github.com/sharkdp/vivid
