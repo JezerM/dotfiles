@@ -76,6 +76,10 @@ local function on_attach(client, bufnr)
     map("n", "]d", function() vim.diagnostic.goto_next() end, { desc = "Next diagnostic" })
     map("n", "<Leader>vtf", function() toggle_format_on_save() end, { desc = "Toggle format on save" })
 
+    if client.server_capabilities.inlayHintProvider then
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
+
     if client.server_capabilities.documentFormattingProvider then
         vim.api.nvim_create_autocmd({ "BufWritePre" }, {
             group = LspAutocommands,
