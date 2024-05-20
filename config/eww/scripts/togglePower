@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-state=$(eww windows | grep "power")
-
-if [ "$state" == "*power" ]; then
-  eww close power
-else
-  eww open power
-fi
