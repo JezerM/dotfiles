@@ -1,5 +1,8 @@
 import = ["~/.config/alacritty/gruvbox.toml"]
 
+[shell]
+program = "/opt/homebrew/bin/tmux"
+
 [bell]
 animation = "EaseOutExpo"
 color = "#FFFFFF"

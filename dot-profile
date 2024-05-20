@@ -15,3 +15,5 @@ export COMPOSER_BIN="/Users/jezerm/.composer/vendor/bin"
 export PATH="$COMPOSER_BIN:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/lib/ruby/gems/3.2.0/bin/:$PATH"
+
+set HOMEBREW_NO_AUTO_UPDATE

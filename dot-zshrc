@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
@@ -16,6 +18,9 @@ zi snippet PZTM::directory
 
 zi light lukechilds/zsh-better-npm-completion
 zi light zsh-users/zsh-completions
+
+zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
+zinit light g-plane/pnpm-shell-completion
 
 zi light zsh-users/zsh-history-substring-search
 zi snippet PZTM::history-substring-search
@@ -52,4 +57,13 @@ function docxtopdf() {
 }
 
 source ~/.profile
+
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.2.2
+
 eval "$(starship init zsh)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
