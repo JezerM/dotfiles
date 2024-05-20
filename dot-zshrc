@@ -39,6 +39,7 @@ zi light rust-zinit
 if type vivid &> /dev/null
 then
   export LS_COLORS="$(vivid generate gruvbox)"
+  zstyle ":completion:*" list-colors "${LS_COLORS}"
 fi
 
 if type brew &>/dev/null
