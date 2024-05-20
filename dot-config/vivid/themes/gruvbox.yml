@@ -43,7 +43,7 @@ core:
   reset_to_normal: {}
 
   directory:
-    foreground: alt_purple
+    foreground: alt_aqua
     font-style: bold
 
   symlink:
@@ -122,7 +122,7 @@ text:
     font-style: italic
 
   configuration:
-    foreground: alt_yellow
+    foreground: alt_orange
 
   other:
     foreground: fg
@@ -132,7 +132,7 @@ markup:
 
 programming:
   source:
-    foreground: green
+    foreground: alt_blue
 
   tooling:
     foreground: alt_green
@@ -142,10 +142,10 @@ programming:
       foreground: alt_blue
 
 media:
-  foreground: aqua
+  foreground: purple
 
   video:
-    foreground: alt_aqua
+    foreground: alt_purple
 
 office:
   foreground: alt_blue
