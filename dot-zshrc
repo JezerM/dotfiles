@@ -24,6 +24,9 @@ zi snippet OMZP::git
 zi snippet OMZP::brew
 zi snippet OMZP::sudo
 
+# Load completions
+autoload -Uz compinit && compinit
+
 zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
 zinit light g-plane/pnpm-shell-completion
 
@@ -57,7 +60,7 @@ source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.2.2
 
-autoload -Uz compinit && compinit
+zinit cdreplay -q
 
 eval "$(starship init zsh)"
 
