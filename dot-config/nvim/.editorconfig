@@ -1,3 +1,4 @@
 [*.lua]
 quote_style = double
 table_separator_style = comma
+indent_size = 4

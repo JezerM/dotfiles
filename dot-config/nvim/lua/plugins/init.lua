@@ -9,7 +9,11 @@ return {
                 opts = function() return require("plugins.configs.lsp-signature") end
             },
             "b0o/schemastore.nvim",
-        }
+            "creativenull/efmls-configs-nvim",
+        },
+        config = function()
+            require("plugins.lsp.init")
+        end
     },
 
     -- Completion

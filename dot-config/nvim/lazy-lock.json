@@ -9,6 +9,7 @@
   "cmp-nvim-ultisnips": { "branch": "main", "commit": "24bca5c3e137b28cd87442d4fc51a2b312dd99cc" },
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp-spell": { "branch": "master", "commit": "694a4e50809d6d645c1ea29015dad0c293f019d6" },
+  "efmls-configs-nvim": { "branch": "main", "commit": "eb2be5b24dbf7200a80bcd5c64bc63afbc8ae86f" },
   "emmet-vim": { "branch": "master", "commit": "def5d57a1ae5afb1b96ebe83c4652d1c03640f4d" },
   "everforest": { "branch": "master", "commit": "bb482c354872cccb56f83e843caf3e5d33f89a24" },
   "gitsigns.nvim": { "branch": "main", "commit": "805610a9393fa231f2c2b49cb521bfa413fadb3d" },
