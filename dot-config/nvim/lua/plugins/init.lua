@@ -46,6 +46,7 @@ return {
             "nvim-treesitter/nvim-treesitter-context",
         },
         cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+        event = "BufEnter",
         opts = function() return require("plugins.configs.treesitter") end,
         config = function(_, opts)
             require("nvim-treesitter.configs").setup(opts)
@@ -64,10 +65,10 @@ return {
     "LunarVim/bigfile.nvim",
 
     -- Themes
-    --"morhetz/gruvbox"
-    "ellisonleao/gruvbox.nvim",
+    -- "morhetz/gruvbox"
+    -- "ellisonleao/gruvbox.nvim",
     "sainnhe/gruvbox-material",
-    "sainnhe/everforest",
+    -- "sainnhe/everforest",
     {
         "nkakouros-original/numbers.nvim",
         opts = function() return require("plugins.configs.numbers") end,
