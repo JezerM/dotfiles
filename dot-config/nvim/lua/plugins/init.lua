@@ -2,7 +2,6 @@ return {
     -- LSP
     {
         "neovim/nvim-lspconfig",
-        event = "BufEnter",
         dependencies = {
             {
                 "ray-x/lsp_signature.nvim",
@@ -11,9 +10,6 @@ return {
             "b0o/schemastore.nvim",
             "creativenull/efmls-configs-nvim",
         },
-        config = function()
-            require("plugins.lsp.init")
-        end
     },
 
     -- Completion
