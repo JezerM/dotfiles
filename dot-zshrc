@@ -39,11 +39,17 @@ zi snippet OMZP::ripgrep/_ripgrep
 zinit ice blockf completions
 zi light rust-zinit
 
+zinit light Aloxaf/fzf-tab
+
 if type vivid &> /dev/null
 then
   export LS_COLORS="$(vivid generate gruvbox)"
-  zstyle ":completion:*" list-colors "${LS_COLORS}"
+  zstyle ":completion:*" list-colors ${(s.:.)LS_COLORS}
 fi
+
+zstyle ":completion:*" menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 if type brew &>/dev/null
 then
@@ -63,6 +69,8 @@ chruby ruby-3.2.2
 zinit cdreplay -q
 
 eval "$(starship init zsh)"
+eval "$(fzf --zsh)"
+eval "$(zoxide init zsh --cmd=zz)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
