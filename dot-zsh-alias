@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-alias ls="gls --color"
-alias ll="gls --color -l"
+alias ls="ls --color"
+alias ll="ls --color -l"
 alias clifm="clifm --lscolors"
 
 alias libreoffice="/Applications/LibreOffice.app/Contents/MacOS/soffice"

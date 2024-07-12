@@ -36,9 +36,6 @@ zi snippet OMZP::fd/_fd
 zi ice as"completion"
 zi snippet OMZP::ripgrep/_ripgrep
 
-zinit ice blockf completions
-zi light rust-zinit
-
 zinit light Aloxaf/fzf-tab
 
 if type vivid &> /dev/null
@@ -62,8 +59,14 @@ source ~/.zsh-syntax
 source ~/.profile
 source ~/.zsh-alias
 
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+if type brew &>/dev/null
+then
+  source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+  source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+else
+  source /usr/local/share/chruby/chruby.sh
+  source /usr/local/share/chruby/auto.sh
+fi
 chruby ruby-3.2.2
 
 zinit cdreplay -q
