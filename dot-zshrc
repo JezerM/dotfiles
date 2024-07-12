@@ -56,7 +56,6 @@ fi
 bindkey -v
 
 source ~/.zsh-syntax
-source ~/.profile
 source ~/.zsh-alias
 
 if type brew &>/dev/null
