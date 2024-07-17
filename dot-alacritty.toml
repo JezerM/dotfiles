@@ -1,7 +1,8 @@
 import = ["~/.config/alacritty/gruvbox.toml"]
 
 [shell]
-program = "/opt/homebrew/bin/tmux"
+program = "zsh"
+args = ["-c", "zsh ~/.local/bin/tmux-chooser.sh"]
 
 [bell]
 animation = "EaseOutExpo"
@@ -21,7 +22,7 @@ WINIT_X11_SCALE_FACTOR = "1.0"
 
 [font]
 builtin_box_drawing = true
-size = 12
+size = 14
 
 [font.glyph_offset]
 x = 0
