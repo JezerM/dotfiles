@@ -93,9 +93,15 @@ function lib.on_attach(client, bufnr)
     end
 end
 
-local tsserver_path = "/usr/lib/node_modules/typescript/lib/tsserverlibrary.js"
+local node_modules_path = "/usr/lib/node_modules"
 if (vim.fn.has("mac")) then
-    tsserver_path = "/opt/homebrew/lib/node_modules/typescript/lib/tsserverlibrary.js"
+    node_modules_path = "/opt/homebrew/lib/node_modules"
+end
+
+local tsserver_path = node_modules_path .. "/typescript/lib/tsserverlibrary.js"
+
+function lib.get_global_node_modules()
+    return node_modules_path
 end
 
 function lib.get_typescript_server_path(root_dir)
