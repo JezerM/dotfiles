@@ -8,7 +8,6 @@ fi
 
 source "${ZINIT_HOME}/zinit.zsh"
 
-zi light zsh-users/zsh-completions
 zi light zsh-users/zsh-autosuggestions
 zi light zsh-users/zsh-syntax-highlighting
 
@@ -24,8 +23,9 @@ zi snippet OMZP::git
 zi snippet OMZP::brew
 zi snippet OMZP::sudo
 
-# Load completions
-autoload -Uz compinit && compinit
+export NVM_COMPLETION=true
+export NVM_SYMLINK_CURRENT="true"
+zinit wait lucid light-mode for lukechilds/zsh-nvm
 
 zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
 zinit light g-plane/pnpm-shell-completion
@@ -37,6 +37,9 @@ zi ice as"completion"
 zi snippet OMZP::ripgrep/_ripgrep
 
 zinit light Aloxaf/fzf-tab
+
+zi wait lucid atload"zicompinit; zicdreplay" blockf for \
+  zsh-users/zsh-completions
 
 if type vivid &> /dev/null
 then
@@ -68,12 +71,6 @@ else
 fi
 chruby ruby-3.2.2
 
-zinit cdreplay -q
-
 eval "$(starship init zsh)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd=zz)"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
