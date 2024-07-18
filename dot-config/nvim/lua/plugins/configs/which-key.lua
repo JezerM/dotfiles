@@ -1,13 +1,9 @@
 return {
-    key_labels = {
-        ["<space>"] = "󱁐",
-        ["<tab>"] = "󰌒",
-        ["<cr>"] = "󰌑",
-        ["<CR>"] = "󰌑",
-    },
-    window = {
+    win = {
         border = "single",
-        winblend = 0
+        wo = {
+            winblend = 0,
+        },
     }
 }
 -- vim: shiftwidth=4 tabstop=4
