@@ -122,11 +122,6 @@ return {
         ft = "markdown",
     },
     {
-        "iamcco/markdown-preview.nvim",
-        ft = "markdown",
-        build = "cd app && npm install"
-    },
-    {
         "nvim-neorg/neorg",
         build = ":Neorg sync-parsers",
         ft = "norg",
