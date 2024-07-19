@@ -76,8 +76,14 @@ cask "zulu"
 # Services
 brew "postgresql@16", restart_service: true, link: true
 
-
 # Applications
 cask "stolendata-mpv"
 cask "vlc"
 cask "transmission"
+cask "libreoffice"
+cask "blender"
+cask "inkscape"
+cask "krita"
+
+cask "alacritty"
+cask "godot"
