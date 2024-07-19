@@ -23,6 +23,15 @@ git clone --recursive https://github.com/JezerM/dotfiles
 cd dotfiles
 stow --dotfiles .
 ```
+
+### macOS
+
+To install macOS packages with Homebrew, run:
+
+```sh
+brew bundle
+```
+
 [alacritty]: https://github.com/alacritty/alacritty
 [nvim]: https://github.com/neovim/neovim
 [zsh]: https://www.zsh.org/
