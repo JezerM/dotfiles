@@ -1,8 +1,8 @@
 import = ["~/.config/alacritty/gruvbox.toml"]
 
 [shell]
-program = "zsh"
-args = ["-c", "zsh ~/.local/bin/tmux-chooser.sh"]
+program = "sh"
+args = ["-c", "zsh --no-rcs ~/.local/bin/tmux-chooser.sh"]
 
 [bell]
 animation = "EaseOutExpo"

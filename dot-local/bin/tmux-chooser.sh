@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+path+=("/opt/homebrew/bin/" "/usr/local/bin/")
+
 IFS=$'\n'
 
 sessions=($(tmux list-sessions))

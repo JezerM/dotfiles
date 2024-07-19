@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-export PATH=${PATH}:/usr/local/mysql/bin:${HOME}/.local/bin
+typeset -U path
+
 if [ -d "$HOME/.cargo" ]; then
   source "$HOME/.cargo/env"
 fi
@@ -9,12 +10,18 @@ export VISUAL=nvim
 export EDITOR=nvim
 # pnpm
 export PNPM_HOME="/Users/jezerm/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+path=($PNPM_HOME $path)
 # pnpm end
 
 export COMPOSER_BIN="/Users/jezerm/.composer/vendor/bin"
-export PATH="$COMPOSER_BIN:$PATH"
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export PATH="/opt/homebrew/lib/ruby/gems/3.2.0/bin/:$PATH"
+path=($COMPOSER_BIN $path)
+
+path=("/usr/local/mysql/bin/" $path)
+path=("$HOME/.local/bin/" $path)
+
+path=("/opt/homebrew/bin/" $path)
+path=("/opt/homebrew/opt/coreutils/libexec/gnubin/" $path)
+path=("/opt/homebrew/opt/ruby/bin/" $path)
+path=("/opt/homebrew/lib/ruby/gems/3.2.0/bin/" $path)
 
 set HOMEBREW_NO_AUTO_UPDATE
