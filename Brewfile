@@ -71,6 +71,7 @@ brew "luajit"
 brew "python@3.12"
 brew "gradle"
 cask "zulu@8"
+cask "zulu@21"
 cask "zulu"
 
 # Services
