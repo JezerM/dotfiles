@@ -44,6 +44,7 @@ return {
         "nvim-treesitter/nvim-treesitter",
         dependencies = {
             "nvim-treesitter/nvim-treesitter-context",
+            "rescript-lang/tree-sitter-rescript"
         },
         cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
         event = "BufEnter",

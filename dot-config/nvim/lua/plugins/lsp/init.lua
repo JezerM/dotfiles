@@ -34,6 +34,7 @@ local language_servers = {
     "taplo",
     "texlab",
     "tsserver",
+    "rescriptls",
     "ruby_lsp",
     "tailwindcss",
     "volar",
