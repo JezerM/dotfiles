@@ -14,7 +14,8 @@ local languages = {
     vue = { prettier },
     react = { prettier },
     svelte = { prettier },
-    php = { phpcbf }
+    php = { phpcbf },
+    markdown = { prettier },
 }
 
 return {
