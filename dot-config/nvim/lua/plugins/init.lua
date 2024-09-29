@@ -119,6 +119,16 @@ return {
 
     -- Markdown
     {
+        "OXY2DEV/markview.nvim",
+        branch = "dev",
+        lazy = false,
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-tree/nvim-web-devicons"
+        },
+        opts = function() return require("plugins.configs.markview") end,
+    },
+    {
         "ellisonleao/glow.nvim",
         ft = "markdown",
     },
@@ -148,6 +158,17 @@ return {
             require("plugins.configs.dadbod-ui")
         end
     },
+    {
+        "mfussenegger/nvim-dap",
+        config = function(_, opts)
+            require("debugger")
+        end
+    },
+    {
+        "rcarriga/nvim-dap-ui",
+        opts = function() return require("plugins.configs.nvim-dap-ui") end,
+        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }
+    },
 
     -- Git
     {
@@ -158,6 +179,9 @@ return {
         "lewis6991/gitsigns.nvim",
         event = "BufReadPre",
         opts = function() return require("plugins.configs.gitsigns") end,
+    },
+    {
+        "sindrets/diffview.nvim",
     },
 
     -- Explorer
@@ -232,6 +256,7 @@ return {
     {
         "folke/trouble.nvim",
         cmd = "Trouble",
+        opts = {},
         dependencies = {
             "nvim-tree/nvim-web-devicons"
         }
