@@ -20,9 +20,11 @@ local language_servers = {
     "efm", -- Diagnostics/formatter
     "eslint",
     "gdscript",
+    "asm_lsp",
     "html",
     "jdtls",
     "jsonls",
+    "lemminx",
     "kotlin_language_server",
     "phpactor",
     "pyright",

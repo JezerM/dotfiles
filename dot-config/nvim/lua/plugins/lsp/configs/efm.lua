@@ -7,6 +7,7 @@ local languages = {
     html = { prettier },
     css = { prettier },
     less = { prettier },
+    scss = { prettier },
     sass = { prettier },
     javascript = { prettier },
     typescript = { prettier },
@@ -14,7 +15,7 @@ local languages = {
     vue = { prettier },
     react = { prettier },
     svelte = { prettier },
-    php = { phpcbf },
+    php = { prettier },
     markdown = { prettier },
 }
 

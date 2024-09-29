@@ -77,7 +77,7 @@ function lib.on_attach(client, bufnr)
     map("n", "<Leader>vtf", function() toggle_format_on_save() end, { desc = "Toggle format on save" })
 
     if client.server_capabilities.inlayHintProvider then
-        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
     end
 
     if client.server_capabilities.documentFormattingProvider then
@@ -98,7 +98,7 @@ if (vim.fn.has("mac")) then
     node_modules_path = "/opt/homebrew/lib/node_modules"
 end
 
-local tsserver_path = node_modules_path .. "/typescript/lib/tsserverlibrary.js"
+local tsserver_path = node_modules_path .. "/typescript/lib/"
 
 function lib.get_global_node_modules()
     return node_modules_path

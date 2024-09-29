@@ -1,3 +1,9 @@
 return {
-    cmd = { "/Library/Developer/CommandLineTools/usr/bin/sourcekit-lsp" },
+    capabilities = {
+        workspace = {
+            didChangeWatchedFiles = {
+                dynamicRegistration = true,
+            },
+        },
+    },
 }
