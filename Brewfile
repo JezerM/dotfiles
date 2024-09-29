@@ -5,7 +5,7 @@ tap "homebrew/cask-versions"
 tap "homebrew/bundle"
 
 # Programs
-brew "neofetch"
+brew "fastfetch"
 brew "btop"
 brew "ncdu"
 brew "smartmontools"
@@ -19,6 +19,7 @@ brew "clifm"
 brew "lsd"
 brew "ripgrep"
 brew "coreutils"
+brew "bandwhich"
 
 brew "starship"
 brew "stow"
