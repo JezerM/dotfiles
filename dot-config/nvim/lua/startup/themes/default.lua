@@ -29,7 +29,8 @@ local settings = {
         margin = 5,
         content = {
             { " Find File", "Telescope find_files", "<leader>ff" },
-            { " Find Word", "Telescope live_grep", "<leader>fs" },
+            { " Find Text", "Telescope live_grep", "<leader>fs" },
+            { " Old files", "Telescope oldfiles", "<leader>fo" },
             { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
             { " New File", "lua require'startup'.new_file()", "<leader>nf" },
         },
