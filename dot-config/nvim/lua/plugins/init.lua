@@ -100,16 +100,9 @@ return {
     {
         "NvChad/nvim-colorizer.lua",
         event = "BufReadPre",
+        opts = function() return require("plugins.configs.colorizer") end,
         config = function(_, opts)
-            require("colorizer").setup({
-                user_default_options = {
-                    rgb_fn = true,
-                    hsl_fn = true,
-                    tailwind = "lsp",
-                    always_update = true,
-                    names = false,
-                }
-            })
+            require("colorizer").setup(opts)
         end
     },
 
