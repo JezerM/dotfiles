@@ -35,7 +35,7 @@ local language_servers = {
     "svelte",
     "taplo",
     "texlab",
-    "tsserver",
+    "ts_ls",
     "rescriptls",
     "ruby_lsp",
     "tailwindcss",
