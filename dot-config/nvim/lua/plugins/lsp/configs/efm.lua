@@ -4,12 +4,14 @@ local clang_format = require("efmls-configs.formatters.clang_format")
 
 local languages = {
     c = { clang_format },
+    cpp = { clang_format },
     html = { prettier },
     css = { prettier },
     less = { prettier },
     scss = { prettier },
     sass = { prettier },
     javascript = { prettier },
+    javascriptreact = { prettier },
     typescript = { prettier },
     typescriptreact = { prettier },
     vue = { prettier },

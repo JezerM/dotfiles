@@ -3,6 +3,35 @@ vim.o.completeopt = "menu,menuone,noselect"
 local cmp = require "cmp"
 local lspkind = require "lspkind"
 
+local function from_rgb_to_hex(color_line)
+    local rgb_colors = {}
+    local is_rgba = false
+
+    -- Try to detect RGB before RGBA
+    -- rgb(255, 255, 255)
+    local rgb = color_line:match '^rgb%(%d+%%?,%s?%d+%%?,%s?%d+%%?%)$'
+    if not rgb then
+        rgb = color_line:match '^rgb%(%d+%%?,%s?%d+%%?,%s?%d+%%?%)$'
+        is_rgba = true
+    end
+    if not rgb then
+        return color_line
+    end
+    -- Remove the "rgb(", ");" and leave only the numbers before
+    -- splitting the string
+    for _, color_part in ipairs(
+        vim.split(
+            is_rgba and rgb:gsub('rgba%(', ''):gsub('%);?', '')
+            or rgb:gsub('rgb%(', ''):gsub('%);?', ''),
+            ','
+        )
+    ) do
+        rgb_colors[#rgb_colors + 1] = tonumber(color_part)
+    end
+    local hex_color = '#' .. string.format('%02X%02X%02X', rgb_colors[1], rgb_colors[2], rgb_colors[3])
+    return hex_color
+end
+
 local options = {
     snippet = {
         expand = function(args)
@@ -37,13 +66,41 @@ local options = {
         autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
     },
     formatting = {
-        format = lspkind.cmp_format({
-            mode = "symbol_text",
-            preset = "default",
-        }),
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            local item = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+            local strings = vim.split(item.kind, "%s", { trimempty = true })
+
+            item.kind = " " .. (strings[1] or "") .. " "
+            item.menu = "    (" .. (strings[2] or "") .. ")"
+
+            if entry.source.name == "calc" then
+                item.kind = "󰃬"
+            end
+
+            local entryItem = entry:get_completion_item()
+            local color = entryItem.documentation
+            if color and type(color) == "string" then
+                local hex = from_rgb_to_hex(color)
+                if hex:match "^#%x%x%x%x%x%x$" then
+                    local hl = "hex-" .. hex:sub(2)
+
+                    if #vim.api.nvim_get_hl(0, { name = hl }) == 0 then
+                        vim.api.nvim_set_hl(0, hl, { fg = hex })
+                    end
+
+                    item.kind = " 󱓻 "
+                    item.kind_hl_group = hl
+                    item.menu_hl_group = hl
+                end
+            end
+
+            return item
+        end
     },
     window = {
         completion = cmp.config.window.bordered({
+            col_offset = -5,
             winhighlight = 'NormalFloat:NormalFloat,FloatBorder:FloatBorder,CursorLine:DiffText',
             border = "rounded"
         }),
