@@ -48,6 +48,7 @@ brew "prettierd"
 brew "yaml-language-server"
 brew "taplo"
 brew "efm-langserver"
+brew "rust-analyzer"
 
 # Media programs
 brew "ffmpeg"
@@ -89,3 +90,4 @@ cask "krita"
 
 cask "alacritty"
 cask "godot"
+cask "betterdisplay"
