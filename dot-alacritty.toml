@@ -1,6 +1,7 @@
+[general]
 import = ["~/.config/alacritty/gruvbox.toml"]
 
-[shell]
+[terminal.shell]
 program = "sh"
 args = ["-c", "zsh --no-rcs ~/.local/bin/tmux-chooser.sh"]
 
