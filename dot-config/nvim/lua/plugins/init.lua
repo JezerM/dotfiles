@@ -110,9 +110,18 @@ return {
         opts = function() return require("plugins.configs.lualine") end,
     },
     {
-        "b0o/incline.nvim",
-        event = "BufReadPre",
-        opts = function() return require("plugins.configs.incline") end
+        "utilyre/barbecue.nvim",
+        name = "barbecue",
+        version = "*",
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons", -- optional dependency
+        },
+        opts = {
+            show_modified = true,
+            include_buftypes = { "", "acwrite" },
+            exclude_filetypes = {}
+        },
     },
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -166,28 +175,6 @@ return {
     {
         "lervag/vimtex",
         ft = "tex",
-    },
-
-    -- Databases
-    {
-        "tpope/vim-dadbod",
-    },
-    {
-        "kristijanhusak/vim-dadbod-ui",
-        config = function(_, opts)
-            require("plugins.configs.dadbod-ui")
-        end
-    },
-    {
-        "mfussenegger/nvim-dap",
-        config = function(_, opts)
-            require("debugger")
-        end
-    },
-    {
-        "rcarriga/nvim-dap-ui",
-        opts = function() return require("plugins.configs.nvim-dap-ui") end,
-        dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }
     },
 
     -- Git
