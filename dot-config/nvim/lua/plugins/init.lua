@@ -149,6 +149,7 @@ return {
     -- Markdown
     {
         "OXY2DEV/markview.nvim",
+        enabled = false,
         branch = "dev",
         lazy = false,
         dependencies = {
@@ -251,10 +252,6 @@ return {
     },
 
     -- Syntax
-    {
-        "leafOfTree/vim-vue-plugin",
-        ft = "vue"
-    },
     {
         "folke/todo-comments.nvim",
         event = "BufReadPost",

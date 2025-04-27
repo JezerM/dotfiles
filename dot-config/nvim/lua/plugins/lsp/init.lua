@@ -39,7 +39,6 @@ local language_servers = {
     "rescriptls",
     "ruby_lsp",
     "tailwindcss",
-    "volar",
     "yamlls",
 }
 
