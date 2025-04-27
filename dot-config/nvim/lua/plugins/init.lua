@@ -195,6 +195,7 @@ return {
     -- Explorer
     {
         "nvim-neo-tree/neo-tree.nvim",
+        enabled = false,
         keys = {
             { "|", "<Cmd>Neotree toggle<CR>", mode = "n", silent = true, }
         },
@@ -205,6 +206,30 @@ return {
             "MunifTanjim/nui.nvim",
         },
         opts = function() return require("plugins.configs.neo-tree") end
+    },
+    {
+        "stevearc/oil.nvim",
+        keys = {
+            { "|", "<Cmd>Oil<CR>", desc = "Open parent directory", silent = true, }
+        },
+        cmd = "Oil",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = function() return require("plugins.configs.oil") end
+    },
+    {
+        enabled = false,
+        "refractalize/oil-git-status.nvim",
+        dependencies = {
+            "stevearc/oil.nvim",
+        },
+        config = true,
+    },
+    {
+        "JezerM/oil-lsp-diagnostics.nvim",
+        dependencies = {
+            "stevearc/oil.nvim",
+        },
+        opts = {}
     },
 
     -- Telescope
