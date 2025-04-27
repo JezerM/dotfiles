@@ -7,7 +7,6 @@ local lib = {}
 
 vim.diagnostic.config({
     virtual_text = true,
-    signs = true,
     underline = true,
     update_in_insert = false,
     severity_sort = true,
@@ -15,7 +14,21 @@ vim.diagnostic.config({
         border = "rounded",
         focusable = true,
         padding = 4,
-    }
+    },
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.HINT] = ""
+        },
+        numhl = {
+            [vim.diagnostic.severity.ERROR] = "TSDanger",
+            [vim.diagnostic.severity.WARN] = "TSWarning",
+            [vim.diagnostic.severity.INFO] = "TSTodo",
+            [vim.diagnostic.severity.HINT] = "TSNote"
+        },
+    },
 })
 
 local handler_override_config = {

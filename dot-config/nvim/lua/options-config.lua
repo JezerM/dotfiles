@@ -91,12 +91,4 @@ vim.g.everforest_enable_italic = 1
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-
---local sign_icons = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
-local sign_numhl = { Error = "TSDanger", Warn = "TSWarning", Hint = "TSTodo", Info = "TSNote" }
-for type, numhl in pairs(sign_numhl) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = "", texthl = hl, numhl = numhl })
-end
-
 -- vim: shiftwidth=4 tabstop=4
