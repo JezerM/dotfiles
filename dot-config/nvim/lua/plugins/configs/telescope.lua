@@ -1,5 +1,3 @@
-local sorters = require("telescope.sorters")
-local previewers = require("telescope.previewers")
 local actions_layout = require("telescope.actions.layout")
 
 local config = {
@@ -24,10 +22,10 @@ local config = {
             height = 0.80,
             preview_cutoff = 120,
         },
-        winblend = 0,
         color_devicons = true,
-        use_less = true,
-        path_display = {},
+        path_display = { "filename_first", truncate = 2 },
+        dynamic_preview_title = true,
+        -- wrap_results = true,
         set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
 
         mappings = {
@@ -48,6 +46,18 @@ local config = {
         }
     },
 }
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TelescopePreviewerLoaded",
+  callback = function(args)
+    if args.data.filetype ~= "help" then
+      vim.wo.number = true
+      vim.wo.wrap = true
+    elseif args.data.bufname:match("*.csv") then
+      vim.wo.wrap = false
+    end
+  end,
+})
 
 return config
 -- vim: shiftwidth=4 tabstop=4
