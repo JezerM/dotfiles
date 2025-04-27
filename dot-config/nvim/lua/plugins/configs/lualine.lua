@@ -20,7 +20,7 @@ return {
         icons_enabled = true,
         theme = "auto",
         component_separators = { left = "", right = "" },
-        section_separators = { left = "\u{e0c6}", right = "\u{e0c7}" },
+        section_separators = { left = "", right = "" },
         disabled_filetypes = {},
         always_divide_middle = true,
     },
@@ -67,14 +67,6 @@ return {
         lualine_y = {},
         lualine_z = {}
     },
-    tabline = {
-        lualine_a = { "buffers" },
-        lualine_b = {},
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {},
-        lualine_z = { "tabs" }
-    }
 }
 
 -- vim: shiftwidth=4 tabstop=4

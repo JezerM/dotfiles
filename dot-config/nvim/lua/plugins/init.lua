@@ -62,6 +62,33 @@ return {
         opts = function() return require("plugins.configs.treesitter-context") end,
     },
 
+    {
+        'luckasRanarison/tailwind-tools.nvim',
+        name = 'tailwind-tools',
+        enabled = false,
+        build = ':UpdateRemotePlugins',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-telescope/telescope.nvim', -- optional
+            'neovim/nvim-lspconfig',         -- optional
+        },
+        opts = {
+            server = {
+                settings = {
+                    includeLanguages = {
+                        ['typescript.glimmer'] = 'javascript',
+                    },
+                },
+            },
+            extension = {
+                queries = { 'typescript.glimmer' },
+            },
+            document_color = {
+                inline_symbol = '󱓻 ',
+            },
+        },
+    },
+
     -- Bigfiles
     "LunarVim/bigfile.nvim",
 

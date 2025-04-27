@@ -3,7 +3,7 @@ return {
         css = true,
         css_fn = true,
         names = false,
-        tailwind = "lsp",
+        tailwind = false,
         always_update = true,
         mode = "virtualtext",
         virtualtext = "󱓻",
