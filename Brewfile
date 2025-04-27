@@ -24,6 +24,7 @@ brew "bandwhich"
 brew "starship"
 brew "stow"
 brew "tmux"
+brew "zellij"
 brew "vivid"
 
 brew "vim"
