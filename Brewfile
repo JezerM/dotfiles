@@ -90,5 +90,6 @@ cask "inkscape"
 cask "krita"
 
 cask "alacritty"
+cask "ghostty"
 cask "godot"
 cask "betterdisplay"

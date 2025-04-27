@@ -1,0 +1,33 @@
+font-family = "MesloLGSDZ Nerd Font"
+font-style = "Regular"
+font-size = 14
+theme = GruvboxDark
+
+command = "/bin/zsh .local/bin/zellij-init.sh"
+term = "xterm-256color"
+title = " "
+
+cursor-color = #ebdbb2
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor
+shell-integration = zsh
+
+clipboard-read = allow
+clipboard-write = allow
+
+# custom-shader = "./crt.glsl"
+# custom-shader-animation = false
+
+window-padding-x = 8
+window-padding-y = 8
+macos-titlebar-style = hidden
+macos-icon = "custom-style"
+macos-icon-frame = beige
+macos-icon-screen-color = #282828
+macos-icon-ghost-color = #ebdbb2
+macos-option-as-alt = "left"
+macos-auto-secure-input = true
+macos-secure-input-indication = true
+
+quit-after-last-window-closed=true
