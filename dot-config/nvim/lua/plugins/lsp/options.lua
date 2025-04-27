@@ -48,13 +48,27 @@ function lib.on_attach(client, bufnr)
 
     require("lazy").load({ plugins = { "telescope.nvim" } })
 
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_override_config)
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help,
-        handler_override_config)
-
     vim.lsp.buf.definition = require("telescope.builtin").lsp_definitions
     vim.lsp.buf.references = require("telescope.builtin").lsp_references
     vim.lsp.buf.implementation = require("telescope.builtin").lsp_implementations
+
+    local hover = vim.lsp.buf.hover
+    vim.lsp.buf.hover = function() hover(handler_override_config) end
+
+    local signature_help = vim.lsp.buf.signature_help
+    vim.lsp.buf.signature_help = function() signature_help(handler_override_config) end
+
+    -- Only allow EFM and ESLint to format files
+    local format = vim.lsp.buf.format
+    vim.lsp.buf.format = function()
+        format(
+            {
+                filter = function(c)
+                    return c.name == "efm" or c.name == "eslint" or c.name == "lua_ls"
+                end
+            }
+        )
+    end
 
     vim.b.can_format = true
 
@@ -72,9 +86,10 @@ function lib.on_attach(client, bufnr)
     map("n", "ga", function() vim.lsp.buf.code_action() end, { desc = "Show code actions" })
     map("n", "<Leader>vr", function() vim.lsp.buf.references() end, { desc = "Show references" })
     map("n", "<Leader>a", function() vim.diagnostic.open_float() end, { desc = "Show diagnostics" })
-    map("n", "[d", function() vim.diagnostic.goto_prev() end, { desc = "Previous diagnostic" })
-    map("n", "]d", function() vim.diagnostic.goto_next() end, { desc = "Next diagnostic" })
+    map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Previous diagnostic" })
+    map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostic" })
     map("n", "<Leader>vtf", function() toggle_format_on_save() end, { desc = "Toggle format on save" })
+    map("n", "<Leader>vf", function() vim.lsp.buf.format({}) end, { desc = "Toggle format on save" })
 
     if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
