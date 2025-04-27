@@ -61,16 +61,7 @@ bindkey -v
 source ~/.zsh-syntax
 source ~/.zsh-alias
 
-if type brew &>/dev/null
-then
-  source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-  source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-else
-  source /usr/local/share/chruby/chruby.sh
-  source /usr/local/share/chruby/auto.sh
-fi
-chruby ruby-3.2.2
-
 eval "$(starship init zsh)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd=zz)"
+eval "$(rbenv init - zsh)"

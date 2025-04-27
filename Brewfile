@@ -31,7 +31,7 @@ brew "neovim"
 brew "tree-sitter"
 
 brew "swift-format"
-brew "chruby"
+brew "rbenv"
 
 brew "curl"
 brew "wget"
@@ -49,6 +49,7 @@ brew "yaml-language-server"
 brew "taplo"
 brew "efm-langserver"
 brew "rust-analyzer"
+brew "ruby-lsp"
 
 # Media programs
 brew "ffmpeg"
