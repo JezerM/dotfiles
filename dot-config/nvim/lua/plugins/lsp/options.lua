@@ -73,13 +73,13 @@ function lib.on_attach(client, bufnr)
 
     -- Only allow EFM and ESLint to format files
     local format = vim.lsp.buf.format
-    vim.lsp.buf.format = function()
-        format(
-            {
+    vim.lsp.buf.format = function(opts)
+        return format(
+            vim.tbl_extend("keep", opts or {}, {
                 filter = function(c)
                     return c.name == "efm" or c.name == "eslint" or c.name == "lua_ls"
                 end
-            }
+            })
         )
     end
 
@@ -102,7 +102,8 @@ function lib.on_attach(client, bufnr)
     map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Previous diagnostic" })
     map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostic" })
     map("n", "<Leader>vtf", function() toggle_format_on_save() end, { desc = "Toggle format on save" })
-    map("n", "<Leader>vf", function() vim.lsp.buf.format({}) end, { desc = "Toggle format on save" })
+    map("n", "<Leader>vf", function() vim.lsp.buf.format({ timeout_ms = 5000 }) end, { desc = "Format file" })
+    map("n", "<Leader>vsf", function() vim.lsp.buf.format({ async = true }) end, { desc = "Format file asynchronously" })
 
     if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })

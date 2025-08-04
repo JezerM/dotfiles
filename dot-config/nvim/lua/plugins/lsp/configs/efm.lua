@@ -1,5 +1,4 @@
 local prettier = require("efmls-configs.formatters.prettier_d")
-local phpcbf = require("efmls-configs.formatters.phpcbf")
 local clang_format = require("efmls-configs.formatters.clang_format")
 
 local languages = {
