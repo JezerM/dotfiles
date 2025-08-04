@@ -23,6 +23,9 @@ zi snippet OMZP::git
 zi snippet OMZP::brew
 zi snippet OMZP::sudo
 
+zi snippet OMZP::docker
+zi snippet OMZP::docker-compose
+
 export NVM_COMPLETION=true
 export NVM_SYMLINK_CURRENT="true"
 zinit wait lucid light-mode for lukechilds/zsh-nvm

@@ -65,7 +65,6 @@ return {
     {
         'luckasRanarison/tailwind-tools.nvim',
         name = 'tailwind-tools',
-        enabled = false,
         build = ':UpdateRemotePlugins',
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
@@ -96,7 +95,7 @@ return {
     -- "morhetz/gruvbox"
     -- "ellisonleao/gruvbox.nvim",
     "sainnhe/gruvbox-material",
-    -- "sainnhe/everforest",
+    "sainnhe/everforest",
     {
         "nkakouros-original/numbers.nvim",
         opts = function() return require("plugins.configs.numbers") end,
