@@ -1,7 +1,5 @@
 # Taps
 tap "fsouza/prettierd"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
 tap "homebrew/bundle"
 
 # Programs
@@ -95,3 +93,4 @@ cask "ghostty"
 cask "godot"
 cask "betterdisplay"
 cask "legcord"
+cask "orbstack"
