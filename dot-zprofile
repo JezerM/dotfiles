@@ -24,13 +24,17 @@ path=("/opt/homebrew/opt/coreutils/libexec/gnubin/" $path)
 path=("/opt/homebrew/opt/ruby/bin/" $path)
 path=("/opt/homebrew/lib/ruby/gems/3.2.0/bin/" $path)
 path=("/opt/homebrew/opt/llvm/bin" $path)
-path=("/opt/homebrew/opt/postgresql@16/bin" $path)
+path=("/opt/homebrew/opt/postgresql@17/bin" $path)
 path=("$HOME/.rbenv/bin" $path)
 path=($path "$HOME/go/bin")
 
 # PKG_CONFIG
-export LDFLAGS="-L/opt/homebrew/opt/postgresql@16/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/postgresql@16/include"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/postgresql@16/lib/pkgconfig"
+export LDFLAGS="-L/opt/homebrew/opt/postgresql@17/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/postgresql@17/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/postgresql@17/lib/pkgconfig"
 
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :

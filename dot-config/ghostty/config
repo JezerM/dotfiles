@@ -1,7 +1,8 @@
 font-family = "MesloLGSDZ Nerd Font"
 font-style = "Regular"
 font-size = 14
-theme = GruvboxDark
+font-feature = -calt, -liga, -dlig
+theme = Gruvbox Dark
 
 command = "/bin/zsh .local/bin/zellij-init.sh"
 term = "xterm-256color"
