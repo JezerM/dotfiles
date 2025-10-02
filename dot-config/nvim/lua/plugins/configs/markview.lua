@@ -1,18 +1,14 @@
 local presets = require("markview.presets")
 
 return {
-    headings = presets.headings.glow_labels,
-    hybrid_modes = { "n" },
-    tables = {
-        enable = true,
-        use_virt_lines = true,
+    preview = {
+        modes = { "i", "n", "no", "c" },
+        hybrid_modes = { "i", "n" },
+        linewise_hybrid_mode = true,
+        debounce = 0,
     },
-    callbacks = {
-        on_enable = function(_, win)
-            -- vim.wo[win].conceallevel = 2;
-            -- You need to add the short name of the modes where you want everything under the cursor be concealed.
-            -- E.g. "nc" will make it conceal under the cursor on normal & command mode. On the other hand, "" will make it never conceal anything under the cursor.
-            -- vim.wo[win].concealcursor = "";
-        end
-    }
+    markdown = {
+        headings = presets.headings.glow,
+        tables = presets.tables.rounded,
+    },
 }

@@ -88,6 +88,12 @@ return {
         },
     },
 
+    {
+        "mfussenegger/nvim-lint",
+        enabled = false,
+        -- opts = function() return require("plugins.configs.nvim-lint") end,
+    },
+
     -- Bigfiles
     "LunarVim/bigfile.nvim",
 
@@ -148,8 +154,8 @@ return {
     -- Markdown
     {
         "OXY2DEV/markview.nvim",
-        enabled = false,
-        branch = "dev",
+        -- enabled = false,
+        -- branch = "dev",
         lazy = false,
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
